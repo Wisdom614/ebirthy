@@ -13,7 +13,8 @@ import { PolaroidReel } from './PolaroidReel';
 import { CinematicLetter } from './CinematicLetter';
 import { SoundController } from './SoundController';
 import { GuestbookWall } from './GuestbookWall';
-import { PartyPopper, Share2 } from 'lucide-react';
+import { KeepsakePosterModal } from './KeepsakePosterModal';
+import { PartyPopper, Share2, Image as ImageIcon } from 'lucide-react';
 
 interface CelebrationCanvasProps {
   scene: SceneConfig;
@@ -30,6 +31,7 @@ export const CelebrationCanvas: React.FC<CelebrationCanvasProps> = ({
 }) => {
   const theme = THEME_DEFINITIONS[scene.theme] || THEME_DEFINITIONS.gold;
   const [activeTab, setActiveTab] = useState<'all' | 'cake' | 'gift' | 'letter' | 'photos' | 'guestbook'>('all');
+  const [isPosterModalOpen, setIsPosterModalOpen] = useState(false);
 
   const triggerConfettiCannon = () => {
     audio.playSFX('horn');
@@ -82,15 +84,27 @@ export const CelebrationCanvas: React.FC<CelebrationCanvasProps> = ({
         {/* Audio Manager (Inline Deck) */}
         <SoundController track={scene.musicTrack} autoPlay={scene.autoPlayCelebration} />
 
-        {onShareClick && (
+        <div className="flex items-center gap-2">
+          {/* Keepsake Poster Button */}
           <button
-            onClick={onShareClick}
-            className="px-4 py-2 bg-white text-[#1c1917] border-2 border-[#1c1917] font-mono text-xs font-bold uppercase tracking-wider shadow-[3px_3px_0px_#1c1917] hover:bg-[#eeeae0] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all cursor-pointer flex items-center gap-2"
+            onClick={() => setIsPosterModalOpen(true)}
+            className="px-3.5 py-2 bg-[#f7f4ed] text-[#1c1917] border-2 border-[#1c1917] font-mono text-xs font-bold uppercase tracking-wider shadow-[3px_3px_0px_#1c1917] hover:bg-[#eeeae0] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all cursor-pointer flex items-center gap-1.5"
+            title="Download commemorative keepsake poster"
           >
-            <Share2 className="w-4 h-4" />
-            <span>[ SHARE SCENE ]</span>
+            <ImageIcon className="w-3.5 h-3.5 text-amber-600" />
+            <span>[ POSTER ]</span>
           </button>
-        )}
+
+          {onShareClick && (
+            <button
+              onClick={onShareClick}
+              className="px-4 py-2 bg-white text-[#1c1917] border-2 border-[#1c1917] font-mono text-xs font-bold uppercase tracking-wider shadow-[3px_3px_0px_#1c1917] hover:bg-[#eeeae0] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all cursor-pointer flex items-center gap-2"
+            >
+              <Share2 className="w-4 h-4" />
+              <span>[ SHARE ]</span>
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Swiss Hero Celebration Banner */}
@@ -219,6 +233,14 @@ export const CelebrationCanvas: React.FC<CelebrationCanvasProps> = ({
       <div className="w-full py-6 text-center font-mono text-[10px] uppercase tracking-widest text-[#1c1917] font-bold border-t-2 border-[#1c1917]/20 relative z-20">
         BIRTHDAY SCENE STUDIO · SWISS EDITORIAL SYSTEM · 2026
       </div>
+
+      {/* Keepsake Commemorative Poster Modal */}
+      <KeepsakePosterModal
+        isOpen={isPosterModalOpen}
+        onClose={() => setIsPosterModalOpen(false)}
+        scene={scene}
+        slug={slug}
+      />
     </div>
   );
 };
