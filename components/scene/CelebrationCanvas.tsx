@@ -41,7 +41,7 @@ export const CelebrationCanvas: React.FC<CelebrationCanvasProps> = ({
   slug
 }) => {
   const theme = THEME_DEFINITIONS[scene.theme] || THEME_DEFINITIONS.gold;
-  const [activeTab, setActiveTab] = useState<'all' | 'cake' | 'gift' | 'letter' | 'photos' | 'guestbook'>('all');
+  const [activeTab, setActiveTab] = useState<'all' | 'cake' | 'gift' | 'letter' | 'photos' | 'guestbook' | 'poster'>('all');
   const [isPosterModalOpen, setIsPosterModalOpen] = useState(false);
 
   const triggerConfettiCannon = () => {
@@ -96,14 +96,14 @@ export const CelebrationCanvas: React.FC<CelebrationCanvasProps> = ({
         <SoundController track={scene.musicTrack} autoPlay={scene.autoPlayCelebration} />
 
         <div className="flex items-center gap-2">
-          {/* Keepsake Poster Button */}
+          {/* High-Visibility Keepsake Poster Button */}
           <button
             onClick={() => setIsPosterModalOpen(true)}
-            className="px-3.5 py-2 bg-[#f7f4ed] text-[#1c1917] border-2 border-[#1c1917] font-mono text-xs font-bold uppercase tracking-wider shadow-[3px_3px_0px_#1c1917] hover:bg-[#eeeae0] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all cursor-pointer flex items-center gap-1.5"
+            className="px-3.5 py-2 bg-amber-400 hover:bg-amber-300 text-[#1c1917] border-2 border-[#1c1917] font-mono text-xs font-black uppercase tracking-wider shadow-[3px_3px_0px_#1c1917] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all cursor-pointer flex items-center gap-1.5"
             title="Download commemorative keepsake poster"
           >
-            <ImageIcon className="w-3.5 h-3.5 text-amber-600" />
-            <span>[ POSTER ]</span>
+            <ImageIcon className="w-4 h-4 text-[#1c1917]" />
+            <span>[ 🖼️ KEEPSAKE POSTER ]</span>
           </button>
 
           {onShareClick && (
@@ -163,7 +163,8 @@ export const CelebrationCanvas: React.FC<CelebrationCanvasProps> = ({
           scene.enableGift ? { id: 'gift', label: '[ SECRET PARCEL ]' } : null,
           scene.letterText ? { id: 'letter', label: '[ PERSONAL MEMO ]' } : null,
           scene.enablePhotoReel && scene.photos.length > 0 ? { id: 'photos', label: '[ ARCHIVE REEL ]' } : null,
-          scene.enableGuestbook !== false ? { id: 'guestbook', label: '[ WISHES BOARD ]' } : null
+          scene.enableGuestbook !== false ? { id: 'guestbook', label: '[ WISHES BOARD ]' } : null,
+          { id: 'poster', label: '[ 🖼️ POSTER EXPORT ]' }
         ]
           .filter(Boolean)
           .map(tab => (
@@ -184,6 +185,32 @@ export const CelebrationCanvas: React.FC<CelebrationCanvasProps> = ({
       {/* Main Interactive Stage */}
       <div className="relative z-20 w-full max-w-4xl px-4 pb-20 flex flex-col items-center gap-10">
         
+        {/* Dedicated Commemorative Keepsake Poster Showcase Plate */}
+        {(activeTab === 'all' || activeTab === 'poster') && (
+          <div className="w-full bg-[#fefcf8] border-4 border-[#1c1917] p-6 sm:p-8 shadow-[8px_8px_0px_#1c1917] flex flex-col md:flex-row items-center justify-between gap-6 relative">
+            <div className="flex-1 text-left">
+              <div className="inline-flex items-center gap-2 px-2.5 py-0.5 bg-amber-400 border-2 border-[#1c1917] font-mono text-[10px] font-black uppercase tracking-widest text-[#1c1917] mb-2 shadow-[2px_2px_0px_#1c1917]">
+                <PartyPopper className="w-3 h-3" />
+                <span>OFFICIAL COMMEMORATIVE KEEPSAKE · 300 DPI</span>
+              </div>
+              <h3 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-[#1c1917]">
+                YOUR BIRTHDAY POSTER IS READY
+              </h3>
+              <p className="mt-2 text-xs sm:text-sm text-zinc-700 font-medium font-sans leading-relaxed">
+                Download a studio-grade, high-resolution 300 DPI keepsake poster customized with your edition milestone, photograph plate, and personal headline to print or frame.
+              </p>
+            </div>
+
+            <button
+              onClick={() => setIsPosterModalOpen(true)}
+              className="w-full md:w-auto px-6 py-4 bg-amber-400 hover:bg-amber-300 text-[#1c1917] font-mono font-black text-sm uppercase tracking-wider border-2 border-[#1c1917] shadow-[4px_4px_0px_#1c1917] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all flex items-center justify-center gap-2.5 flex-shrink-0 cursor-pointer"
+            >
+              <ImageIcon className="w-5 h-5 text-[#1c1917]" />
+              <span>[ 🖼️ GET PRINTABLE POSTER ]</span>
+            </button>
+          </div>
+        )}
+
         {/* Cake Section */}
         {scene.enableCake && (activeTab === 'all' || activeTab === 'cake') && (
           <div className="w-full flex flex-col items-center border-2 border-[#1c1917] p-6 bg-white shadow-[4px_4px_0px_#1c1917]">
@@ -239,6 +266,16 @@ export const CelebrationCanvas: React.FC<CelebrationCanvasProps> = ({
           </div>
         )}
       </div>
+
+      {/* Floating High-Visibility Keepsake Poster Quick Badge */}
+      <button
+        onClick={() => setIsPosterModalOpen(true)}
+        className="fixed bottom-6 right-4 sm:right-6 z-40 px-4 py-2.5 bg-amber-400 hover:bg-amber-300 text-[#1c1917] border-2 border-[#1c1917] font-mono text-xs font-black uppercase tracking-wider shadow-[4px_4px_0px_#1c1917] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all cursor-pointer flex items-center gap-2"
+        title="Download high-resolution 300 DPI keepsake poster"
+      >
+        <ImageIcon className="w-4 h-4 text-[#1c1917]" />
+        <span>[ 🖼️ KEEPSAKE POSTER ]</span>
+      </button>
 
       {/* Footer Branding */}
       <div className="w-full py-6 text-center font-mono text-[10px] uppercase tracking-widest text-[#1c1917] font-bold border-t-2 border-[#1c1917]/20 relative z-20">
