@@ -115,7 +115,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({ scene, isOpen, slug: ini
           )}
           {cloudStatus === 'local_only' && (
             <div className="p-2.5 bg-amber-50 border-2 border-amber-400 text-amber-950 text-xs font-mono">
-              <p className="font-bold">⚠️ Cloud Database not configured in environment variables.</p>
+              <p className="font-bold">[ NOTICE: Cloud Database not configured in environment variables ]</p>
               <p className="text-[11px] text-amber-900 mt-0.5">
                 This link works only on this browser until <code>NEXT_PUBLIC_SUPABASE_URL</code> and <code>NEXT_PUBLIC_SUPABASE_ANON_KEY</code> are added to your <code>.env</code> file and hosting platform.
               </p>
@@ -123,7 +123,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({ scene, isOpen, slug: ini
           )}
           {cloudStatus === 'error' && (
             <div className="p-2.5 bg-rose-50 border-2 border-rose-400 text-rose-950 text-xs font-mono">
-              <p className="font-bold">⚠️ Cloud sync failed: {cloudErrorMsg}</p>
+              <p className="font-bold">[ ERROR: Cloud sync failed: {cloudErrorMsg} ]</p>
               <p className="text-[11px] text-rose-900 mt-0.5">
                 Please ensure your Supabase database tables and RLS policies are created.
               </p>

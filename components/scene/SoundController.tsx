@@ -68,18 +68,19 @@ export const SoundController: React.FC<SoundControllerProps> = ({
   if (track === 'none') return null;
 
   return (
-    <div className={`flex items-center gap-2 ${className}`}>
+    <div className={`flex items-center gap-1.5 sm:gap-2 ${className}`}>
       {/* Mechanical Audio Deck Pill */}
       <button
         onClick={manualTogglePlay}
-        className={`px-3 py-2 border-2 border-[#1c1917] font-mono text-xs font-bold uppercase flex items-center gap-2 shadow-[3px_3px_0px_#1c1917] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all cursor-pointer ${
+        className={`px-2 sm:px-3 py-1.5 sm:py-2 border-2 border-[#1c1917] font-mono text-[10px] sm:text-xs font-bold uppercase flex items-center gap-1.5 sm:gap-2 shadow-[2px_2px_0px_#1c1917] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all cursor-pointer ${
           isPlaying
             ? 'bg-amber-400 text-[#1c1917]'
             : 'bg-white text-[#1c1917] hover:bg-[#eeeae0]'
         }`}
       >
         <Music className="w-3.5 h-3.5" />
-        <span>{isPlaying ? `AUDIO · ${track}` : 'AUDIO: OFF'}</span>
+        <span className="hidden sm:inline">{isPlaying ? `AUDIO · ${track}` : 'AUDIO: OFF'}</span>
+        <span className="sm:hidden">{isPlaying ? 'AUDIO' : 'OFF'}</span>
 
         {/* Mechanical VU Equalizer Bars */}
         {isPlaying && (
@@ -95,9 +96,9 @@ export const SoundController: React.FC<SoundControllerProps> = ({
       <button
         onClick={toggleMute}
         title={isMuted ? 'Unmute audio' : 'Mute audio'}
-        className="p-2 bg-white hover:bg-[#eeeae0] border-2 border-[#1c1917] text-[#1c1917] shadow-[3px_3px_0px_#1c1917] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all cursor-pointer"
+        className="p-1.5 sm:p-2 bg-white hover:bg-[#eeeae0] border-2 border-[#1c1917] text-[#1c1917] shadow-[2px_2px_0px_#1c1917] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all cursor-pointer"
       >
-        {isMuted ? <VolumeX className="w-4 h-4 text-rose-600" /> : <Volume2 className="w-4 h-4 text-[#1c1917]" />}
+        {isMuted ? <VolumeX className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-rose-600" /> : <Volume2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#1c1917]" />}
       </button>
     </div>
   );

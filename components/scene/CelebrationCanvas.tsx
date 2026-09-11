@@ -149,17 +149,23 @@ export const CelebrationCanvas: React.FC<CelebrationCanvasProps> = ({
       )}
 
       {/* Top Architectural Navigation & Control Bar */}
-      <header className="w-full max-w-5xl px-4 pt-4 sm:pt-6 flex items-center justify-between z-30 border-b-2 border-[#1c1917]/20 pb-4 gap-3 flex-wrap">
-        <BrandLogo size="sm" showSubtitle={true} href="/" />
+      <header className="w-full max-w-5xl px-3 sm:px-4 pt-3 sm:pt-6 pb-3 sm:pb-4 border-b-2 border-[#1c1917]/20 z-30 flex items-center justify-between gap-2">
+        {/* Left: Brand Logo (compact on mobile) */}
+        <div className="flex-shrink-0">
+          <BrandLogo size="sm" showSubtitle={false} href="/" />
+        </div>
 
-        {/* Audio Manager Inline Deck */}
-        <SoundController track={scene.musicTrack} autoPlay={scene.autoPlayCelebration} />
+        {/* Center: Sound Controller */}
+        <div className="flex-shrink-0">
+          <SoundController track={scene.musicTrack} autoPlay={scene.autoPlayCelebration} />
+        </div>
 
-        <div className="flex items-center gap-2">
+        {/* Right: Actions */}
+        <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
           {/* Confetti Blaster */}
           <button
             onClick={triggerConfettiCannon}
-            className="px-3 py-1.5 bg-white hover:bg-[#eeeae0] text-[#1c1917] border-2 border-[#1c1917] font-mono text-xs font-bold uppercase tracking-wider shadow-[2px_2px_0px_#1c1917] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all cursor-pointer hidden sm:flex items-center gap-1.5"
+            className="px-2.5 sm:px-3 py-1.5 bg-white hover:bg-[#eeeae0] text-[#1c1917] border-2 border-[#1c1917] font-mono text-[10px] sm:text-xs font-bold uppercase shadow-[2px_2px_0px_#1c1917] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all cursor-pointer hidden md:flex items-center gap-1.5"
             title="Trigger Confetti Cannon"
           >
             <PartyPopper className="w-3.5 h-3.5 text-amber-600" />
@@ -172,20 +178,22 @@ export const CelebrationCanvas: React.FC<CelebrationCanvasProps> = ({
               setIsPosterModalOpen(true);
               markStageCompleted('poster');
             }}
-            className="px-3.5 py-1.5 bg-amber-400 hover:bg-amber-300 text-[#1c1917] border-2 border-[#1c1917] font-mono text-xs font-black uppercase tracking-wider shadow-[2px_2px_0px_#1c1917] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all cursor-pointer flex items-center gap-1.5"
+            className="px-2.5 sm:px-3.5 py-1.5 bg-amber-400 hover:bg-amber-300 text-[#1c1917] border-2 border-[#1c1917] font-mono text-[10px] sm:text-xs font-black uppercase tracking-wider shadow-[2px_2px_0px_#1c1917] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all cursor-pointer flex items-center gap-1.5"
             title="Download commemorative keepsake poster"
           >
             <ImageIcon className="w-3.5 h-3.5" />
-            <span>[ POSTER ]</span>
+            <span className="hidden sm:inline">[ POSTER ]</span>
+            <span className="sm:hidden">POSTER</span>
           </button>
 
           {onShareClick && (
             <button
               onClick={onShareClick}
-              className="px-3 py-1.5 bg-white text-[#1c1917] border-2 border-[#1c1917] font-mono text-xs font-bold uppercase tracking-wider shadow-[2px_2px_0px_#1c1917] hover:bg-[#eeeae0] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all cursor-pointer flex items-center gap-1.5"
+              className="px-2.5 sm:px-3 py-1.5 bg-white text-[#1c1917] border-2 border-[#1c1917] font-mono text-[10px] sm:text-xs font-bold uppercase shadow-[2px_2px_0px_#1c1917] hover:bg-[#eeeae0] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all cursor-pointer flex items-center gap-1.5"
+              title="Share Celebration Link"
             >
               <Share2 className="w-3.5 h-3.5" />
-              <span>[ SHARE ]</span>
+              <span className="hidden sm:inline">[ SHARE ]</span>
             </button>
           )}
         </div>
@@ -339,9 +347,9 @@ export const CelebrationCanvas: React.FC<CelebrationCanvasProps> = ({
                     setCurrentStageIndex(idx);
                     audio.playSFX('chime');
                   }}
-                  className={`flex-1 min-w-[130px] p-2.5 border-2 text-left transition-all cursor-pointer relative ${
+                  className={`flex-1 min-w-[105px] sm:min-w-[130px] p-2 sm:p-2.5 border-2 text-left transition-all cursor-pointer relative flex-shrink-0 ${
                     isActive
-                      ? 'bg-white border-[#1c1917] shadow-[4px_4px_0px_#1c1917] translate-y-[-2px]'
+                      ? 'bg-white border-[#1c1917] shadow-[3px_3px_0px_#1c1917] sm:shadow-[4px_4px_0px_#1c1917] translate-y-[-2px]'
                       : isDone
                       ? 'bg-[#f7f4ed] border-[#1c1917]/60 hover:border-[#1c1917] shadow-[2px_2px_0px_#1c1917]'
                       : 'bg-white/80 border-[#1c1917]/40 hover:border-[#1c1917]'
