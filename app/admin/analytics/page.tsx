@@ -3,6 +3,8 @@
 import React, { useEffect, useState } from 'react';
 import { fetchAnalyticsSummary, AnalyticsSummary } from '../../../utils/supabase/analyticsDb';
 import { BrandLogo } from '../../../components/ui/BrandLogo';
+import { supabase, isSupabaseConfigured } from '../../../utils/supabase/client';
+import { audio } from '../../../utils/audioManager';
 import {
   Activity,
   Users,
@@ -22,15 +24,49 @@ import {
   RefreshCw,
   ArrowUpRight,
   ShieldCheck,
-  Radio
+  ShieldAlert,
+  Lock,
+  Unlock,
+  KeyRound,
+  Radio,
+  LogOut,
+  AlertCircle
 } from 'lucide-react';
 import Link from 'next/link';
 
+const ADMIN_STORAGE_KEY = 'ebirthy_admin_auth_token';
+const DEFAULT_ADMIN_PIN = process.env.NEXT_PUBLIC_ADMIN_PIN || 'ebirthy2026';
+
 export default function AdminAnalyticsDashboard() {
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [pinInput, setPinInput] = useState<string>('');
+  const [authError, setAuthError] = useState<string | null>(null);
+  const [isCheckingAuth, setIsCheckingAuth] = useState<boolean>(true);
+
   const [summary, setSummary] = useState<AnalyticsSummary | null>(null);
   const [loading, setLoading] = useState(true);
   const [lastRefreshed, setLastRefreshed] = useState<Date>(new Date());
   const [autoRefresh, setAutoRefresh] = useState(true);
+
+  // Check initial authentication
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedToken = sessionStorage.getItem(ADMIN_STORAGE_KEY);
+      if (storedToken === 'granted') {
+        setIsAuthenticated(true);
+      } else if (isSupabaseConfigured && supabase) {
+        // Also check if logged in as creator
+        supabase.auth.getUser().then(({ data: { user } }) => {
+          if (user && user.email) {
+            setIsAuthenticated(true);
+          }
+          setIsCheckingAuth(false);
+        });
+        return;
+      }
+    }
+    setIsCheckingAuth(false);
+  }, []);
 
   const loadData = async () => {
     setLoading(true);
@@ -41,6 +77,8 @@ export default function AdminAnalyticsDashboard() {
   };
 
   useEffect(() => {
+    if (!isAuthenticated) return;
+
     loadData();
 
     if (!autoRefresh) return;
@@ -49,7 +87,31 @@ export default function AdminAnalyticsDashboard() {
     }, 15000); // 15s auto-refresh
 
     return () => clearInterval(interval);
-  }, [autoRefresh]);
+  }, [isAuthenticated, autoRefresh]);
+
+  const handleUnlock = (e: React.FormEvent) => {
+    e.preventDefault();
+    setAuthError(null);
+
+    if (pinInput.trim() === DEFAULT_ADMIN_PIN) {
+      audio.playSFX('sparkle');
+      sessionStorage.setItem(ADMIN_STORAGE_KEY, 'granted');
+      setIsAuthenticated(true);
+    } else {
+      audio.playSFX('unwrap');
+      setAuthError('INVALID ACCESS KEY. VERIFICATION FAILED.');
+      setPinInput('');
+    }
+  };
+
+  const handleLockSession = () => {
+    sessionStorage.removeItem(ADMIN_STORAGE_KEY);
+    if (isSupabaseConfigured && supabase) {
+      supabase.auth.signOut().then();
+    }
+    setIsAuthenticated(false);
+    setPinInput('');
+  };
 
   const formatDuration = (seconds: number) => {
     if (seconds < 60) return `${seconds}s`;
@@ -75,9 +137,89 @@ export default function AdminAnalyticsDashboard() {
       return <Download className="w-3.5 h-3.5 text-emerald-600" />;
     if (eventName.includes('confetti') || eventName.includes('cheer'))
       return <Sparkles className="w-3.5 h-3.5 text-yellow-600" />;
-    if (eventName.includes('shared')) return <Share2 className="w-3.5 h-3.5 text-purple-600" />;
+    if (eventName.includes('shared') || eventName.includes('launched'))
+      return <Share2 className="w-3.5 h-3.5 text-purple-600" />;
     return <Activity className="w-3.5 h-3.5 text-zinc-600" />;
   };
+
+  if (isCheckingAuth) {
+    return (
+      <div className="min-h-screen bg-[#f7f4ed] text-[#1c1917] flex items-center justify-center font-mono text-xs uppercase">
+        <RefreshCw className="w-5 h-5 animate-spin text-amber-600 mr-2" />
+        <span>[ VERIFYING ACCESS CREDENTIALS... ]</span>
+      </div>
+    );
+  }
+
+  // Render Gate Lock Screen if not authorized
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-[#f7f4ed] text-[#1c1917] flex flex-col items-center justify-center p-4 sm:p-6 font-sans">
+        <div className="max-w-md w-full bg-white border-4 border-[#1c1917] p-6 sm:p-8 shadow-[8px_8px_0px_#1c1917] text-[#1c1917] animate-in zoom-in-95 duration-150">
+          
+          <div className="flex items-center justify-between border-b-2 border-[#1c1917] pb-4 mb-6">
+            <BrandLogo size="sm" showSubtitle={false} href="/" />
+            <div className="flex items-center gap-1.5 px-2 py-0.5 bg-rose-100 text-rose-900 border border-rose-400 font-mono text-[9px] font-black uppercase">
+              <Lock className="w-3 h-3" />
+              <span>[ RESTRICTED AREA ]</span>
+            </div>
+          </div>
+
+          <div className="text-center mb-6">
+            <div className="w-12 h-12 bg-amber-400 border-2 border-[#1c1917] text-[#1c1917] flex items-center justify-center mx-auto mb-3 shadow-[3px_3px_0px_#1c1917]">
+              <KeyRound className="w-6 h-6" />
+            </div>
+            <h2 className="text-2xl font-black uppercase tracking-tight text-[#1c1917]">
+              ADMIN GATEWAY
+            </h2>
+            <p className="font-mono text-xs text-zinc-600 mt-1 uppercase font-semibold">
+              ENTER SYSTEM PASSKEY TO ACCESS REAL-TIME TELEMETRY & VISITOR METRICS.
+            </p>
+          </div>
+
+          <form onSubmit={handleUnlock} className="space-y-4">
+            <div>
+              <label className="block font-mono text-[10px] uppercase font-bold tracking-wider text-[#1c1917] mb-1.5">
+                MASTER ADMIN PASSKEY
+              </label>
+              <input
+                type="password"
+                value={pinInput}
+                onChange={(e) => {
+                  setPinInput(e.target.value);
+                  setAuthError(null);
+                }}
+                placeholder="Enter access key..."
+                autoFocus
+                className="w-full px-3.5 py-3 bg-[#f7f4ed] border-2 border-[#1c1917] text-[#1c1917] font-mono text-sm tracking-wider focus:outline-none focus:border-amber-500 shadow-[2px_2px_0px_#1c1917]"
+              />
+            </div>
+
+            {authError && (
+              <div className="p-2.5 bg-rose-50 border-2 border-rose-500 text-rose-700 font-mono text-xs font-bold flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                <span>{authError}</span>
+              </div>
+            )}
+
+            <button
+              type="submit"
+              className="w-full py-3.5 bg-amber-400 hover:bg-amber-300 text-[#1c1917] font-mono font-bold text-xs uppercase tracking-wider border-2 border-[#1c1917] shadow-[4px_4px_0px_#1c1917] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <Unlock className="w-4 h-4" />
+              <span>[ UNLOCK DASHBOARD ]</span>
+            </button>
+          </form>
+
+          <div className="mt-6 pt-4 border-t-2 border-[#1c1917]/20 text-center font-mono text-[10px] text-zinc-500 uppercase font-semibold">
+            <Link href="/" className="hover:text-amber-700 underline underline-offset-2">
+              &lt;&lt; RETURN TO HOMEPAGE
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#f7f4ed] text-[#1c1917] p-4 sm:p-8 font-sans selection:bg-amber-400 selection:text-black">
@@ -92,7 +234,7 @@ export default function AdminAnalyticsDashboard() {
                 TELEMETRY & VISITOR INTELLIGENCE
               </h1>
               <span className="font-mono text-[10px] text-zinc-500 uppercase font-bold tracking-wider block">
-                LIVE TRAFFIC MATRIX · ACTION FUNNEL · DWELL METRICS
+                AUTHENTICATED OWNER SESSION · ACTION FUNNEL · DWELL METRICS
               </span>
             </div>
           </div>
@@ -113,6 +255,15 @@ export default function AdminAnalyticsDashboard() {
             >
               <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
               <span>REFRESH</span>
+            </button>
+
+            <button
+              onClick={handleLockSession}
+              className="px-3 py-1.5 bg-rose-100 hover:bg-rose-200 text-rose-900 border-2 border-[#1c1917] font-bold uppercase shadow-[2px_2px_0px_#1c1917] transition-all flex items-center gap-1 cursor-pointer"
+              title="Lock Admin Session"
+            >
+              <LogOut className="w-3.5 h-3.5" />
+              <span>[ LOCK ]</span>
             </button>
 
             <Link
