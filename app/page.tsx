@@ -1,11 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { PRESET_TEMPLATES, THEME_DEFINITIONS } from '../utils/presets';
-import { encodeScene } from '../utils/sceneEncoder';
 import { audio } from '../utils/audioManager';
-import { formatBirthDayMonth } from '../utils/dateFormatter';
 import confetti from 'canvas-confetti';
 import { BrandLogo } from '../components/ui/BrandLogo';
 import {
@@ -22,8 +20,6 @@ import {
 } from 'lucide-react';
 
 export default function HomePage() {
-  const [activeCategory, setActiveCategory] = useState<string>('all');
-
   const handleConfettiBlast = () => {
     audio.playSFX('horn');
     audio.playSFX('cheer');
@@ -33,11 +29,6 @@ export default function HomePage() {
       origin: { y: 0.6 }
     });
   };
-
-  const filteredPresets = Object.entries(PRESET_TEMPLATES).filter(([_, template]) => {
-    if (activeCategory === 'all') return true;
-    return template.category === activeCategory;
-  });
 
   const renderPresetIcon = (iconName: string) => {
     switch (iconName) {
@@ -131,158 +122,46 @@ export default function HomePage() {
       {/* Curated Templates Gallery */}
       <section className="py-20 px-6 sm:px-12 bg-[#eeeae0] border-b-2 border-[#1c1917]">
         <div className="max-w-6xl mx-auto">
-          {/* Section Header */}
-          <div className="flex flex-col md:flex-row items-start md:items-end justify-between border-b-2 border-[#1c1917] pb-4 mb-8 gap-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between border-b-2 border-[#1c1917] pb-4 mb-10 gap-4">
             <div>
               <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-amber-700 block mb-1">
-                [ CATALOG ARCHIVE · 2026 CURATED EDITIONS ]
+                [ CATALOG ARCHIVE · CURATED PRESETS ]
               </span>
-              <h2 className="text-2xl sm:text-4xl font-black uppercase text-[#1c1917] tracking-tight">
-                CELEBRATION SCENE SPECIMENS
+              <h2 className="text-2xl sm:text-3xl font-black uppercase text-[#1c1917] tracking-tight">
+                CELEBRATION SCENE TEMPLATES
               </h2>
             </div>
-            <p className="font-mono text-xs text-zinc-600 uppercase font-semibold max-w-sm">
-              SELECT ANY ARCHIVAL SPECIMEN TO INSTANTLY TEST-DRIVE OR CUSTOMIZE WITH YOUR RECIPIENT DETAILS.
-            </p>
+            <span className="font-mono text-xs text-zinc-600 uppercase font-semibold">
+              EXPLORE CURATED ARCHIVE SPECIMENS
+            </span>
           </div>
 
-          {/* Interactive Category Filter Pills */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-8 scrollbar-none">
-            {[
-              { id: 'all', label: `ALL EDITIONS (${Object.keys(PRESET_TEMPLATES).length})` },
-              { id: 'friends', label: 'FRIENDS & BROTHER' },
-              { id: 'romance', label: 'ROMANCE & PARTNER' },
-              { id: 'family', label: 'FAMILY & SISTER' },
-              { id: 'minimalist', label: 'MINIMALIST & EDITORIAL' }
-            ].map((cat) => {
-              const isActive = activeCategory === cat.id;
-              return (
-                <button
-                  key={cat.id}
-                  onClick={() => {
-                    setActiveCategory(cat.id);
-                    audio.playSFX('sparkle');
-                  }}
-                  className={`px-3.5 py-2 font-mono text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-all border-2 border-[#1c1917] cursor-pointer ${
-                    isActive
-                      ? 'bg-amber-400 text-[#1c1917] shadow-[3px_3px_0px_#1c1917] translate-x-[-1px] translate-y-[-1px]'
-                      : 'bg-white text-zinc-700 hover:bg-[#f7f4ed] shadow-[1px_1px_0px_#1c1917]'
-                  }`}
-                >
-                  <span>{cat.label}</span>
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Specimen Cards Grid (3 Columns) */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredPresets.map(([key, template]) => {
+            {Object.entries(PRESET_TEMPLATES).map(([key, template], idx) => {
               const theme = THEME_DEFINITIONS[template.config.theme] || THEME_DEFINITIONS.gold;
-
               return (
                 <div
                   key={key}
-                  className="bg-white border-2 border-[#1c1917] flex flex-col justify-between shadow-[4px_4px_0px_#1c1917] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[7px_7px_0px_#1c1917] transition-all group overflow-hidden"
+                  className="bg-white border-2 border-[#1c1917] p-5 flex flex-col justify-between shadow-[4px_4px_0px_#1c1917] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#1c1917] transition-all group"
                 >
                   <div>
-                    {/* Top Archival Header Bar */}
-                    <div className="p-3 bg-[#f7f4ed] border-b-2 border-[#1c1917] flex items-center justify-between text-[9px] font-mono font-bold text-[#1c1917]">
-                      <span className="text-zinc-600 uppercase tracking-wider">{template.specimenRef}</span>
-                      <span className="px-2 py-0.5 bg-amber-200 text-amber-900 border border-amber-400 uppercase">
-                        {template.badge}
+                    {/* Header Strip */}
+                    <div className={`h-20 -mx-5 -mt-5 ${theme.backgroundClass} p-3 flex items-center justify-between border-b-2 border-[#1c1917] mb-4`}>
+                      <div className="w-8 h-8 bg-white border-2 border-[#1c1917] shadow-[2px_2px_0px_#1c1917] flex items-center justify-center">
+                        {renderPresetIcon(template.iconName)}
+                      </div>
+                      <span className="font-mono text-[9px] font-bold px-2 py-0.5 bg-white text-[#1c1917] border border-[#1c1917] uppercase shadow-sm">
+                        {template.tag}
                       </span>
                     </div>
 
-                    {/* Visual Mini-Simulation Header Plate */}
-                    <div className={`p-4 ${theme.backgroundClass} border-b-2 border-[#1c1917] relative`}>
-                      {/* Top Row: Icon and Color Swatches */}
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="w-8 h-8 bg-white border-2 border-[#1c1917] shadow-[2px_2px_0px_#1c1917] flex items-center justify-center">
-                          {renderPresetIcon(template.iconName)}
-                        </div>
-
-                        {/* Palette Swatch Dots */}
-                        <div className="flex items-center gap-1.5 bg-white px-2 py-1 border border-[#1c1917] shadow-[1px_1px_0px_#1c1917]">
-                          <span className="font-mono text-[8px] text-zinc-500 uppercase mr-0.5">PALETTE:</span>
-                          {template.swatches.map((color, cIdx) => (
-                            <span
-                              key={cIdx}
-                              className="w-3 h-3 rounded-full border border-[#1c1917]"
-                              style={{ backgroundColor: color }}
-                              title={color}
-                            />
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Mini Preview Mockup Card */}
-                      <div className="bg-white border-2 border-[#1c1917] p-3 shadow-[2px_2px_0px_#1c1917]">
-                        <div className="flex items-center justify-between font-mono text-[9px] font-bold text-zinc-500 border-b border-[#1c1917]/20 pb-1 mb-1.5">
-                          <span>FOR: {template.config.recipientName.toUpperCase()}</span>
-                          <span className="text-amber-700 bg-amber-100 px-1 border border-amber-300">
-                            {template.config.birthDate ? formatBirthDayMonth(template.config.birthDate) : '13|05'}
-                          </span>
-                        </div>
-                        <h4 className="font-black text-sm uppercase text-[#1c1917] leading-tight truncate">
-                          HAPPY BIRTHDAY, {template.config.recipientName}!
-                        </h4>
-                        <p className="font-mono text-[9px] text-zinc-600 uppercase font-semibold mt-1 truncate">
-                          {template.config.headline}
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Body Details */}
-                    <div className="p-5">
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="font-mono text-[9px] text-amber-700 uppercase font-extrabold tracking-wider">
-                          [ {template.tag} · {template.category.toUpperCase()} ]
-                        </span>
-                      </div>
-                      <h3 className="font-mono font-bold text-base uppercase text-[#1c1917] group-hover:text-amber-600 transition-colors">
-                        {template.name}
-                      </h3>
-
-                      <p className="font-sans text-xs text-zinc-700 mt-2.5 line-clamp-3 leading-relaxed font-medium italic">
-                        "{template.config.wishes}"
-                      </p>
-
-                      {/* Highlighted Feature Chips */}
-                      <div className="mt-4 pt-3 border-t border-[#1c1917]/20">
-                        <span className="font-mono text-[9px] text-zinc-500 uppercase font-bold block mb-1.5">
-                          INCLUDED ARCHIVE MODULES:
-                        </span>
-                        <div className="flex flex-wrap gap-1.5">
-                          {template.highlightFeatures.map((feat, fIdx) => (
-                            <span
-                              key={fIdx}
-                              className="px-2 py-0.5 bg-[#f7f4ed] border border-[#1c1917] font-mono text-[9px] font-bold uppercase text-[#1c1917]"
-                            >
-                              ✦ {feat}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Actions Bar */}
-                  <div className="p-4 bg-[#f7f4ed] border-t-2 border-[#1c1917] flex items-center gap-2">
-                    <Link
-                      href={`/celebrate?preset=${key}`}
-                      className="flex-1 py-2.5 bg-white hover:bg-[#eeeae0] text-[#1c1917] font-mono text-xs font-bold uppercase border-2 border-[#1c1917] shadow-[2px_2px_0px_#1c1917] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none flex items-center justify-center gap-1.5 transition-all"
-                    >
-                      <Play className="w-3.5 h-3.5 text-amber-600" />
-                      <span>PREVIEW</span>
-                    </Link>
-                    <Link
-                      href={`/studio?preset=${key}`}
-                      className="flex-1 py-2.5 bg-amber-400 hover:bg-amber-300 text-[#1c1917] font-mono text-xs font-bold uppercase border-2 border-[#1c1917] shadow-[2px_2px_0px_#1c1917] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none flex items-center justify-center gap-1.5 transition-all"
-                    >
-                      <Wand2 className="w-3.5 h-3.5" />
-                      <span>CUSTOMIZE</span>
-                    </Link>
+                    <span className="font-mono text-[9px] text-zinc-500 uppercase font-bold">PRESET 0{idx + 1}</span>
+                    <h3 className="font-mono font-bold text-sm uppercase text-[#1c1917] mt-1 group-hover:text-amber-600 transition-colors">
+                      {template.name}
+                    </h3>
+                    <p className="font-mono text-xs text-zinc-600 mt-2 line-clamp-3 leading-relaxed font-medium">
+                      "{template.config.wishes}"
+                    </p>
                   </div>
                 </div>
               );
