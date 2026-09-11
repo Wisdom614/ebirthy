@@ -9,16 +9,34 @@ import { BrandLogo } from '../ui/BrandLogo';
 interface AuthModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSuccess?: () => void;
+  onSuccess?: (user?: any) => void;
+  defaultMode?: 'signin' | 'signup';
+  title?: string;
+  description?: string;
 }
 
-export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => {
-  const [mode, setMode] = useState<'signin' | 'signup'>('signin');
+export const AuthModal: React.FC<AuthModalProps> = ({
+  isOpen,
+  onClose,
+  onSuccess,
+  defaultMode = 'signin',
+  title,
+  description
+}) => {
+  const [mode, setMode] = useState<'signin' | 'signup'>(defaultMode);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
+
+  React.useEffect(() => {
+    if (isOpen) {
+      setMode(defaultMode);
+      setErrorMsg(null);
+      setSuccessMsg(null);
+    }
+  }, [isOpen, defaultMode]);
 
   if (!isOpen) return null;
 
@@ -41,17 +59,15 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
         });
         if (error) throw error;
         setSuccessMsg(
-          data.session
+          data.session || data.user
             ? 'Account created successfully! [ OK ]'
             : 'Account registered. Please check email for verification.'
         );
         audio.playSFX('sparkle');
-        if (data.session) {
-          setTimeout(() => {
-            onSuccess?.();
-            onClose();
-          }, 1200);
-        }
+        setTimeout(() => {
+          onSuccess?.(data.user || data.session?.user);
+          onClose();
+        }, 1000);
       } else {
         const { error, data } = await supabase.auth.signInWithPassword({
           email,
@@ -61,9 +77,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
         setSuccessMsg('Authentication successful.');
         audio.playSFX('sparkle');
         setTimeout(() => {
-          onSuccess?.();
+          onSuccess?.(data.user || data.session?.user);
           onClose();
-        }, 1000);
+        }, 800);
       }
     } catch (err: any) {
       setErrorMsg(err.message || 'Authentication error.');
@@ -97,10 +113,10 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
         </div>
 
         <h3 className="text-xl sm:text-2xl font-bold uppercase tracking-tight text-[#1c1917]">
-          {mode === 'signin' ? 'SIGN IN TO STUDIO' : 'REGISTER CREATOR ACCOUNT'}
+          {title || (mode === 'signin' ? 'SIGN IN TO STUDIO' : 'REGISTER CREATOR ACCOUNT')}
         </h3>
         <p className="font-mono text-xs text-zinc-600 mt-1 font-medium">
-          Store, update, and manage your custom celebration scenes in cloud.
+          {description || (mode === 'signin' ? 'Access your cloud vault and managed celebration scenes.' : 'Create an account to save, preserve, and dispatch celebration links.')}
         </p>
 
         {errorMsg && (

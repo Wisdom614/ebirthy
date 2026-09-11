@@ -49,6 +49,12 @@ function StudioContent() {
   const [isSaving, setIsSaving] = useState(false);
   const [savedSuccess, setSavedSuccess] = useState(false);
   const [currentSceneId, setCurrentSceneId] = useState<string | undefined>(undefined);
+  const [authModalConfig, setAuthModalConfig] = useState<{
+    defaultMode: 'signin' | 'signup';
+    title?: string;
+    description?: string;
+  }>({ defaultMode: 'signin' });
+  const [pendingShareAfterAuth, setPendingShareAfterAuth] = useState(false);
 
   useEffect(() => {
     const data = searchParams.get('data');
@@ -95,6 +101,40 @@ function StudioContent() {
     }
   };
 
+  const openSignInModal = () => {
+    setAuthModalConfig({
+      defaultMode: 'signin',
+      title: 'SIGN IN TO STUDIO',
+      description: 'Access your cloud vault and managed celebration scenes.'
+    });
+    setPendingShareAfterAuth(false);
+    setIsAuthModalOpen(true);
+  };
+
+  const handleShareClick = () => {
+    if (isSupabaseConfigured && !user) {
+      setAuthModalConfig({
+        defaultMode: 'signup',
+        title: 'SIGN UP TO SHARE LINK',
+        description: `Create a free creator account to generate, save, and share your celebration link for ${scene.recipientName || 'your friend'}.`
+      });
+      setPendingShareAfterAuth(true);
+      setIsAuthModalOpen(true);
+      return;
+    }
+    setIsShareModalOpen(true);
+  };
+
+  const handleAuthSuccess = (authenticatedUser?: any) => {
+    if (authenticatedUser) {
+      setUser(authenticatedUser);
+    }
+    if (pendingShareAfterAuth) {
+      setPendingShareAfterAuth(false);
+      setIsShareModalOpen(true);
+    }
+  };
+
   const handleSaveToCloud = async () => {
     if (!isSupabaseConfigured) {
       alert('Cloud storage sync is currently offline. Your celebration scene is saved in your local session and short links.');
@@ -102,6 +142,12 @@ function StudioContent() {
     }
 
     if (!user) {
+      setAuthModalConfig({
+        defaultMode: 'signup',
+        title: 'SIGN UP TO SAVE SCENE',
+        description: 'Create an account to save and manage scenes in your cloud vault.'
+      });
+      setPendingShareAfterAuth(false);
       setIsAuthModalOpen(true);
       return;
     }
@@ -218,7 +264,7 @@ function StudioContent() {
             </button>
           ) : (
             <button
-              onClick={() => setIsAuthModalOpen(true)}
+              onClick={openSignInModal}
               className="px-2.5 py-1.5 bg-white hover:bg-[#eeeae0] border-2 border-[#1c1917] font-mono text-xs uppercase text-[#1c1917] font-bold transition-colors cursor-pointer flex items-center gap-1 shadow-[2px_2px_0px_#1c1917]"
             >
               <LogIn className="w-3.5 h-3.5 text-amber-600" />
@@ -228,7 +274,7 @@ function StudioContent() {
 
           {/* Share Modal Trigger */}
           <button
-            onClick={() => setIsShareModalOpen(true)}
+            onClick={handleShareClick}
             className="px-3.5 py-1.5 bg-amber-400 hover:bg-amber-300 text-[#1c1917] border-2 border-[#1c1917] font-mono font-bold text-xs uppercase shadow-[3px_3px_0px_#1c1917] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none flex items-center gap-1.5 transition-all cursor-pointer"
           >
             <Share2 className="w-4 h-4" />
@@ -258,7 +304,7 @@ function StudioContent() {
 
           {/* Mobile Share Button (Always Visible) */}
           <button
-            onClick={() => setIsShareModalOpen(true)}
+            onClick={handleShareClick}
             className="px-2.5 py-1.5 bg-amber-400 hover:bg-amber-300 text-[#1c1917] border-2 border-[#1c1917] font-mono font-bold text-[11px] uppercase shadow-[2px_2px_0px_#1c1917] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none flex items-center gap-1 cursor-pointer"
           >
             <Share2 className="w-3.5 h-3.5" />
@@ -317,7 +363,7 @@ function StudioContent() {
                 </button>
               ) : (
                 <button
-                  onClick={() => setIsAuthModalOpen(true)}
+                  onClick={openSignInModal}
                   className="w-full px-2.5 py-2 text-left font-mono text-xs font-bold uppercase text-amber-700 hover:bg-amber-50 flex items-center gap-2"
                 >
                   <LogIn className="w-3.5 h-3.5" />
@@ -419,7 +465,7 @@ function StudioContent() {
                   <CelebrationCanvas
                     scene={scene}
                     previewMode={false}
-                    onShareClick={() => setIsShareModalOpen(true)}
+                    onShareClick={handleShareClick}
                   />
                 </div>
               </div>
@@ -429,7 +475,7 @@ function StudioContent() {
                 <CelebrationCanvas
                   scene={scene}
                   previewMode={false}
-                  onShareClick={() => setIsShareModalOpen(true)}
+                  onShareClick={handleShareClick}
                 />
               </div>
             )}
@@ -441,15 +487,31 @@ function StudioContent() {
       <ShareModal
         scene={scene}
         slug={currentSceneId}
+        user={user}
         isOpen={isShareModalOpen}
         onClose={() => setIsShareModalOpen(false)}
+        onRequireAuth={() => {
+          setAuthModalConfig({
+            defaultMode: 'signup',
+            title: 'SIGN UP TO SHARE LINK',
+            description: `Create a free creator account to generate, save, and share your celebration link for ${scene.recipientName || 'your friend'}.`
+          });
+          setPendingShareAfterAuth(true);
+          setIsAuthModalOpen(true);
+        }}
       />
 
       {/* Auth Modal Dialog */}
       <AuthModal
         isOpen={isAuthModalOpen}
-        onClose={() => setIsAuthModalOpen(false)}
-        onSuccess={() => setIsAuthModalOpen(false)}
+        defaultMode={authModalConfig.defaultMode}
+        title={authModalConfig.title}
+        description={authModalConfig.description}
+        onClose={() => {
+          setIsAuthModalOpen(false);
+          setPendingShareAfterAuth(false);
+        }}
+        onSuccess={handleAuthSuccess}
       />
 
       {/* Saved Scenes Drawer */}
