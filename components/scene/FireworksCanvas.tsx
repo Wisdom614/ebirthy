@@ -34,21 +34,33 @@ export const FireworksCanvas: React.FC<FireworksCanvasProps> = ({
 
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d', { alpha: true });
     if (!ctx) return;
 
+    let isRunning = false;
+
     const handleResize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      if (!canvas) return;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = window.innerWidth * dpr;
+      canvas.height = window.innerHeight * dpr;
+      ctx.scale(dpr, dpr);
     };
     handleResize();
     window.addEventListener('resize', handleResize);
 
-    const createBurst = (x: number, y: number, count = 45) => {
+    const startLoopIfNeeded = () => {
+      if (!isRunning && particlesRef.current.length > 0) {
+        isRunning = true;
+        animFrameId.current = requestAnimationFrame(loop);
+      }
+    };
+
+    const createBurst = (x: number, y: number, count = 35) => {
       const baseColor = colors[Math.floor(Math.random() * colors.length)];
       for (let i = 0; i < count; i++) {
         const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5);
-        const speed = 2 + Math.random() * 5;
+        const speed = 2 + Math.random() * 4.5;
         particlesRef.current.push({
           x,
           y,
@@ -56,29 +68,36 @@ export const FireworksCanvas: React.FC<FireworksCanvasProps> = ({
           vy: Math.sin(angle) * speed,
           alpha: 1,
           color: Math.random() > 0.3 ? baseColor : '#ffffff',
-          size: 2 + Math.random() * 2.5,
-          decay: 0.015 + Math.random() * 0.015
+          size: 2 + Math.random() * 2,
+          decay: 0.018 + Math.random() * 0.015
         });
       }
+      startLoopIfNeeded();
     };
 
     // Auto fireworks interval
     const interval = setInterval(() => {
       if (document.hidden) return;
       const x = window.innerWidth * (0.2 + Math.random() * 0.6);
-      const y = window.innerHeight * (0.15 + Math.random() * 0.4);
-      createBurst(x, y, 40);
-    }, 2800);
+      const y = window.innerHeight * (0.15 + Math.random() * 0.35);
+      createBurst(x, y, 30);
+    }, 3200);
 
-    // Render loop
+    // High performance render loop (zero shadowBlur overhead)
     const loop = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      if (particlesRef.current.length === 0) {
+        ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+        isRunning = false;
+        return;
+      }
+
+      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
       for (let i = particlesRef.current.length - 1; i >= 0; i--) {
         const p = particlesRef.current[i];
         p.x += p.vx;
         p.y += p.vy;
-        p.vy += 0.05; // gravity
+        p.vy += 0.04; // gravity
         p.vx *= 0.98; // air resistance
         p.vy *= 0.98;
         p.alpha -= p.decay;
@@ -88,21 +107,17 @@ export const FireworksCanvas: React.FC<FireworksCanvasProps> = ({
           continue;
         }
 
-        ctx.save();
-        ctx.globalAlpha = p.alpha;
+        ctx.globalAlpha = Math.max(0, p.alpha);
         ctx.fillStyle = p.color;
-        ctx.shadowBlur = 8;
-        ctx.shadowColor = p.color;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.restore();
+        ctx.fillRect(p.x - p.size / 2, p.y - p.size / 2, p.size, p.size);
       }
 
-      animFrameId.current = requestAnimationFrame(loop);
+      if (particlesRef.current.length > 0) {
+        animFrameId.current = requestAnimationFrame(loop);
+      } else {
+        isRunning = false;
+      }
     };
-
-    animFrameId.current = requestAnimationFrame(loop);
 
     return () => {
       window.removeEventListener('resize', handleResize);
@@ -125,10 +140,10 @@ export const FireworksCanvas: React.FC<FireworksCanvasProps> = ({
     const y = e.clientY - rect.top;
 
     const baseColor = colors[Math.floor(Math.random() * colors.length)];
-    const count = 50;
+    const count = 40;
     for (let i = 0; i < count; i++) {
       const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5);
-      const speed = 2.5 + Math.random() * 5.5;
+      const speed = 2.5 + Math.random() * 5;
       particlesRef.current.push({
         x,
         y,
@@ -136,9 +151,46 @@ export const FireworksCanvas: React.FC<FireworksCanvasProps> = ({
         vy: Math.sin(angle) * speed,
         alpha: 1,
         color: Math.random() > 0.3 ? baseColor : '#ffffff',
-        size: 2 + Math.random() * 3,
-        decay: 0.015 + Math.random() * 0.015
+        size: 2 + Math.random() * 2.5,
+        decay: 0.018 + Math.random() * 0.015
       });
+    }
+
+    if (animFrameId.current) {
+      cancelAnimationFrame(animFrameId.current);
+    }
+    const ctx = canvas.getContext('2d');
+    if (ctx) {
+      const loop = () => {
+        if (particlesRef.current.length === 0) {
+          ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+          return;
+        }
+        ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+        for (let i = particlesRef.current.length - 1; i >= 0; i--) {
+          const p = particlesRef.current[i];
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.04;
+          p.vx *= 0.98;
+          p.vy *= 0.98;
+          p.alpha -= p.decay;
+
+          if (p.alpha <= 0) {
+            particlesRef.current.splice(i, 1);
+            continue;
+          }
+
+          ctx.globalAlpha = Math.max(0, p.alpha);
+          ctx.fillStyle = p.color;
+          ctx.fillRect(p.x - p.size / 2, p.y - p.size / 2, p.size, p.size);
+        }
+
+        if (particlesRef.current.length > 0) {
+          animFrameId.current = requestAnimationFrame(loop);
+        }
+      };
+      animFrameId.current = requestAnimationFrame(loop);
     }
   };
 

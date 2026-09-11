@@ -22,6 +22,34 @@ export const InteractiveCake: React.FC<InteractiveCakeProps> = ({
   const [isAllBlown, setIsAllBlown] = useState(false);
   const [isListeningMic, setIsListeningMic] = useState(false);
 
+  const micStreamRef = React.useRef<MediaStream | null>(null);
+  const micAnimRef = React.useRef<number | null>(null);
+  const micAudioCtxRef = React.useRef<AudioContext | null>(null);
+
+  const stopMicStream = () => {
+    if (micAnimRef.current) {
+      cancelAnimationFrame(micAnimRef.current);
+      micAnimRef.current = null;
+    }
+    if (micStreamRef.current) {
+      micStreamRef.current.getTracks().forEach(t => t.stop());
+      micStreamRef.current = null;
+    }
+    if (micAudioCtxRef.current && micAudioCtxRef.current.state !== 'closed') {
+      try {
+        micAudioCtxRef.current.close();
+      } catch {}
+      micAudioCtxRef.current = null;
+    }
+    setIsListeningMic(false);
+  };
+
+  useEffect(() => {
+    return () => {
+      stopMicStream();
+    };
+  }, []);
+
   useEffect(() => {
     setLitCandles(new Array(candleCount).fill(true));
     setIsAllBlown(false);
@@ -91,15 +119,19 @@ export const InteractiveCake: React.FC<InteractiveCakeProps> = ({
 
   const toggleMicDetection = async () => {
     if (isListeningMic) {
-      setIsListeningMic(false);
+      stopMicStream();
       return;
     }
 
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      micStreamRef.current = stream;
       setIsListeningMic(true);
 
-      const audioContext = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
+      const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+      const audioContext = new AudioCtx();
+      micAudioCtxRef.current = audioContext;
+
       const analyser = audioContext.createAnalyser();
       const microphone = audioContext.createMediaStreamSource(stream);
       microphone.connect(analyser);
@@ -109,10 +141,7 @@ export const InteractiveCake: React.FC<InteractiveCakeProps> = ({
       const dataArray = new Uint8Array(bufferLength);
 
       const checkVolume = () => {
-        if (!isListeningMic && stream) {
-          stream.getTracks().forEach(track => track.stop());
-          return;
-        }
+        if (!micStreamRef.current) return;
 
         analyser.getByteFrequencyData(dataArray);
         let sum = 0;
@@ -123,18 +152,17 @@ export const InteractiveCake: React.FC<InteractiveCakeProps> = ({
 
         if (average > 45) {
           blowAllCandles();
-          stream.getTracks().forEach(track => track.stop());
-          setIsListeningMic(false);
+          stopMicStream();
           return;
         }
 
-        requestAnimationFrame(checkVolume);
+        micAnimRef.current = requestAnimationFrame(checkVolume);
       };
 
-      checkVolume();
+      micAnimRef.current = requestAnimationFrame(checkVolume);
     } catch (err) {
       console.warn('Microphone permission denied or not supported:', err);
-      setIsListeningMic(false);
+      stopMicStream();
     }
   };
 

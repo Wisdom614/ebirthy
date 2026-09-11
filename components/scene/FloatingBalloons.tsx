@@ -84,12 +84,13 @@ export const FloatingBalloons: React.FC<FloatingBalloonsProps> = ({
         return (
           <div
             key={balloon.id}
-            className="absolute bottom-[-100px] pointer-events-auto cursor-pointer select-none group"
+            className="absolute bottom-[-100px] pointer-events-auto cursor-pointer select-none group will-change-transform"
             style={{
               left: `${balloon.left}%`,
               animation: `floatSlow ${balloon.speed}s linear infinite`,
               animationDelay: `${balloon.delay}s`,
-              width: `${balloon.size}px`
+              width: `${balloon.size}px`,
+              willChange: 'transform'
             }}
             onClick={(e) => popBalloon(balloon.id, e)}
             title="[ CLICK TO POP ]"

@@ -3,7 +3,6 @@
 import React, { useRef, useState } from 'react';
 import { SceneConfig } from '../../types/scene';
 import { THEME_DEFINITIONS } from '../../utils/presets';
-import { toPng } from 'html-to-image';
 import { audio } from '../../utils/audioManager';
 import confetti from 'canvas-confetti';
 import { X, Download, Printer, Loader2, Sparkles, Image as ImageIcon } from 'lucide-react';
@@ -36,6 +35,7 @@ export const KeepsakePosterModal: React.FC<KeepsakePosterModalProps> = ({
     try {
       audio.playSFX('sparkle');
       
+      const { toPng } = await import('html-to-image');
       const dataUrl = await toPng(posterRef.current, {
         pixelRatio: 3, // 300 DPI crisp print quality
         cacheBust: true,

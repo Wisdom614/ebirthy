@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import dynamic from 'next/dynamic';
 import confetti from 'canvas-confetti';
 import { SceneConfig } from '../../types/scene';
 import { THEME_DEFINITIONS } from '../../utils/presets';
@@ -10,11 +11,21 @@ import { FloatingBalloons } from './FloatingBalloons';
 import { SurpriseGiftBox } from './SurpriseGiftBox';
 import { FireworksCanvas } from './FireworksCanvas';
 import { PolaroidReel } from './PolaroidReel';
-import { CinematicLetter } from './CinematicLetter';
 import { SoundController } from './SoundController';
-import { GuestbookWall } from './GuestbookWall';
-import { KeepsakePosterModal } from './KeepsakePosterModal';
 import { PartyPopper, Share2, Image as ImageIcon } from 'lucide-react';
+
+const CinematicLetter = dynamic(
+  () => import('./CinematicLetter').then((m) => m.CinematicLetter),
+  { ssr: false }
+);
+const GuestbookWall = dynamic(
+  () => import('./GuestbookWall').then((m) => m.GuestbookWall),
+  { ssr: false }
+);
+const KeepsakePosterModal = dynamic(
+  () => import('./KeepsakePosterModal').then((m) => m.KeepsakePosterModal),
+  { ssr: false }
+);
 
 interface CelebrationCanvasProps {
   scene: SceneConfig;
