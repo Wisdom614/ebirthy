@@ -14,6 +14,7 @@ import { FireworksCanvas } from './FireworksCanvas';
 import { PolaroidReel } from './PolaroidReel';
 import { SoundController } from './SoundController';
 import { KeepsakePosterModal } from './KeepsakePosterModal';
+import { LifeChronometer } from './LifeChronometer';
 import { BrandLogo } from '../ui/BrandLogo';
 import { formatBirthDayMonth } from '../../utils/dateFormatter';
 import {
@@ -258,6 +259,14 @@ export const CelebrationCanvas: React.FC<CelebrationCanvasProps> = ({
           </button>
         </div>
       </section>
+
+      {/* Real-Time Life Chronometer Milestone Section */}
+      {scene.birthDate && (
+        <LifeChronometer
+          birthDate={scene.birthDate}
+          recipientName={scene.recipientName}
+        />
+      )}
 
       {/* View Mode & Milestone Tracker Control Bar */}
       <section className="relative z-30 w-full max-w-4xl px-4 my-6">

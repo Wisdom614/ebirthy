@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { SceneConfig, FontStyle } from '../../types/scene';
+import { calculateLifeChronicle } from '../../utils/chronicleCalculator';
 import { VoiceNoteRecorder } from './VoiceNoteRecorder';
 
 interface DetailsFormProps {
@@ -50,10 +51,10 @@ export const DetailsForm: React.FC<DetailsFormProps> = ({ scene, onChange }) => 
           />
         </div>
 
-        {/* Birth Date (Day & Month) */}
+        {/* Birth Date */}
         <div>
           <label className="block font-mono text-[11px] uppercase font-bold tracking-wider text-[#1c1917] mb-1.5">
-            BIRTH DATE (DAY & MONTH)
+            BIRTH DATE (CALCULATES LIVE CHRONOMETER)
           </label>
           <input
             type="date"
@@ -61,9 +62,18 @@ export const DetailsForm: React.FC<DetailsFormProps> = ({ scene, onChange }) => 
             onChange={(e) => onChange({ birthDate: e.target.value })}
             className="w-full px-3.5 py-2.5 bg-white border-2 border-[#1c1917] text-[#1c1917] font-mono text-sm focus:outline-none focus:border-amber-500 shadow-[2px_2px_0px_#1c1917]"
           />
-          <span className="font-mono text-[9px] text-zinc-500 uppercase mt-1 block">
-            FORMATTED AS DD|MM (E.G. 13|05)
-          </span>
+          {scene.birthDate && calculateLifeChronicle(scene.birthDate).isValid ? (
+            <div className="mt-1.5 p-1.5 bg-amber-50 border border-amber-300 font-mono text-[9px] font-bold text-amber-900 flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              <span>
+                LIVE CHRONICLE: {calculateLifeChronicle(scene.birthDate).years}YRS · {calculateLifeChronicle(scene.birthDate).months}MOS · {calculateLifeChronicle(scene.birthDate).weeks}WKS · {calculateLifeChronicle(scene.birthDate).days}DAYS
+              </span>
+            </div>
+          ) : (
+            <span className="font-mono text-[9px] text-zinc-500 uppercase mt-1 block">
+              DISPLAYS LIVE YEARS, MONTHS, WEEKS, DAYS & MINUTES
+            </span>
+          )}
         </div>
 
         {/* Relationship */}
