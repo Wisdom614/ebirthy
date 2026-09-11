@@ -1,0 +1,98 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f7f4ed;
+  --foreground: #1c1917;
+  --font-mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+}
+
+/* Strict Zero Border Radius Policy */
+*, *::before, *::after {
+  border-radius: 0px !important;
+}
+
+/* Swiss Architectural Grid on Warm Paper */
+.grid-bg {
+  background-size: 32px 32px;
+  background-image: 
+    linear-gradient(to right, rgba(28, 25, 23, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(28, 25, 23, 0.06) 1px, transparent 1px);
+}
+
+.grid-bg-dense {
+  background-size: 16px 16px;
+  background-image: 
+    linear-gradient(to right, rgba(28, 25, 23, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(28, 25, 23, 0.05) 1px, transparent 1px);
+}
+
+/* Tactile Zero-Blur Charcoal Ink Shadows */
+.brutal-shadow {
+  box-shadow: 4px 4px 0px #1c1917;
+}
+
+.brutal-shadow-sm {
+  box-shadow: 2px 2px 0px #1c1917;
+}
+
+.brutal-shadow-amber {
+  box-shadow: 4px 4px 0px #f59e0b;
+}
+
+.brutal-shadow-cobalt {
+  box-shadow: 4px 4px 0px #2563eb;
+}
+
+/* Flame & Sway Animations */
+@keyframes floatSlow {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes flameFlicker {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.95;
+  }
+  50% {
+    transform: scale(1.08, 0.92);
+    opacity: 1;
+  }
+}
+
+.animate-float-slow {
+  animation: floatSlow 5s ease-in-out infinite;
+}
+
+.animate-flame {
+  animation: flameFlicker 0.4s infinite alternate ease-in-out;
+  transform-origin: bottom center;
+}
+
+/* Straight Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f7f4ed;
+  border-left: 1px solid #1c1917;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1c1917;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #f59e0b;
+}

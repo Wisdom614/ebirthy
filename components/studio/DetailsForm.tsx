@@ -1,0 +1,142 @@
+'use client';
+
+import React from 'react';
+import { SceneConfig, FontStyle } from '../../types/scene';
+
+interface DetailsFormProps {
+  scene: SceneConfig;
+  onChange: (updated: Partial<SceneConfig>) => void;
+}
+
+export const DetailsForm: React.FC<DetailsFormProps> = ({ scene, onChange }) => {
+  return (
+    <div className="space-y-6">
+      <div className="border-b-2 border-[#1c1917] pb-3">
+        <span className="font-mono text-[10px] uppercase font-bold tracking-widest text-amber-600 block mb-1">
+          [ 01 // IDENTITY & DISPATCH ]
+        </span>
+        <h3 className="text-sm font-bold uppercase tracking-tight text-[#1c1917]">
+          Recipient & Personal Message
+        </h3>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {/* Recipient Name */}
+        <div>
+          <label className="block font-mono text-[11px] uppercase font-bold tracking-wider text-[#1c1917] mb-1.5">
+            RECIPIENT NAME *
+          </label>
+          <input
+            type="text"
+            value={scene.recipientName}
+            onChange={(e) => onChange({ recipientName: e.target.value })}
+            placeholder="e.g. ALEX"
+            className="w-full px-3.5 py-2.5 bg-white border-2 border-[#1c1917] text-[#1c1917] font-mono text-sm focus:outline-none focus:border-amber-500 shadow-[2px_2px_0px_#1c1917]"
+          />
+        </div>
+
+        {/* Sender Name */}
+        <div>
+          <label className="block font-mono text-[11px] uppercase font-bold tracking-wider text-[#1c1917] mb-1.5">
+            YOUR NAME (SENDER)
+          </label>
+          <input
+            type="text"
+            value={scene.senderName}
+            onChange={(e) => onChange({ senderName: e.target.value })}
+            placeholder="e.g. BEST FRIEND"
+            className="w-full px-3.5 py-2.5 bg-white border-2 border-[#1c1917] text-[#1c1917] font-mono text-sm focus:outline-none focus:border-amber-500 shadow-[2px_2px_0px_#1c1917]"
+          />
+        </div>
+
+        {/* Age Turning */}
+        <div>
+          <label className="block font-mono text-[11px] uppercase font-bold tracking-wider text-[#1c1917] mb-1.5">
+            AGE TURNING (OPTIONAL)
+          </label>
+          <input
+            type="number"
+            value={scene.age || ''}
+            onChange={(e) => onChange({ age: e.target.value ? parseInt(e.target.value) : undefined })}
+            placeholder="e.g. 24"
+            className="w-full px-3.5 py-2.5 bg-white border-2 border-[#1c1917] text-[#1c1917] font-mono text-sm focus:outline-none focus:border-amber-500 shadow-[2px_2px_0px_#1c1917]"
+          />
+        </div>
+
+        {/* Relationship */}
+        <div>
+          <label className="block font-mono text-[11px] uppercase font-bold tracking-wider text-[#1c1917] mb-1.5">
+            RELATIONSHIP / TAG
+          </label>
+          <input
+            type="text"
+            value={scene.relationship}
+            onChange={(e) => onChange({ relationship: e.target.value })}
+            placeholder="e.g. SOULMATE, BROTHER"
+            className="w-full px-3.5 py-2.5 bg-white border-2 border-[#1c1917] text-[#1c1917] font-mono text-sm focus:outline-none focus:border-amber-500 shadow-[2px_2px_0px_#1c1917]"
+          />
+        </div>
+      </div>
+
+      {/* Main Headline */}
+      <div>
+        <label className="block font-mono text-[11px] uppercase font-bold tracking-wider text-[#1c1917] mb-1.5">
+          BANNER HEADLINE
+        </label>
+        <input
+          type="text"
+          value={scene.headline}
+          onChange={(e) => onChange({ headline: e.target.value })}
+          placeholder="e.g. ANOTHER YEAR OF PURE EXCELLENCE"
+          className="w-full px-3.5 py-2.5 bg-white border-2 border-[#1c1917] text-[#1c1917] font-mono text-sm focus:outline-none focus:border-amber-500 shadow-[2px_2px_0px_#1c1917]"
+        />
+      </div>
+
+      {/* Short Wishes */}
+      <div>
+        <label className="block font-mono text-[11px] uppercase font-bold tracking-wider text-[#1c1917] mb-1.5">
+          QUICK WISHES QUOTE
+        </label>
+        <textarea
+          rows={2}
+          value={scene.wishes}
+          onChange={(e) => onChange({ wishes: e.target.value })}
+          placeholder="Short wish that appears under the main headline..."
+          className="w-full px-3.5 py-2.5 bg-white border-2 border-[#1c1917] text-[#1c1917] font-mono text-sm focus:outline-none focus:border-amber-500 shadow-[2px_2px_0px_#1c1917] resize-none"
+        />
+      </div>
+
+      {/* Secret Letter */}
+      <div>
+        <div className="flex items-center justify-between mb-1.5">
+          <label className="font-mono text-[11px] uppercase font-bold tracking-wider text-[#1c1917]">
+            SECRET HEARTFELT MEMO (SEALED UNBOXING)
+          </label>
+          <div className="flex items-center gap-1">
+            {(['modern', 'elegant', 'playful'] as FontStyle[]).map((f) => (
+              <button
+                key={f}
+                type="button"
+                onClick={() => onChange({ fontStyle: f })}
+                className={`px-2 py-0.5 font-mono text-[9px] uppercase border-2 transition-colors ${
+                  scene.fontStyle === f
+                    ? 'bg-amber-400 text-[#1c1917] border-[#1c1917] font-bold shadow-[1px_1px_0px_#1c1917]'
+                    : 'bg-white text-zinc-700 border-[#1c1917] hover:bg-[#eeeae0]'
+                }`}
+              >
+                {f}
+              </button>
+            ))}
+          </div>
+        </div>
+        <textarea
+          rows={5}
+          value={scene.letterText}
+          onChange={(e) => onChange({ letterText: e.target.value })}
+          placeholder="Write a personal note. When the recipient opens the envelope, this will reveal with a typewriter animation..."
+          className="w-full px-3.5 py-2.5 bg-white border-2 border-[#1c1917] text-[#1c1917] font-mono text-sm focus:outline-none focus:border-amber-500 shadow-[2px_2px_0px_#1c1917] resize-none"
+        />
+      </div>
+    </div>
+  );
+};
