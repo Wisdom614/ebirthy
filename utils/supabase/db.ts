@@ -121,6 +121,10 @@ export async function deleteSceneFromSupabase(sceneId: string): Promise<boolean>
 
 const LOCAL_GUESTBOOK_PREFIX = 'ebirthy_guestbook_';
 
+const isValidUuid = (str?: string): boolean =>
+  typeof str === 'string' &&
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(str);
+
 /**
  * Fetches guestbook entries for a given scene slug
  */
@@ -150,20 +154,28 @@ export async function fetchGuestbookEntries(sceneSlug: string): Promise<import('
       return localEntries;
     }
 
-    // Merge and deduplicate by id
-    const combined = [...(data || []), ...localEntries];
-    const unique = Array.from(new Map(combined.map(item => [item.id, item])).values());
-    unique.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
-    return unique;
+    if (data && data.length > 0) {
+      // Update local storage with authoritative cloud data
+      if (typeof window !== 'undefined') {
+        try {
+          localStorage.setItem(localKey, JSON.stringify(data));
+        } catch {}
+      }
+      return data;
+    }
+
+    return localEntries;
   } catch {
     return localEntries;
   }
 }
 
 /**
- * Adds a new signature/wish to the guestbook
+ * Adds a new signature/wish to the guestbook and persists to Supabase cloud
  */
-export async function saveGuestbookEntry(entry: import('../../types/scene').GuestbookEntry): Promise<boolean> {
+export async function saveGuestbookEntry(
+  entry: import('../../types/scene').GuestbookEntry
+): Promise<import('../../types/scene').GuestbookEntry | null> {
   const localKey = `${LOCAL_GUESTBOOK_PREFIX}${entry.scene_slug}`;
   if (typeof window !== 'undefined') {
     try {
@@ -175,28 +187,59 @@ export async function saveGuestbookEntry(entry: import('../../types/scene').Gues
   }
 
   if (!isSupabaseConfigured || !supabase) {
-    return true;
+    return entry;
   }
 
   try {
-    const { error } = await supabase
+    const payload: {
+      id?: string;
+      scene_slug: string;
+      sender_name: string;
+      message: string;
+      stamp: string;
+      created_at: string;
+    } = {
+      scene_slug: entry.scene_slug,
+      sender_name: entry.sender_name || 'Anonymous Friend',
+      message: entry.message || '',
+      stamp: entry.stamp || 'celebrate',
+      created_at: entry.created_at || new Date().toISOString()
+    };
+
+    // Only include id if it's a valid Postgres UUID
+    if (entry.id && isValidUuid(entry.id)) {
+      payload.id = entry.id;
+    }
+
+    const { data, error } = await supabase
       .from('guestbook_entries')
-      .insert([{
-        id: entry.id,
-        scene_slug: entry.scene_slug,
-        sender_name: entry.sender_name,
-        message: entry.message,
-        stamp: entry.stamp,
-        created_at: entry.created_at
-      }]);
+      .insert([payload])
+      .select()
+      .single();
 
     if (error) {
-      console.warn('Guestbook cloud persist notice:', error);
+      console.error('Supabase guestbook insert failed:', error);
+      return null;
     }
-    return true;
+
+    // If Supabase generated an ID or returned the created row, update local cache
+    if (data && typeof window !== 'undefined') {
+      try {
+        const existing = localStorage.getItem(localKey);
+        if (existing) {
+          const list = JSON.parse(existing);
+          const updatedList = list.map((item: any) =>
+            item.id === entry.id ? { ...item, id: data.id } : item
+          );
+          localStorage.setItem(localKey, JSON.stringify(updatedList));
+        }
+      } catch {}
+    }
+
+    return data || entry;
   } catch (err) {
-    console.warn('Guestbook save error:', err);
-    return true;
+    console.error('Guestbook save error:', err);
+    return null;
   }
 }
 

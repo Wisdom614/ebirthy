@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { GuestbookEntry, GuestbookStamp } from '../../types/scene';
+import { supabase, isSupabaseConfigured } from '../../utils/supabase/client';
 import {
   fetchGuestbookEntries,
   saveGuestbookEntry,
@@ -34,6 +35,17 @@ interface GuestbookWallProps {
   themeAccent?: string;
 }
 
+const generateUUID = (): string => {
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    return crypto.randomUUID();
+  }
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+    const r = (Math.random() * 16) | 0;
+    const v = c === 'x' ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+};
+
 const STAMP_CONFIG: Record<
   GuestbookStamp,
   { label: string; icon: React.ComponentType<{ className?: string }>; badgeColor: string }
@@ -64,12 +76,44 @@ export const GuestbookWall: React.FC<GuestbookWallProps> = ({
 
   useEffect(() => {
     let isMounted = true;
+
+    // 1. Initial fetch
     fetchGuestbookEntries(effectiveSlug).then((data) => {
       if (isMounted) {
         setEntries(data);
         setLoading(false);
       }
     });
+
+    // 2. Realtime subscription for live guestbook sync across devices
+    let channel: any = null;
+    if (isSupabaseConfigured && supabase) {
+      try {
+        channel = supabase
+          .channel(`guestbook-live-${effectiveSlug}`)
+          .on(
+            'postgres_changes',
+            {
+              event: 'INSERT',
+              schema: 'public',
+              table: 'guestbook_entries',
+              filter: `scene_slug=eq.${effectiveSlug}`
+            },
+            (payload) => {
+              if (payload && payload.new) {
+                const incoming = payload.new as GuestbookEntry;
+                setEntries((prev) => {
+                  if (prev.some((e) => e.id === incoming.id)) return prev;
+                  return [incoming, ...prev];
+                });
+              }
+            }
+          )
+          .subscribe();
+      } catch (e) {
+        console.warn('Realtime channel error:', e);
+      }
+    }
 
     // Load saved thank-you note from local storage
     if (typeof window !== 'undefined') {
@@ -88,6 +132,9 @@ export const GuestbookWall: React.FC<GuestbookWallProps> = ({
 
     return () => {
       isMounted = false;
+      if (channel && supabase) {
+        supabase.removeChannel(channel);
+      }
     };
   }, [effectiveSlug, recipientName, thankYouStorageKey]);
 
@@ -107,8 +154,9 @@ export const GuestbookWall: React.FC<GuestbookWallProps> = ({
     message: string;
     stamp: GuestbookStamp;
   }) => {
+    const entryId = generateUUID();
     const newEntry: GuestbookEntry = {
-      id: `entry-${Date.now()}-${Math.random().toString(36).substr(2, 4)}`,
+      id: entryId,
       scene_slug: effectiveSlug,
       sender_name: item.sender_name,
       message: item.message,
@@ -118,10 +166,16 @@ export const GuestbookWall: React.FC<GuestbookWallProps> = ({
       created_at: new Date().toISOString()
     };
 
-    setEntries((prev) => [newEntry, ...prev]);
+    // Optimistically update local state
+    setEntries((prev) => [newEntry, ...prev.filter((e) => e.id !== entryId)]);
 
     // Save to persistence (Supabase & localStorage)
-    await saveGuestbookEntry(newEntry);
+    const saved = await saveGuestbookEntry(newEntry);
+    if (saved && saved.id) {
+      setEntries((prev) =>
+        prev.map((e) => (e.id === entryId ? { ...e, id: saved.id } : e))
+      );
+    }
 
     // Micro-confetti burst from the button area
     confetti({
