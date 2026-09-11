@@ -1,33 +1,29 @@
 export interface LifeChronicle {
-  years: number;
-  months: number;
-  weeks: number;
-  days: number;
-  hours: number;
-  minutes: number;
-  seconds: number;
+  totalYears: number;
+  totalMonths: number;
+  totalWeeks: number;
   totalDays: number;
   totalHours: number;
   totalMinutes: number;
+  totalSeconds: number;
   isTodayBirthday: boolean;
   isValid: boolean;
 }
 
 /**
  * Calculates live life duration telemetry from a given birth date string.
+ * Computes exact cumulative totals: Total Years, Total Months, Total Weeks,
+ * Total Days, Total Hours, Total Minutes, and Total Seconds.
  */
 export function calculateLifeChronicle(birthDateStr?: string, targetNow?: Date): LifeChronicle {
   const invalidResult: LifeChronicle = {
-    years: 0,
-    months: 0,
-    weeks: 0,
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
+    totalYears: 0,
+    totalMonths: 0,
+    totalWeeks: 0,
     totalDays: 0,
     totalHours: 0,
     totalMinutes: 0,
+    totalSeconds: 0,
     isTodayBirthday: false,
     isValid: false
   };
@@ -42,56 +38,51 @@ export function calculateLifeChronicle(birthDateStr?: string, targetNow?: Date):
 
   if (diffMs <= 0) return invalidResult;
 
-  let years = now.getFullYear() - birth.getFullYear();
-  let months = now.getMonth() - birth.getMonth();
-  let days = now.getDate() - birth.getDate();
-  let hours = now.getHours() - birth.getHours();
-  let minutes = now.getMinutes() - birth.getMinutes();
-  let seconds = now.getSeconds() - birth.getSeconds();
+  // 1. Total Completed Years
+  let totalYears = now.getFullYear() - birth.getFullYear();
+  if (
+    now.getMonth() < birth.getMonth() ||
+    (now.getMonth() === birth.getMonth() && now.getDate() < birth.getDate())
+  ) {
+    totalYears--;
+  }
+  totalYears = Math.max(0, totalYears);
 
-  if (seconds < 0) {
-    seconds += 60;
-    minutes--;
+  // 2. Total Completed Months
+  let totalMonths =
+    (now.getFullYear() - birth.getFullYear()) * 12 +
+    (now.getMonth() - birth.getMonth());
+  if (now.getDate() < birth.getDate()) {
+    totalMonths--;
   }
-  if (minutes < 0) {
-    minutes += 60;
-    hours--;
-  }
-  if (hours < 0) {
-    hours += 24;
-    days--;
-  }
-  if (days < 0) {
-    const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0);
-    days += prevMonth.getDate();
-    months--;
-  }
-  if (months < 0) {
-    months += 12;
-    years--;
-  }
+  totalMonths = Math.max(0, totalMonths);
 
-  const weeks = Math.floor(days / 7);
-  const remainingDays = days % 7;
+  // 3. Total Weeks
+  const totalWeeks = Math.floor(diffMs / (1000 * 60 * 60 * 24 * 7));
 
+  // 4. Total Days
   const totalDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+  // 5. Total Hours
   const totalHours = Math.floor(diffMs / (1000 * 60 * 60));
+
+  // 6. Total Minutes
   const totalMinutes = Math.floor(diffMs / (1000 * 60));
+
+  // 7. Total Seconds
+  const totalSeconds = Math.floor(diffMs / 1000);
 
   const isTodayBirthday =
     now.getMonth() === birth.getMonth() && now.getDate() === birth.getDate();
 
   return {
-    years: Math.max(0, years),
-    months: Math.max(0, months),
-    weeks: Math.max(0, weeks),
-    days: Math.max(0, remainingDays),
-    hours: Math.max(0, hours),
-    minutes: Math.max(0, minutes),
-    seconds: Math.max(0, seconds),
+    totalYears,
+    totalMonths,
+    totalWeeks,
     totalDays,
     totalHours,
     totalMinutes,
+    totalSeconds,
     isTodayBirthday,
     isValid: true
   };

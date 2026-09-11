@@ -33,12 +33,12 @@ export const LifeChronometer: React.FC<LifeChronometerProps> = ({ birthDate, rec
   }
 
   const units = [
-    { label: 'YEARS', value: chronicle.years, unitName: 'SOLAR ORBITS' },
-    { label: 'MONTHS', value: chronicle.months, unitName: 'FULL MONTHS' },
-    { label: 'WEEKS', value: chronicle.weeks, unitName: 'WEEKS PASSED' },
-    { label: 'DAYS', value: chronicle.days, unitName: 'DAYS' },
-    { label: 'HOURS', value: chronicle.hours, unitName: 'HOURS' },
-    { label: 'MINUTES', value: chronicle.minutes, unitName: 'MINUTES' }
+    { label: 'TOTAL YEARS', value: chronicle.totalYears.toLocaleString(), unitName: 'SOLAR ORBITS' },
+    { label: 'TOTAL MONTHS', value: chronicle.totalMonths.toLocaleString(), unitName: 'MONTHS LIVED' },
+    { label: 'TOTAL WEEKS', value: chronicle.totalWeeks.toLocaleString(), unitName: 'WEEKS PASSED' },
+    { label: 'TOTAL DAYS', value: chronicle.totalDays.toLocaleString(), unitName: 'DAYS ON EARTH' },
+    { label: 'TOTAL HOURS', value: chronicle.totalHours.toLocaleString(), unitName: 'HOURS OF IMPACT' },
+    { label: 'TOTAL MINUTES', value: chronicle.totalMinutes.toLocaleString(), unitName: 'MINUTES LIVED' }
   ];
 
   return (
@@ -80,7 +80,7 @@ export const LifeChronometer: React.FC<LifeChronometerProps> = ({ birthDate, rec
               <span className="font-mono text-[9px] font-bold uppercase text-zinc-500 block mb-1">
                 {unit.label}
               </span>
-              <div className="font-mono font-black text-2xl sm:text-3xl text-[#1c1917] tracking-tight">
+              <div className="font-mono font-black text-xl sm:text-2xl text-[#1c1917] tracking-tight truncate">
                 {unit.value}
               </div>
               <span className="font-mono text-[8px] font-bold uppercase text-amber-700 tracking-wider block mt-1">
@@ -90,22 +90,22 @@ export const LifeChronometer: React.FC<LifeChronometerProps> = ({ birthDate, rec
           ))}
         </div>
 
-        {/* Real-Time Seconds Live Pulsar Bar */}
+        {/* Real-Time Total Seconds Live Pulsar Bar */}
         <div className="mt-4 pt-4 border-t-2 border-[#1c1917]/20 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs font-mono font-bold">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping" />
             <span className="text-[#1c1917] uppercase tracking-wide">
-              SECONDS TICKING:
+              TOTAL SECONDS LIVED (LIVE TICKER):
             </span>
-            <span className="px-2 py-0.5 bg-emerald-100 text-emerald-900 border border-emerald-400 font-mono font-black">
-              {String(chronicle.seconds).padStart(2, '0')}s
+            <span className="px-2.5 py-0.5 bg-emerald-100 text-emerald-900 border border-emerald-400 font-mono font-black text-sm">
+              {chronicle.totalSeconds.toLocaleString()}s
             </span>
           </div>
 
           <div className="text-zinc-600 text-[11px] uppercase tracking-wider text-center sm:text-right">
-            <span>CUMULATIVE: </span>
+            <span>MILESTONE: </span>
             <span className="text-[#1c1917] font-black">
-              {chronicle.totalDays.toLocaleString()} DAYS · {chronicle.totalHours.toLocaleString()} HOURS
+              {chronicle.totalDays.toLocaleString()} DAYS OF PURE EXCELLENCE
             </span>
           </div>
         </div>
