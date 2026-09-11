@@ -265,6 +265,7 @@ export const CelebrationCanvas: React.FC<CelebrationCanvasProps> = ({
         <LifeChronometer
           birthDate={scene.birthDate}
           recipientName={scene.recipientName}
+          photoUrl={scene.photos?.[0]?.url}
         />
       )}
 

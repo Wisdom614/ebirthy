@@ -3,17 +3,24 @@
 import React, { useState, useEffect } from 'react';
 import { calculateLifeChronicle, LifeChronicle } from '../../utils/chronicleCalculator';
 import { formatBirthDayMonth } from '../../utils/dateFormatter';
-import { Clock, Activity, Sparkles, Calendar } from 'lucide-react';
+import { Clock, Calendar, Download, Camera, Image as ImageIcon } from 'lucide-react';
+import { ChronicleImageModal } from './ChronicleImageModal';
 
 interface LifeChronometerProps {
   birthDate?: string;
   recipientName: string;
+  photoUrl?: string;
 }
 
-export const LifeChronometer: React.FC<LifeChronometerProps> = ({ birthDate, recipientName }) => {
+export const LifeChronometer: React.FC<LifeChronometerProps> = ({
+  birthDate,
+  recipientName,
+  photoUrl
+}) => {
   const [chronicle, setChronicle] = useState<LifeChronicle>(() =>
     calculateLifeChronicle(birthDate)
   );
+  const [isCardModalOpen, setIsCardModalOpen] = useState(false);
 
   useEffect(() => {
     if (!birthDate) return;
@@ -47,26 +54,28 @@ export const LifeChronometer: React.FC<LifeChronometerProps> = ({ birthDate, rec
         {/* Top Architectural Header */}
         <div className="border-b-2 border-[#1c1917] pb-4 mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div>
-            <div className="flex items-center gap-2 mb-1">
-              <Activity className="w-4 h-4 text-amber-600 animate-pulse" />
-              <span className="font-mono text-[10px] uppercase font-black tracking-widest text-amber-700 bg-amber-100 px-2 py-0.5 border border-amber-300">
-                [ REAL-TIME LIFE CHRONOMETER ]
-              </span>
-            </div>
             <h3 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-[#1c1917]">
               LIVING CHRONICLE OF {recipientName}
             </h3>
+            <span className="font-mono text-[10px] text-zinc-500 uppercase font-bold tracking-wider block mt-0.5">
+              CUMULATIVE LIFETIME MILESTONE RECORD
+            </span>
           </div>
 
-          <div className="flex items-center gap-2 font-mono text-xs">
+          <div className="flex items-center gap-2 font-mono text-xs flex-wrap">
             <span className="px-2.5 py-1 bg-[#f7f4ed] border border-[#1c1917] font-bold text-[#1c1917] flex items-center gap-1.5 shadow-sm">
               <Calendar className="w-3.5 h-3.5 text-amber-600" />
               <span>BORN: {formatBirthDayMonth(birthDate)}</span>
             </span>
-            <span className="px-2.5 py-1 bg-amber-400 border border-[#1c1917] font-black text-[#1c1917] shadow-sm flex items-center gap-1">
-              <Clock className="w-3.5 h-3.5" />
-              <span>LIVE</span>
-            </span>
+
+            <button
+              onClick={() => setIsCardModalOpen(true)}
+              className="px-3 py-1 bg-amber-400 hover:bg-amber-300 text-[#1c1917] border-2 border-[#1c1917] font-black uppercase shadow-[2px_2px_0px_#1c1917] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all flex items-center gap-1.5 cursor-pointer text-xs"
+              title="Export shareable milestone image card"
+            >
+              <Download className="w-3.5 h-3.5" />
+              <span>[ EXPORT CARD ]</span>
+            </button>
           </div>
         </div>
 
@@ -110,6 +119,16 @@ export const LifeChronometer: React.FC<LifeChronometerProps> = ({ birthDate, rec
           </div>
         </div>
       </div>
+
+      {/* Export Chronicle Card Modal */}
+      <ChronicleImageModal
+        isOpen={isCardModalOpen}
+        onClose={() => setIsCardModalOpen(false)}
+        recipientName={recipientName}
+        birthDate={birthDate}
+        chronicle={chronicle}
+        photoUrl={photoUrl}
+      />
     </div>
   );
 };
