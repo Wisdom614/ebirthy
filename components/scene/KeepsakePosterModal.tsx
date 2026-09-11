@@ -100,28 +100,28 @@ export const KeepsakePosterModal: React.FC<KeepsakePosterModalProps> = ({
           <div
             ref={posterRef}
             id="printable-keepsake-poster"
-            className="w-full max-w-[480px] bg-[#f7f4ed] border-3 sm:border-4 border-[#1c1917] p-4 sm:p-8 flex flex-col justify-between shadow-[4px_4px_0px_#1c1917] sm:shadow-[8px_8px_0px_#1c1917] relative text-[#1c1917] aspect-[3/4.2]"
+            className="w-full max-w-[480px] bg-[#f7f4ed] border-4 border-[#1c1917] p-6 sm:p-8 flex flex-col justify-between shadow-[8px_8px_0px_#1c1917] relative text-[#1c1917] aspect-[3/4.2]"
           >
             {/* Top Structural Header */}
-            <div className="border-b-2 border-[#1c1917] pb-2 sm:pb-3 flex items-center justify-between gap-2 flex-wrap">
+            <div className="border-b-2 border-[#1c1917] pb-3 flex items-center justify-between gap-2 flex-wrap">
               <BrandLogo size="sm" showSubtitle={true} href="" />
               <div className="flex items-center gap-1.5">
                 {scene.birthDate && (
-                  <span className="font-mono text-[9px] sm:text-[10px] font-black px-2 py-0.5 bg-amber-400 text-[#1c1917] border border-[#1c1917] uppercase shadow-sm">
+                  <span className="font-mono text-[10px] font-black px-2 py-0.5 bg-amber-400 text-[#1c1917] border border-[#1c1917] uppercase shadow-sm">
                     {formatBirthDayMonth(scene.birthDate)}
                   </span>
                 )}
-                <span className="font-mono text-[8px] sm:text-[9px] font-bold px-2 py-0.5 bg-white border border-[#1c1917] uppercase shadow-sm">
+                <span className="font-mono text-[9px] font-bold px-2 py-0.5 bg-white border border-[#1c1917] uppercase shadow-sm">
                   OFFICIAL ARCHIVE
                 </span>
               </div>
             </div>
 
             {/* Poster Main Body */}
-            <div className="my-auto py-2 sm:py-4 flex flex-col items-center text-center">
+            <div className="my-auto py-4 flex flex-col items-center text-center">
               {/* Optional Photo Plate Header */}
               {primaryPhoto?.url ? (
-                <div className="w-24 h-24 sm:w-40 sm:h-40 bg-white border-2 border-[#1c1917] p-1.5 sm:p-2 shadow-[3px_3px_0px_#1c1917] mb-2 sm:mb-4">
+                <div className="w-36 h-36 sm:w-44 sm:h-44 bg-white border-2 border-[#1c1917] p-2 shadow-[4px_4px_0px_#1c1917] mb-4">
                   <img
                     src={primaryPhoto.url}
                     alt={scene.recipientName}
@@ -130,15 +130,15 @@ export const KeepsakePosterModal: React.FC<KeepsakePosterModalProps> = ({
                   />
                 </div>
               ) : (
-                <div className="p-2 sm:p-3 bg-white border-2 border-[#1c1917] shadow-[2px_2px_0px_#1c1917] mb-2 sm:mb-4 flex items-center justify-center">
+                <div className="p-3 bg-white border-2 border-[#1c1917] shadow-[3px_3px_0px_#1c1917] mb-4 flex items-center justify-center">
                   <BrandLogo size="md" showSubtitle={false} href="" />
                 </div>
               )}
 
               {/* Main Headline */}
-              <h2 className="text-xl sm:text-3xl font-black uppercase tracking-tight text-[#1c1917] leading-none">
+              <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-[#1c1917] leading-none">
                 HAPPY BIRTHDAY <br />
-                <span className="bg-amber-400 text-[#1c1917] px-2 py-0.5 border-2 border-[#1c1917] inline-block mt-1 shadow-[2px_2px_0px_#1c1917] sm:shadow-[3px_3px_0px_#1c1917]">
+                <span className="bg-amber-400 text-[#1c1917] px-2.5 py-0.5 border-2 border-[#1c1917] inline-block mt-1 shadow-[3px_3px_0px_#1c1917]">
                   {scene.recipientName}
                 </span>
               </h2>

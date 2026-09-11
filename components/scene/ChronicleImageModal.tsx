@@ -97,26 +97,26 @@ export const ChronicleImageModal: React.FC<ChronicleImageModalProps> = ({
           <div
             ref={cardRef}
             id="printable-chronicle-card"
-            className="w-full max-w-[420px] bg-[#f7f4ed] border-3 sm:border-4 border-[#1c1917] p-4 sm:p-7 flex flex-col justify-between shadow-[4px_4px_0px_#1c1917] sm:shadow-[6px_6px_0px_#1c1917] relative text-[#1c1917]"
+            className="w-full max-w-[380px] bg-[#f7f4ed] border-3 sm:border-4 border-[#1c1917] p-3.5 sm:p-6 flex flex-col justify-between shadow-[4px_4px_0px_#1c1917] sm:shadow-[6px_6px_0px_#1c1917] relative text-[#1c1917]"
           >
             {/* Top Structural Header */}
-            <div className="border-b-2 border-[#1c1917] pb-3 flex items-center justify-between gap-2 flex-wrap">
+            <div className="border-b-2 border-[#1c1917] pb-2 sm:pb-3 flex items-center justify-between gap-2 flex-wrap">
               <BrandLogo size="sm" showSubtitle={true} href="" />
-              <div className="flex items-center gap-1.5 font-mono text-[9px] font-bold">
-                <span className="px-2 py-0.5 bg-amber-400 text-[#1c1917] border border-[#1c1917] uppercase shadow-sm">
+              <div className="flex items-center gap-1.5 font-mono text-[8px] sm:text-[9px] font-bold">
+                <span className="px-1.5 sm:px-2 py-0.5 bg-amber-400 text-[#1c1917] border border-[#1c1917] uppercase shadow-sm">
                   {formatBirthDayMonth(birthDate)}
                 </span>
-                <span className="px-2 py-0.5 bg-white border border-[#1c1917] uppercase shadow-sm">
+                <span className="px-1.5 sm:px-2 py-0.5 bg-white border border-[#1c1917] uppercase shadow-sm">
                   OFFICIAL ARCHIVE
                 </span>
               </div>
             </div>
 
             {/* Main Portrait & Name Header */}
-            <div className="my-2 sm:my-4 flex flex-col items-center text-center">
+            <div className="my-1.5 sm:my-3 flex flex-col items-center text-center">
               {/* Recipient Photo Frame Plate */}
               {photoUrl ? (
-                <div className="w-20 h-20 sm:w-28 sm:h-28 bg-white border-2 border-[#1c1917] p-1 sm:p-1.5 shadow-[3px_3px_0px_#1c1917] mb-2 sm:mb-3">
+                <div className="w-16 h-16 sm:w-24 sm:h-24 bg-white border-2 border-[#1c1917] p-1 shadow-[2px_2px_0px_#1c1917] sm:shadow-[3px_3px_0px_#1c1917] mb-1.5 sm:mb-2.5">
                   <img
                     src={photoUrl}
                     alt={recipientName}
@@ -125,83 +125,83 @@ export const ChronicleImageModal: React.FC<ChronicleImageModalProps> = ({
                   />
                 </div>
               ) : (
-                <div className="w-14 h-14 sm:w-20 sm:h-20 bg-amber-400 border-2 border-[#1c1917] shadow-[2px_2px_0px_#1c1917] mb-2 sm:mb-3 flex items-center justify-center">
-                  <Camera className="w-6 h-6 sm:w-8 sm:h-8 text-[#1c1917]" />
+                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-amber-400 border-2 border-[#1c1917] shadow-[2px_2px_0px_#1c1917] mb-1.5 sm:mb-2.5 flex items-center justify-center">
+                  <Camera className="w-5 h-5 sm:w-7 sm:h-7 text-[#1c1917]" />
                 </div>
               )}
 
-              <h2 className="text-lg sm:text-2xl font-black uppercase tracking-tight text-[#1c1917] leading-tight">
+              <h2 className="text-base sm:text-xl font-black uppercase tracking-tight text-[#1c1917] leading-tight">
                 LIVING CHRONICLE OF <br />
-                <span className="bg-amber-400 px-2 py-0.5 border border-[#1c1917] inline-block mt-0.5 sm:mt-1">
+                <span className="bg-amber-400 px-2 py-0.5 border border-[#1c1917] inline-block mt-0.5">
                   {recipientName}
                 </span>
               </h2>
-              <span className="font-mono text-[8px] sm:text-[9px] text-zinc-600 uppercase font-bold tracking-wider mt-0.5 sm:mt-1 block">
+              <span className="font-mono text-[8px] text-zinc-600 uppercase font-bold tracking-wider mt-0.5 block">
                 CUMULATIVE MILESTONE TELEMETRY · BORN {formatBirthDayMonth(birthDate)}
               </span>
             </div>
 
             {/* Total Units 2x3 Grid */}
-            <div className="grid grid-cols-2 gap-2 my-2 font-mono">
-              <div className="bg-white border-2 border-[#1c1917] p-2 text-center shadow-[1px_1px_0px_#1c1917]">
-                <span className="text-[8px] text-zinc-500 uppercase font-bold block">TOTAL YEARS</span>
-                <span className="text-lg font-black text-[#1c1917] leading-tight block">
+            <div className="grid grid-cols-2 gap-1.5 sm:gap-2 my-1.5 sm:my-2 font-mono">
+              <div className="bg-white border-2 border-[#1c1917] p-1.5 sm:p-2 text-center shadow-[1px_1px_0px_#1c1917]">
+                <span className="text-[7px] sm:text-[8px] text-zinc-500 uppercase font-bold block">TOTAL YEARS</span>
+                <span className="text-base sm:text-lg font-black text-[#1c1917] leading-tight block">
                   {chronicle.totalYears.toLocaleString()}
                 </span>
-                <span className="text-[7px] text-amber-700 uppercase font-bold">SOLAR ORBITS</span>
+                <span className="text-[6px] sm:text-[7px] text-amber-700 uppercase font-bold">SOLAR ORBITS</span>
               </div>
 
-              <div className="bg-white border-2 border-[#1c1917] p-2 text-center shadow-[1px_1px_0px_#1c1917]">
-                <span className="text-[8px] text-zinc-500 uppercase font-bold block">TOTAL MONTHS</span>
-                <span className="text-lg font-black text-[#1c1917] leading-tight block">
+              <div className="bg-white border-2 border-[#1c1917] p-1.5 sm:p-2 text-center shadow-[1px_1px_0px_#1c1917]">
+                <span className="text-[7px] sm:text-[8px] text-zinc-500 uppercase font-bold block">TOTAL MONTHS</span>
+                <span className="text-base sm:text-lg font-black text-[#1c1917] leading-tight block">
                   {chronicle.totalMonths.toLocaleString()}
                 </span>
-                <span className="text-[7px] text-amber-700 uppercase font-bold">MONTHS LIVED</span>
+                <span className="text-[6px] sm:text-[7px] text-amber-700 uppercase font-bold">MONTHS LIVED</span>
               </div>
 
-              <div className="bg-white border-2 border-[#1c1917] p-2 text-center shadow-[1px_1px_0px_#1c1917]">
-                <span className="text-[8px] text-zinc-500 uppercase font-bold block">TOTAL WEEKS</span>
-                <span className="text-lg font-black text-[#1c1917] leading-tight block">
+              <div className="bg-white border-2 border-[#1c1917] p-1.5 sm:p-2 text-center shadow-[1px_1px_0px_#1c1917]">
+                <span className="text-[7px] sm:text-[8px] text-zinc-500 uppercase font-bold block">TOTAL WEEKS</span>
+                <span className="text-base sm:text-lg font-black text-[#1c1917] leading-tight block">
                   {chronicle.totalWeeks.toLocaleString()}
                 </span>
-                <span className="text-[7px] text-amber-700 uppercase font-bold">WEEKS PASSED</span>
+                <span className="text-[6px] sm:text-[7px] text-amber-700 uppercase font-bold">WEEKS PASSED</span>
               </div>
 
-              <div className="bg-white border-2 border-[#1c1917] p-2 text-center shadow-[1px_1px_0px_#1c1917]">
-                <span className="text-[8px] text-zinc-500 uppercase font-bold block">TOTAL DAYS</span>
-                <span className="text-lg font-black text-[#1c1917] leading-tight block">
+              <div className="bg-white border-2 border-[#1c1917] p-1.5 sm:p-2 text-center shadow-[1px_1px_0px_#1c1917]">
+                <span className="text-[7px] sm:text-[8px] text-zinc-500 uppercase font-bold block">TOTAL DAYS</span>
+                <span className="text-base sm:text-lg font-black text-[#1c1917] leading-tight block">
                   {chronicle.totalDays.toLocaleString()}
                 </span>
-                <span className="text-[7px] text-amber-700 uppercase font-bold">DAYS ON EARTH</span>
+                <span className="text-[6px] sm:text-[7px] text-amber-700 uppercase font-bold">DAYS ON EARTH</span>
               </div>
 
-              <div className="bg-white border-2 border-[#1c1917] p-2 text-center shadow-[1px_1px_0px_#1c1917]">
-                <span className="text-[8px] text-zinc-500 uppercase font-bold block">TOTAL HOURS</span>
-                <span className="text-lg font-black text-[#1c1917] leading-tight block">
+              <div className="bg-white border-2 border-[#1c1917] p-1.5 sm:p-2 text-center shadow-[1px_1px_0px_#1c1917]">
+                <span className="text-[7px] sm:text-[8px] text-zinc-500 uppercase font-bold block">TOTAL HOURS</span>
+                <span className="text-base sm:text-lg font-black text-[#1c1917] leading-tight block">
                   {chronicle.totalHours.toLocaleString()}
                 </span>
-                <span className="text-[7px] text-amber-700 uppercase font-bold">HOURS OF IMPACT</span>
+                <span className="text-[6px] sm:text-[7px] text-amber-700 uppercase font-bold">HOURS OF IMPACT</span>
               </div>
 
-              <div className="bg-white border-2 border-[#1c1917] p-2 text-center shadow-[1px_1px_0px_#1c1917]">
-                <span className="text-[8px] text-zinc-500 uppercase font-bold block">TOTAL MINUTES</span>
-                <span className="text-lg font-black text-[#1c1917] leading-tight block truncate">
+              <div className="bg-white border-2 border-[#1c1917] p-1.5 sm:p-2 text-center shadow-[1px_1px_0px_#1c1917]">
+                <span className="text-[7px] sm:text-[8px] text-zinc-500 uppercase font-bold block">TOTAL MINUTES</span>
+                <span className="text-base sm:text-lg font-black text-[#1c1917] leading-tight block truncate">
                   {chronicle.totalMinutes.toLocaleString()}
                 </span>
-                <span className="text-[7px] text-amber-700 uppercase font-bold">MINUTES LIVED</span>
+                <span className="text-[6px] sm:text-[7px] text-amber-700 uppercase font-bold">MINUTES LIVED</span>
               </div>
             </div>
 
             {/* Bottom Signature & Verification Seal */}
-            <div className="mt-3 pt-3 border-t-2 border-[#1c1917] flex items-end justify-between font-mono text-[8px] gap-2">
+            <div className="mt-2 pt-2 border-t-2 border-[#1c1917] flex items-end justify-between font-mono text-[7px] sm:text-[8px] gap-2">
               <div className="text-left">
                 <span className="text-zinc-500 uppercase block font-semibold">VERIFIED MILESTONE</span>
-                <span className="font-bold text-[10px] uppercase text-[#1c1917]">{chronicle.totalDays.toLocaleString()} DAYS OF EXCELLENCE</span>
+                <span className="font-bold text-[8px] sm:text-[10px] uppercase text-[#1c1917]">{chronicle.totalDays.toLocaleString()} DAYS OF EXCELLENCE</span>
               </div>
 
               <div className="text-right">
                 <span className="text-zinc-500 uppercase block font-semibold">STAMPED YEAR</span>
-                <span className="font-bold text-[10px] uppercase text-[#1c1917]">{currentYear} CELEBRATION</span>
+                <span className="font-bold text-[8px] sm:text-[10px] uppercase text-[#1c1917]">{currentYear} CELEBRATION</span>
               </div>
             </div>
           </div>

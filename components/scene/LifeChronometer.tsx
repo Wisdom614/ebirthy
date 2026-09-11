@@ -49,15 +49,15 @@ export const LifeChronometer: React.FC<LifeChronometerProps> = ({
   ];
 
   return (
-    <div className="w-full max-w-4xl mx-auto my-8 px-4">
-      <div className="bg-white border-2 border-[#1c1917] p-5 sm:p-7 shadow-[6px_6px_0px_#1c1917] text-[#1c1917] relative overflow-hidden">
+    <div className="w-full max-w-4xl mx-auto my-6 sm:my-8 px-3 sm:px-4">
+      <div className="bg-white border-2 border-[#1c1917] p-4 sm:p-7 shadow-[4px_4px_0px_#1c1917] sm:shadow-[6px_6px_0px_#1c1917] text-[#1c1917] relative overflow-hidden">
         {/* Top Architectural Header */}
-        <div className="border-b-2 border-[#1c1917] pb-4 mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <div className="border-b-2 border-[#1c1917] pb-3 sm:pb-4 mb-4 sm:mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div>
-            <h3 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-[#1c1917]">
+            <h3 className="text-lg sm:text-2xl font-black uppercase tracking-tight text-[#1c1917]">
               LIVING CHRONICLE OF {recipientName}
             </h3>
-            <span className="font-mono text-[10px] text-zinc-500 uppercase font-bold tracking-wider block mt-0.5">
+            <span className="font-mono text-[9px] sm:text-[10px] text-zinc-500 uppercase font-bold tracking-wider block mt-0.5">
               CUMULATIVE LIFETIME MILESTONE RECORD
             </span>
           </div>
