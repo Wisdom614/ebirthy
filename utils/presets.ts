@@ -130,15 +130,33 @@ export const DEFAULT_SCENE: SceneConfig = {
   voiceNoteDuration: 0
 };
 
-export const PRESET_TEMPLATES: Record<string, { name: string; tag: string; iconName: 'scroll' | 'compass' | 'leaf' | 'zap'; config: SceneConfig }> = {
+export interface PresetTemplateItem {
+  name: string;
+  tag: string;
+  specimenRef: string;
+  category: 'friends' | 'romance' | 'family' | 'minimalist';
+  badge: string;
+  iconName: 'scroll' | 'compass' | 'leaf' | 'zap' | 'sparkles' | 'award';
+  highlightFeatures: string[];
+  swatches: string[];
+  config: SceneConfig;
+}
+
+export const PRESET_TEMPLATES: Record<string, PresetTemplateItem> = {
   'warm-linen': {
     name: 'Warm Linen & Ochre',
     tag: 'EDITION 01',
+    specimenRef: 'SPECIMEN · EB-01',
+    category: 'friends',
+    badge: 'SIGNATURE DISPATCH',
     iconName: 'scroll',
+    highlightFeatures: ['3D Parcel Unbox', 'Mic Candle Blow', 'Photo Plates', 'Orchestral Synth'],
+    swatches: ['#f59e0b', '#d97706', '#1c1917'],
     config: {
       ...DEFAULT_SCENE,
       recipientName: 'Alex',
       relationship: 'Best Friend',
+      birthDate: '2002-05-13',
       theme: 'gold',
       headline: 'LEVELING UP TODAY · MILESTONE UNLOCKED',
       wishes: 'To my favorite partner-in-crime: may your day be as bold, memorable, and unforgettable as our best stories!',
@@ -151,11 +169,17 @@ export const PRESET_TEMPLATES: Record<string, { name: string; tag: string; iconN
   'bauhaus-vermillion': {
     name: 'Bauhaus Vermillion',
     tag: 'EDITION 02',
+    specimenRef: 'SPECIMEN · EB-02',
+    category: 'romance',
+    badge: 'POPULAR ROMANCE',
     iconName: 'compass',
+    highlightFeatures: ['Synthwave Engine', 'Interactive Balloons', 'Archival Letter', 'Strawberry Cake'],
+    swatches: ['#dc2626', '#2563eb', '#1c1917'],
     config: {
       ...DEFAULT_SCENE,
       recipientName: 'Sam',
       relationship: 'Partner',
+      birthDate: '2000-02-14',
       theme: 'neon',
       headline: 'HAPPY BIRTHDAY TO MY ENTIRE WORLD',
       wishes: 'Every day with you is a gift, but today is the most special of all. Thank you for bringing endless warmth and depth to everything.',
@@ -169,11 +193,17 @@ export const PRESET_TEMPLATES: Record<string, { name: string; tag: string; iconN
   'sandstone-sage': {
     name: 'Sandstone & Sage',
     tag: 'EDITION 03',
+    specimenRef: 'SPECIMEN · EB-03',
+    category: 'family',
+    badge: 'HEARTFELT KEEPSAKE',
     iconName: 'leaf',
+    highlightFeatures: ['Chill Lo-Fi Audio', 'Vanilla Cake & Candles', 'Keepsake Poster', 'Terracotta Accents'],
+    swatches: ['#15803d', '#ea580c', '#1c1917'],
     config: {
       ...DEFAULT_SCENE,
       recipientName: 'Chloe',
       relationship: 'Sister',
+      birthDate: '2003-08-24',
       theme: 'pastel',
       headline: 'CELEBRATING ANOTHER REMARKABLE CHAPTER',
       wishes: 'Sending you the warmest birthday wishes wrapped in elegance, clarity, and bold ambitions.',
@@ -184,19 +214,71 @@ export const PRESET_TEMPLATES: Record<string, { name: string; tag: string; iconN
     }
   },
   'swiss-cobalt': {
-    name: 'Swiss Cobalt',
+    name: 'Swiss Cobalt International',
     tag: 'EDITION 04',
+    specimenRef: 'SPECIMEN · EB-04',
+    category: 'minimalist',
+    badge: 'HIGH-ENERGY FESTIVE',
     iconName: 'zap',
+    highlightFeatures: ['Dynamic Fireworks', 'High-Contrast Grid', 'Voucher Reveal', 'Festive Chimes'],
+    swatches: ['#1d4ed8', '#ea580c', '#1c1917'],
     config: {
       ...DEFAULT_SCENE,
       recipientName: 'David',
       relationship: 'Brother',
+      birthDate: '1998-11-09',
       theme: 'fireworks',
       headline: 'LIGHT UP THE SKIES · BIG DAY AHEAD',
       wishes: 'Aim for the highest peaks this year. Wishing you relentless drive, health, and limitless triumph.',
       letterText: "Happy Birthday David!\n\nAnother lap around the sun and you keep setting the bar higher. Keep dreaming big, working hard, and enjoying the ride.",
       musicTrack: 'festive',
       cakeFlavor: 'chocolate',
+      balloonCount: 8
+    }
+  },
+  'architectural-gold': {
+    name: 'Architectural Stone & Gold',
+    tag: 'EDITION 05',
+    specimenRef: 'SPECIMEN · EB-05',
+    category: 'minimalist',
+    badge: 'EDITORIAL ARCHIVE',
+    iconName: 'award',
+    highlightFeatures: ['Gold Particles Physics', 'Classified Seal', 'Swiss Typography', 'Milestone Certificate'],
+    swatches: ['#f59e0b', '#78716c', '#1c1917'],
+    config: {
+      ...DEFAULT_SCENE,
+      recipientName: 'Marcus',
+      relationship: 'Colleague',
+      birthDate: '1995-04-18',
+      theme: 'retro',
+      headline: 'PRECISION, DISTINCTION & PURE MASTERY',
+      wishes: 'Honoring another year of visionary work and exceptional craft. Here is to limitless new milestones.',
+      letterText: "Dear Marcus,\n\nWishing you a magnificent birthday celebration. May this coming year bring groundbreaking successes and creative breakthroughs.",
+      musicTrack: 'festive',
+      cakeFlavor: 'chocolate',
+      balloonCount: 8
+    }
+  },
+  'midnight-rose': {
+    name: 'Midnight Velvet & Ruby',
+    tag: 'EDITION 06',
+    specimenRef: 'SPECIMEN · EB-06',
+    category: 'romance',
+    badge: 'INTIMATE EDITION',
+    iconName: 'sparkles',
+    highlightFeatures: ['Ambient Synthesizer', 'Mic Blow Physics', 'Curated Photo Reel', 'Confetti Fanfare'],
+    swatches: ['#e11d48', '#881337', '#1c1917'],
+    config: {
+      ...DEFAULT_SCENE,
+      recipientName: 'Elena',
+      relationship: 'Soulmate',
+      birthDate: '2001-12-05',
+      theme: 'neon',
+      headline: 'AN UNFORGETTABLE EVENING FOR SOMEONE SPECIAL',
+      wishes: 'To the one who makes every second feel extraordinary: happy birthday, my favorite human in the world.',
+      letterText: "Elena,\n\nEvery day with you is a celebration, but today the entire spotlight belongs to you. Thank you for your warmth, humor, and grace.\n\nForever yours.",
+      musicTrack: 'synthwave',
+      cakeFlavor: 'strawberry',
       balloonCount: 8
     }
   }
