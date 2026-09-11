@@ -1,6 +1,9 @@
 import { supabase, isSupabaseConfigured } from '../supabase/client';
 
 const VISITOR_STORAGE_KEY = 'ebirthy_visitor_id';
+const SESSION_ID_KEY = 'ebirthy_session_id';
+const SESSION_PATH_KEY = 'ebirthy_session_path';
+const SESSION_START_KEY = 'ebirthy_session_start';
 
 const generateUUID = (): string => {
   if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
@@ -73,10 +76,41 @@ let activeSession: ActiveSession | null = null;
 let heartbeatInterval: any = null;
 
 /**
- * Initializes a new page session in Supabase and starts duration heartbeat
+ * Initializes or resumes a page session in Supabase and starts duration heartbeat.
+ * Prevents duplicate session record creation when refreshing the same page.
  */
 export async function trackPageView(path: string): Promise<string | null> {
   if (typeof window === 'undefined') return null;
+
+  // Never track internal admin visits
+  if (path.startsWith('/admin')) {
+    return null;
+  }
+
+  const visitorId = getOrCreateVisitorId();
+
+  // Check if this is a page refresh on the SAME path within the same browser tab session
+  const storedSessionId = sessionStorage.getItem(SESSION_ID_KEY);
+  const storedSessionPath = sessionStorage.getItem(SESSION_PATH_KEY);
+  const storedSessionStart = sessionStorage.getItem(SESSION_START_KEY);
+
+  if (storedSessionId && storedSessionPath === path && storedSessionStart) {
+    // RESUME EXISTING SESSION — DO NOT CREATE DUPLICATE DATABASE ROW ON REFRESH
+    activeSession = {
+      sessionId: storedSessionId,
+      visitorId,
+      path,
+      startTime: Number(storedSessionStart) || Date.now()
+    };
+
+    if (heartbeatInterval) clearInterval(heartbeatInterval);
+    heartbeatInterval = setInterval(() => {
+      sendHeartbeat();
+    }, 12000);
+
+    sendHeartbeat();
+    return storedSessionId;
+  }
 
   // Flush previous session if changing route
   if (activeSession) {
@@ -84,7 +118,7 @@ export async function trackPageView(path: string): Promise<string | null> {
     if (heartbeatInterval) clearInterval(heartbeatInterval);
   }
 
-  const visitorId = getOrCreateVisitorId();
+  // Start new distinct page session
   const sessionId = generateUUID();
   const startTime = Date.now();
 
@@ -94,6 +128,12 @@ export async function trackPageView(path: string): Promise<string | null> {
     path,
     startTime
   };
+
+  try {
+    sessionStorage.setItem(SESSION_ID_KEY, sessionId);
+    sessionStorage.setItem(SESSION_PATH_KEY, path);
+    sessionStorage.setItem(SESSION_START_KEY, startTime.toString());
+  } catch {}
 
   const deviceType = getDeviceType();
   const browser = getBrowserName();
@@ -134,9 +174,10 @@ export async function trackPageView(path: string): Promise<string | null> {
  */
 export function sendHeartbeat() {
   if (!activeSession || !isSupabaseConfigured || !supabase) return;
+  if (activeSession.path.startsWith('/admin')) return;
 
   const elapsedSeconds = Math.floor((Date.now() - activeSession.startTime) / 1000);
-  if (elapsedSeconds <= 0) return;
+  if (elapsedSeconds < 0) return;
 
   try {
     supabase
@@ -155,6 +196,8 @@ export function sendHeartbeat() {
  */
 export function flushSessionDuration() {
   if (!activeSession) return;
+  if (activeSession.path.startsWith('/admin')) return;
+
   const elapsedSeconds = Math.floor((Date.now() - activeSession.startTime) / 1000);
   if (elapsedSeconds <= 0) return;
 
@@ -180,10 +223,11 @@ export async function trackEvent(
   eventData: Record<string, any> = {}
 ): Promise<void> {
   if (typeof window === 'undefined') return;
+  const path = activeSession ? activeSession.path : window.location.pathname;
+  if (path.startsWith('/admin')) return;
 
   const visitorId = activeSession ? activeSession.visitorId : getOrCreateVisitorId();
-  const sessionId = activeSession ? activeSession.sessionId : null;
-  const path = activeSession ? activeSession.path : window.location.pathname;
+  const sessionId = activeSession ? activeSession.sessionId : sessionStorage.getItem(SESSION_ID_KEY);
 
   if (isSupabaseConfigured && supabase) {
     try {

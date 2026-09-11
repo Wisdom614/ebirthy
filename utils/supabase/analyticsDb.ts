@@ -38,30 +38,35 @@ export interface AnalyticsSummary {
 }
 
 /**
- * Fetches aggregated analytics summary from Supabase
+ * Fetches aggregated analytics summary from Supabase, filtering out admin visits
  */
 export async function fetchAnalyticsSummary(): Promise<AnalyticsSummary | null> {
   if (!isSupabaseConfigured || !supabase) return null;
 
   try {
-    // 1. Fetch recent 100 sessions
-    const { data: sessions, error: sessionErr } = await supabase
+    // 1. Fetch recent sessions excluding internal admin pages
+    const { data: rawSessions, error: sessionErr } = await supabase
       .from('visitor_sessions')
       .select('*')
+      .not('path', 'like', '/admin%')
       .order('created_at', { ascending: false })
-      .limit(200);
+      .limit(300);
 
-    // 2. Fetch recent 100 events
-    const { data: events, error: eventErr } = await supabase
+    // 2. Fetch recent events excluding internal admin pages
+    const { data: rawEvents, error: eventErr } = await supabase
       .from('analytics_events')
       .select('*')
+      .not('path', 'like', '/admin%')
       .order('created_at', { ascending: false })
-      .limit(100);
+      .limit(150);
 
-    if (sessionErr || !sessions) {
+    if (sessionErr || !rawSessions) {
       console.warn('Analytics fetch error:', sessionErr);
       return null;
     }
+
+    const sessions = rawSessions || [];
+    const events = rawEvents || [];
 
     const now = Date.now();
     const fiveMinutesAgo = now - 5 * 60 * 1000;
@@ -93,11 +98,17 @@ export async function fetchAnalyticsSummary(): Promise<AnalyticsSummary | null> 
       .sort((a, b) => b.count - a.count)
       .slice(0, 10);
 
-    // Device breakdown
-    const deviceCounts: Record<string, number> = {};
+    // Device breakdown (aggregate by distinct visitor_id to accurately count devices)
+    const visitorDeviceMap = new Map<string, string>();
     sessions.forEach((s) => {
-      const d = s.device_type || 'desktop';
-      deviceCounts[d] = (deviceCounts[d] || 0) + 1;
+      if (!visitorDeviceMap.has(s.visitor_id)) {
+        visitorDeviceMap.set(s.visitor_id, s.device_type || 'desktop');
+      }
+    });
+
+    const deviceCounts: Record<string, number> = {};
+    visitorDeviceMap.forEach((deviceType) => {
+      deviceCounts[deviceType] = (deviceCounts[deviceType] || 0) + 1;
     });
     const deviceBreakdown = Object.entries(deviceCounts)
       .map(([device_type, count]) => ({ device_type, count }))
@@ -116,7 +127,7 @@ export async function fetchAnalyticsSummary(): Promise<AnalyticsSummary | null> 
 
     // Event breakdown
     const eventCounts: Record<string, number> = {};
-    (events || []).forEach((e) => {
+    events.forEach((e) => {
       const name = e.event_name || 'unknown';
       eventCounts[name] = (eventCounts[name] || 0) + 1;
     });
@@ -133,7 +144,7 @@ export async function fetchAnalyticsSummary(): Promise<AnalyticsSummary | null> 
       eventBreakdown,
       deviceBreakdown,
       referrerBreakdown,
-      recentEvents: events || [],
+      recentEvents: events,
       recentSessions: sessions.slice(0, 15)
     };
   } catch (err) {
