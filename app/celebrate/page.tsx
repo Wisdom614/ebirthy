@@ -15,6 +15,7 @@ import confetti from 'canvas-confetti';
 import { Sparkles, ArrowRight, Wand2, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { BrandLogo } from '../../components/ui/BrandLogo';
+import { formatBirthDayMonth } from '../../utils/dateFormatter';
 
 function CelebrateContent() {
   const searchParams = useSearchParams();
@@ -102,7 +103,7 @@ function CelebrateContent() {
               </span>
               {scene.birthDate && (
                 <span className="font-mono text-[9px] uppercase px-1.5 py-0.5 bg-amber-100 text-amber-900 border border-amber-300 font-bold">
-                  BORN {new Date(scene.birthDate + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' }).toUpperCase()}
+                  DATE: {formatBirthDayMonth(scene.birthDate)}
                 </span>
               )}
             </div>

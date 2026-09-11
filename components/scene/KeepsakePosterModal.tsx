@@ -7,6 +7,7 @@ import { audio } from '../../utils/audioManager';
 import confetti from 'canvas-confetti';
 import { X, Download, Printer, Loader2, Sparkles, Image as ImageIcon } from 'lucide-react';
 import { BrandLogo } from '../ui/BrandLogo';
+import { formatBirthDayMonth } from '../../utils/dateFormatter';
 
 interface KeepsakePosterModalProps {
   isOpen: boolean;
@@ -106,12 +107,12 @@ export const KeepsakePosterModal: React.FC<KeepsakePosterModalProps> = ({
               <BrandLogo size="sm" showSubtitle={true} href="" />
               <div className="flex items-center gap-1.5">
                 {scene.birthDate && (
-                  <span className="font-mono text-[9px] font-bold px-2 py-0.5 bg-amber-100 text-amber-900 border border-[#1c1917] uppercase shadow-sm">
-                    BORN {new Date(scene.birthDate + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase()}
+                  <span className="font-mono text-[10px] font-black px-2 py-0.5 bg-amber-400 text-[#1c1917] border border-[#1c1917] uppercase shadow-sm">
+                    {formatBirthDayMonth(scene.birthDate)}
                   </span>
                 )}
                 <span className="font-mono text-[9px] font-bold px-2 py-0.5 bg-white border border-[#1c1917] uppercase shadow-sm">
-                  EDITION · {scene.age ? `${scene.age} YEARS` : 'MILESTONE'}
+                  OFFICIAL ARCHIVE
                 </span>
               </div>
             </div>
@@ -164,15 +165,15 @@ export const KeepsakePosterModal: React.FC<KeepsakePosterModalProps> = ({
 
               {scene.birthDate && (
                 <div className="text-center">
-                  <span className="text-zinc-500 uppercase block font-semibold">BORN DATE</span>
-                  <span className="font-bold text-[11px] uppercase text-[#1c1917]">
-                    {new Date(scene.birthDate + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase()}
+                  <span className="text-zinc-500 uppercase block font-semibold">DATE</span>
+                  <span className="font-mono font-black text-xs uppercase text-[#1c1917] bg-white px-2 py-0.5 border border-[#1c1917]">
+                    {formatBirthDayMonth(scene.birthDate)}
                   </span>
                 </div>
               )}
 
               <div className="text-right">
-                <span className="text-zinc-500 uppercase block font-semibold">VERIFIED DATE</span>
+                <span className="text-zinc-500 uppercase block font-semibold">VERIFIED YEAR</span>
                 <span className="font-bold text-xs uppercase text-[#1c1917]">{new Date().getFullYear()} CELEBRATION</span>
               </div>
             </div>

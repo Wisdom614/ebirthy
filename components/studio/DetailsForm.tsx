@@ -50,42 +50,20 @@ export const DetailsForm: React.FC<DetailsFormProps> = ({ scene, onChange }) => 
           />
         </div>
 
-        {/* Birth Date */}
+        {/* Birth Date (Day & Month) */}
         <div>
           <label className="block font-mono text-[11px] uppercase font-bold tracking-wider text-[#1c1917] mb-1.5">
-            BIRTH DATE (OPTIONAL)
+            BIRTH DATE (DAY & MONTH)
           </label>
           <input
             type="date"
             value={scene.birthDate || ''}
-            onChange={(e) => {
-              const val = e.target.value;
-              const updates: Partial<SceneConfig> = { birthDate: val };
-              if (val && !scene.age) {
-                const birthYear = new Date(val).getFullYear();
-                const currentYear = new Date().getFullYear();
-                if (birthYear && currentYear > birthYear) {
-                  updates.age = currentYear - birthYear;
-                }
-              }
-              onChange(updates);
-            }}
+            onChange={(e) => onChange({ birthDate: e.target.value })}
             className="w-full px-3.5 py-2.5 bg-white border-2 border-[#1c1917] text-[#1c1917] font-mono text-sm focus:outline-none focus:border-amber-500 shadow-[2px_2px_0px_#1c1917]"
           />
-        </div>
-
-        {/* Age Turning */}
-        <div>
-          <label className="block font-mono text-[11px] uppercase font-bold tracking-wider text-[#1c1917] mb-1.5">
-            AGE TURNING (OPTIONAL)
-          </label>
-          <input
-            type="number"
-            value={scene.age || ''}
-            onChange={(e) => onChange({ age: e.target.value ? parseInt(e.target.value) : undefined })}
-            placeholder="e.g. 24"
-            className="w-full px-3.5 py-2.5 bg-white border-2 border-[#1c1917] text-[#1c1917] font-mono text-sm focus:outline-none focus:border-amber-500 shadow-[2px_2px_0px_#1c1917]"
-          />
+          <span className="font-mono text-[9px] text-zinc-500 uppercase mt-1 block">
+            FORMATTED AS DD|MM (E.G. 13|05)
+          </span>
         </div>
 
         {/* Relationship */}
