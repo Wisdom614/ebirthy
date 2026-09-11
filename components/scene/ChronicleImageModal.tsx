@@ -97,7 +97,7 @@ export const ChronicleImageModal: React.FC<ChronicleImageModalProps> = ({
           <div
             ref={cardRef}
             id="printable-chronicle-card"
-            className="w-full max-w-[420px] bg-[#f7f4ed] border-4 border-[#1c1917] p-6 sm:p-8 flex flex-col justify-between shadow-[6px_6px_0px_#1c1917] relative text-[#1c1917]"
+            className="w-full max-w-[420px] bg-[#f7f4ed] border-3 sm:border-4 border-[#1c1917] p-4 sm:p-7 flex flex-col justify-between shadow-[4px_4px_0px_#1c1917] sm:shadow-[6px_6px_0px_#1c1917] relative text-[#1c1917]"
           >
             {/* Top Structural Header */}
             <div className="border-b-2 border-[#1c1917] pb-3 flex items-center justify-between gap-2 flex-wrap">
@@ -113,10 +113,10 @@ export const ChronicleImageModal: React.FC<ChronicleImageModalProps> = ({
             </div>
 
             {/* Main Portrait & Name Header */}
-            <div className="my-4 flex flex-col items-center text-center">
+            <div className="my-2 sm:my-4 flex flex-col items-center text-center">
               {/* Recipient Photo Frame Plate */}
               {photoUrl ? (
-                <div className="w-28 h-28 sm:w-32 sm:h-32 bg-white border-2 border-[#1c1917] p-1.5 shadow-[4px_4px_0px_#1c1917] mb-3">
+                <div className="w-20 h-20 sm:w-28 sm:h-28 bg-white border-2 border-[#1c1917] p-1 sm:p-1.5 shadow-[3px_3px_0px_#1c1917] mb-2 sm:mb-3">
                   <img
                     src={photoUrl}
                     alt={recipientName}
@@ -125,18 +125,18 @@ export const ChronicleImageModal: React.FC<ChronicleImageModalProps> = ({
                   />
                 </div>
               ) : (
-                <div className="w-20 h-20 bg-amber-400 border-2 border-[#1c1917] shadow-[3px_3px_0px_#1c1917] mb-3 flex items-center justify-center">
-                  <Camera className="w-8 h-8 text-[#1c1917]" />
+                <div className="w-14 h-14 sm:w-20 sm:h-20 bg-amber-400 border-2 border-[#1c1917] shadow-[2px_2px_0px_#1c1917] mb-2 sm:mb-3 flex items-center justify-center">
+                  <Camera className="w-6 h-6 sm:w-8 sm:h-8 text-[#1c1917]" />
                 </div>
               )}
 
-              <h2 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-[#1c1917] leading-tight">
+              <h2 className="text-lg sm:text-2xl font-black uppercase tracking-tight text-[#1c1917] leading-tight">
                 LIVING CHRONICLE OF <br />
-                <span className="bg-amber-400 px-2 py-0.5 border border-[#1c1917] inline-block mt-1">
+                <span className="bg-amber-400 px-2 py-0.5 border border-[#1c1917] inline-block mt-0.5 sm:mt-1">
                   {recipientName}
                 </span>
               </h2>
-              <span className="font-mono text-[9px] text-zinc-600 uppercase font-bold tracking-wider mt-1 block">
+              <span className="font-mono text-[8px] sm:text-[9px] text-zinc-600 uppercase font-bold tracking-wider mt-0.5 sm:mt-1 block">
                 CUMULATIVE MILESTONE TELEMETRY · BORN {formatBirthDayMonth(birthDate)}
               </span>
             </div>
