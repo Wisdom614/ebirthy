@@ -13,7 +13,7 @@ export const DetailsForm: React.FC<DetailsFormProps> = ({ scene, onChange }) => 
     <div className="space-y-6">
       <div className="border-b-2 border-[#1c1917] pb-3">
         <span className="font-mono text-[10px] uppercase font-bold tracking-widest text-amber-600 block mb-1">
-          [ 01 // IDENTITY & DISPATCH ]
+          [ 01 · IDENTITY & DISPATCH ]
         </span>
         <h3 className="text-sm font-bold uppercase tracking-tight text-[#1c1917]">
           Recipient & Personal Message

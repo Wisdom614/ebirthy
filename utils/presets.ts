@@ -91,7 +91,7 @@ export const DEFAULT_SCENE: SceneConfig = {
   
   enableGift: true,
   giftContent: {
-    title: 'SPECIAL BIRTHDAY REVEAL // PRIZE 01',
+    title: 'SPECIAL BIRTHDAY REVEAL · PRIZE 01',
     message: 'Surprise! You have unlocked 1 Free Birthday Dinner & Unlimited Good Vibes!',
     voucherCode: 'BDAY-VIP-2026'
   },
@@ -101,19 +101,19 @@ export const DEFAULT_SCENE: SceneConfig = {
     {
       id: 'photo-1',
       url: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=600&auto=format&fit=crop&q=80',
-      caption: 'ARCHIVE ITEM 01 // Celebrating good times',
+      caption: 'ARCHIVE ITEM 01 · Celebrating good times',
       rotation: 0
     },
     {
       id: 'photo-2',
       url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=600&auto=format&fit=crop&q=80',
-      caption: 'ARCHIVE ITEM 02 // Memories that shine bright',
+      caption: 'ARCHIVE ITEM 02 · Memories that shine bright',
       rotation: 0
     },
     {
       id: 'photo-3',
       url: 'https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=600&auto=format&fit=crop&q=80',
-      caption: 'ARCHIVE ITEM 03 // To many sweet years ahead',
+      caption: 'ARCHIVE ITEM 03 · To many sweet years ahead',
       rotation: 0
     }
   ],
@@ -127,14 +127,14 @@ export const DEFAULT_SCENE: SceneConfig = {
 export const PRESET_TEMPLATES: Record<string, { name: string; tag: string; iconName: 'scroll' | 'compass' | 'leaf' | 'zap'; config: SceneConfig }> = {
   'warm-linen': {
     name: 'Warm Linen & Ochre',
-    tag: 'EDITION // 01',
+    tag: 'EDITION 01',
     iconName: 'scroll',
     config: {
       ...DEFAULT_SCENE,
       recipientName: 'Alex',
       relationship: 'Best Friend',
       theme: 'gold',
-      headline: 'LEVELING UP TODAY // MILESTONE UNLOCKED',
+      headline: 'LEVELING UP TODAY · MILESTONE UNLOCKED',
       wishes: 'To my favorite partner-in-crime: may your day be as bold, memorable, and unforgettable as our best stories!',
       letterText: "Happy Birthday buddy!\n\nFrom all the crazy adventures to the non-stop laughs, life is 1000x more fun with you around. Let's make this year another legendary milestone.",
       musicTrack: 'orchestral',
@@ -144,7 +144,7 @@ export const PRESET_TEMPLATES: Record<string, { name: string; tag: string; iconN
   },
   'bauhaus-vermillion': {
     name: 'Bauhaus Vermillion',
-    tag: 'EDITION // 02',
+    tag: 'EDITION 02',
     iconName: 'compass',
     config: {
       ...DEFAULT_SCENE,
@@ -162,7 +162,7 @@ export const PRESET_TEMPLATES: Record<string, { name: string; tag: string; iconN
   },
   'sandstone-sage': {
     name: 'Sandstone & Sage',
-    tag: 'EDITION // 03',
+    tag: 'EDITION 03',
     iconName: 'leaf',
     config: {
       ...DEFAULT_SCENE,
@@ -179,14 +179,14 @@ export const PRESET_TEMPLATES: Record<string, { name: string; tag: string; iconN
   },
   'swiss-cobalt': {
     name: 'Swiss Cobalt',
-    tag: 'EDITION // 04',
+    tag: 'EDITION 04',
     iconName: 'zap',
     config: {
       ...DEFAULT_SCENE,
       recipientName: 'David',
       relationship: 'Brother',
       theme: 'fireworks',
-      headline: 'LIGHT UP THE SKIES // BIG DAY AHEAD',
+      headline: 'LIGHT UP THE SKIES · BIG DAY AHEAD',
       wishes: 'Aim for the highest peaks this year. Wishing you relentless drive, health, and limitless triumph.',
       letterText: "Happy Birthday David!\n\nAnother lap around the sun and you keep setting the bar higher. Keep dreaming big, working hard, and enjoying the ride.",
       musicTrack: 'festive',

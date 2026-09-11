@@ -79,7 +79,7 @@ export const SoundController: React.FC<SoundControllerProps> = ({
         }`}
       >
         <Music className="w-3.5 h-3.5" />
-        <span>{isPlaying ? `AUDIO // ${track}` : 'AUDIO: OFF'}</span>
+        <span>{isPlaying ? `AUDIO · ${track}` : 'AUDIO: OFF'}</span>
 
         {/* Mechanical VU Equalizer Bars */}
         {isPlaying && (

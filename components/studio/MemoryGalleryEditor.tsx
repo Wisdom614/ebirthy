@@ -13,15 +13,15 @@ interface MemoryGalleryEditorProps {
 const SAMPLE_PHOTO_PRESETS = [
   {
     url: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=600&auto=format&fit=crop&q=80',
-    caption: 'ARCHIVE ITEM 01 // Celebrating good times'
+    caption: 'ARCHIVE ITEM 01 · Celebrating good times'
   },
   {
     url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=600&auto=format&fit=crop&q=80',
-    caption: 'ARCHIVE ITEM 02 // Memories that shine bright'
+    caption: 'ARCHIVE ITEM 02 · Memories that shine bright'
   },
   {
     url: 'https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=600&auto=format&fit=crop&q=80',
-    caption: 'ARCHIVE ITEM 03 // To many sweet years ahead'
+    caption: 'ARCHIVE ITEM 03 · To many sweet years ahead'
   }
 ];
 
@@ -74,7 +74,7 @@ export const MemoryGalleryEditor: React.FC<MemoryGalleryEditorProps> = ({ scene,
       <div className="border-b-2 border-[#1c1917] pb-3 flex items-center justify-between">
         <div>
           <span className="font-mono text-[10px] uppercase font-bold tracking-widest text-amber-600 block mb-1">
-            [ 04 // VISUAL ARCHIVE & MEMORIES ]
+            [ 04 · VISUAL ARCHIVE & MEMORIES ]
           </span>
           <h3 className="text-sm font-bold uppercase tracking-tight text-[#1c1917]">
             Photographic Memory Plates
@@ -113,7 +113,7 @@ export const MemoryGalleryEditor: React.FC<MemoryGalleryEditorProps> = ({ scene,
                 >
                   <div className="flex items-center justify-between border-b border-[#1c1917]/20 pb-2">
                     <span className="font-mono text-xs font-bold text-amber-600">
-                      [ PLATE // 0{index + 1} ]
+                      [ PLATE 0{index + 1} ]
                     </span>
                     <button
                       type="button"
@@ -188,7 +188,7 @@ export const MemoryGalleryEditor: React.FC<MemoryGalleryEditorProps> = ({ scene,
                       type="text"
                       value={photo.caption}
                       onChange={(e) => updatePhoto(photo.id, { caption: e.target.value })}
-                      placeholder="e.g. ARCHIVE ITEM // BEST MOMENT"
+                      placeholder="e.g. ARCHIVE ITEM 01 · BEST MOMENT"
                       className="w-full px-3 py-1.5 bg-[#f7f4ed] border-2 border-[#1c1917] text-[#1c1917] font-mono text-xs focus:outline-none focus:border-amber-500 shadow-[2px_2px_0px_#1c1917]"
                     />
                   </div>

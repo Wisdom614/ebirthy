@@ -104,7 +104,7 @@ export const CinematicLetter: React.FC<CinematicLetterProps> = ({
             <div className="flex items-center gap-2">
               <div className="w-2.5 h-2.5 bg-rose-600 border border-black" />
               <span className="font-mono text-xs uppercase font-bold tracking-widest text-black">
-                PERSONAL DISPATCH // MEMORANDUM
+                PERSONAL DISPATCH · MEMORANDUM
               </span>
             </div>
             <span className="font-mono text-[10px] text-zinc-600 uppercase">

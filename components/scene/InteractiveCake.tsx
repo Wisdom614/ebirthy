@@ -202,8 +202,8 @@ export const InteractiveCake: React.FC<InteractiveCakeProps> = ({
 
         {/* Cake Stand */}
         <div className={`w-72 sm:w-80 h-3.5 ${flavorStyles.stand} shadow-[5px_5px_0px_#1c1917] -mt-0.5 relative z-[-1] flex items-center justify-between px-3`}>
-          <span className="font-mono text-[8px] text-zinc-600 font-bold">PLATFORM // BASE 01</span>
-          <span className="font-mono text-[8px] text-zinc-600 font-bold">SYS // STABLE</span>
+          <span className="font-mono text-[8px] text-zinc-600 font-bold">PLATFORM BASE 01</span>
+          <span className="font-mono text-[8px] text-zinc-600 font-bold">SYS STABLE</span>
         </div>
       </div>
 
@@ -213,7 +213,7 @@ export const InteractiveCake: React.FC<InteractiveCakeProps> = ({
           <div className="flex flex-col items-center">
             <div className="px-4 py-2 bg-amber-400 text-[#1c1917] border-2 border-[#1c1917] font-mono text-xs font-bold tracking-wider uppercase shadow-[3px_3px_0px_#1c1917] flex items-center gap-2">
               <Sparkles className="w-4 h-4" />
-              <span>[ STATUS: CANDLES EXTINGUISHED // WISH RECORDED ]</span>
+              <span>[ STATUS: CANDLES EXTINGUISHED · WISH RECORDED ]</span>
             </div>
             <button
               onClick={relightCandles}
@@ -248,8 +248,8 @@ export const InteractiveCake: React.FC<InteractiveCakeProps> = ({
 
         <span className="font-mono text-[10px] text-zinc-600 uppercase tracking-wider font-semibold">
           {isListeningMic
-            ? '&gt;&gt; MICROPHONE ACTIVE // BLOW AIR INTO SENSOR'
-            : '&gt;&gt; CLICK CANDLES DIRECTLY OR EXECUTE COMMAND'}
+            ? '>> MICROPHONE ACTIVE · BLOW AIR INTO SENSOR'
+            : '>> CLICK CANDLES DIRECTLY OR EXECUTE COMMAND'}
         </span>
       </div>
     </div>

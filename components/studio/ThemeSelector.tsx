@@ -27,7 +27,7 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({ scene, onChange })
     <div className="space-y-6">
       <div className="border-b-2 border-[#1c1917] pb-3">
         <span className="font-mono text-[10px] uppercase font-bold tracking-widest text-amber-600 block mb-1">
-          [ 02 // ARCHITECTURAL PALETTE & STYLE ]
+          [ 02 · ARCHITECTURAL PALETTE & STYLE ]
         </span>
         <h3 className="text-sm font-bold uppercase tracking-tight text-[#1c1917]">
           Visual Atmosphere & Environment
@@ -68,7 +68,7 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({ scene, onChange })
               </div>
 
               <div className="flex items-center justify-between">
-                <span className="font-mono text-[9px] text-zinc-500 uppercase font-semibold">PALETTE // 0{idx + 1}</span>
+                <span className="font-mono text-[9px] text-zinc-500 uppercase font-semibold">PALETTE 0{idx + 1}</span>
               </div>
 
               <h4 className="font-mono font-bold text-sm text-[#1c1917] uppercase mt-0.5">{t.name}</h4>

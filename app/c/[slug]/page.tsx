@@ -30,15 +30,32 @@ export default function ShortLinkCelebratePage() {
       .then((record) => {
         if (record && record.config) {
           setScene(record.config);
+          setLoading(false);
         } else {
+          // Check local client cache
+          try {
+            const cached = localStorage.getItem(`ebirthy_scene_${slug}`);
+            if (cached) {
+              setScene(JSON.parse(cached));
+              setLoading(false);
+              return;
+            }
+          } catch {}
           setError('Celebration scene not found or link has expired.');
+          setLoading(false);
         }
       })
       .catch((err) => {
-        console.error('Failed to load short link scene:', err);
+        console.warn('Supabase fetch failed, checking local cache:', err);
+        try {
+          const cached = localStorage.getItem(`ebirthy_scene_${slug}`);
+          if (cached) {
+            setScene(JSON.parse(cached));
+            setLoading(false);
+            return;
+          }
+        } catch {}
         setError('Failed to load celebration data.');
-      })
-      .finally(() => {
         setLoading(false);
       });
   }, [slug]);
@@ -64,7 +81,7 @@ export default function ShortLinkCelebratePage() {
     return (
       <div className="min-h-screen bg-[#f7f4ed] text-[#1c1917] flex flex-col items-center justify-center gap-3 font-mono text-xs uppercase">
         <Loader2 className="w-8 h-8 text-amber-600 animate-spin" />
-        <span>[ RETRIEVING DISPATCH // {slug} ]</span>
+        <span>[ RETRIEVING DISPATCH · {slug} ]</span>
       </div>
     );
   }
@@ -127,7 +144,7 @@ export default function ShortLinkCelebratePage() {
             </button>
 
             <span className="mt-4 font-mono text-[10px] text-zinc-500 uppercase tracking-widest font-semibold">
-              &gt;&gt; AUDIO SYSTEM READY // TURN ON SOUND
+              &gt;&gt; AUDIO SYSTEM READY · TURN ON SOUND
             </span>
           </div>
 

@@ -21,7 +21,7 @@ export const PolaroidReel: React.FC<PolaroidReelProps> = ({
     <div className="relative w-full py-6">
       {/* Industrial Structural Line */}
       <div className="relative w-full h-4 flex items-center justify-between px-4 mb-4 border-b-2 border-zinc-800">
-        <span className="font-mono text-[9px] text-zinc-500 uppercase tracking-widest">[ ARCHIVE REEL // 01-0{photos.length} ]</span>
+        <span className="font-mono text-[9px] text-zinc-500 uppercase tracking-widest">[ ARCHIVE REEL · 01-0{photos.length} ]</span>
         <span className="font-mono text-[9px] text-zinc-500 uppercase tracking-widest">[ MEMORY PLATES ]</span>
       </div>
 
@@ -57,7 +57,7 @@ export const PolaroidReel: React.FC<PolaroidReelProps> = ({
               {/* Monospaced Caption */}
               <div className="mt-3 text-left border-t border-black/20 pt-2">
                 <span className="font-mono text-[8px] uppercase tracking-wider text-zinc-500 block">
-                  PLATE // 0{index + 1}
+                  PLATE 0{index + 1}
                 </span>
                 <p className="font-mono text-xs text-black font-semibold tracking-tight uppercase line-clamp-2">
                   {photo.caption || 'ARCHIVE MEMORY'}

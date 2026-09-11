@@ -85,7 +85,7 @@ export const SurpriseGiftBox: React.FC<SurpriseGiftBoxProps> = ({
         <div className="relative max-w-md w-full bg-white border-2 border-[#1c1917] p-6 sm:p-8 shadow-[6px_6px_0px_#1c1917] text-[#1c1917]">
           <div className="flex items-center justify-between border-b-2 border-[#1c1917] pb-3 mb-4">
             <span className="font-mono text-[10px] text-amber-600 font-bold uppercase tracking-widest">
-              [ CLASSIFIED BIRTHDAY PAYLOAD // 01 ]
+              [ CLASSIFIED BIRTHDAY PAYLOAD · 01 ]
             </span>
             <span className="font-mono text-[10px] text-zinc-500 uppercase font-semibold">
               STATUS: UNSEALED

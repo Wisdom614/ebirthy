@@ -95,10 +95,10 @@ export const CelebrationCanvas: React.FC<CelebrationCanvasProps> = ({
         
         {/* Technical Metadata Badge */}
         <div className="inline-flex items-center gap-2 px-3 py-1 bg-white border-2 border-[#1c1917] font-mono text-[10px] uppercase font-bold tracking-widest text-[#1c1917] mb-6 shadow-[2px_2px_0px_#1c1917]">
-          <span>[ EDITION // {scene.age ? `${scene.age}_YEARS` : 'SPECIAL_MILESTONE'} ]</span>
+          <span>[ EDITION · {scene.age ? `${scene.age}_YEARS` : 'SPECIAL_MILESTONE'} ]</span>
           {scene.relationship && (
             <>
-              <span className="text-zinc-400">/</span>
+              <span className="text-zinc-400">·</span>
               <span className="text-amber-700 font-extrabold">{scene.relationship.toUpperCase()}</span>
             </>
           )}
@@ -200,7 +200,7 @@ export const CelebrationCanvas: React.FC<CelebrationCanvasProps> = ({
 
       {/* Footer Branding */}
       <div className="w-full py-6 text-center font-mono text-[10px] uppercase tracking-widest text-[#1c1917] font-bold border-t-2 border-[#1c1917]/20 relative z-20">
-        BIRTHDAY SCENE STUDIO // SWISS EDITORIAL SYSTEM // 2026
+        BIRTHDAY SCENE STUDIO · SWISS EDITORIAL SYSTEM · 2026
       </div>
     </div>
   );

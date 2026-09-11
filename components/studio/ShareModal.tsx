@@ -2,11 +2,11 @@
 
 import React, { useState, useEffect } from 'react';
 import { SceneConfig } from '../../types/scene';
-import { getShareableUrl, compressScene } from '../../utils/sceneEncoder';
+import { generateSceneSlug } from '../../utils/sceneEncoder';
 import { saveSceneToSupabase } from '../../utils/supabase/db';
 import { isSupabaseConfigured } from '../../utils/supabase/client';
 import { audio } from '../../utils/audioManager';
-import { X, Copy, Check, ExternalLink, Send, Link as LinkIcon, Loader2, Sparkles } from 'lucide-react';
+import { X, Copy, Check, ExternalLink, Send, Link as LinkIcon, Sparkles } from 'lucide-react';
 
 interface ShareModalProps {
   scene: SceneConfig;
@@ -17,57 +17,47 @@ interface ShareModalProps {
 
 export const ShareModal: React.FC<ShareModalProps> = ({ scene, isOpen, slug: initialSlug, onClose }) => {
   const [copied, setCopied] = useState(false);
-  const [shortSlug, setShortSlug] = useState<string | undefined>(initialSlug);
-  const [isGeneratingShort, setIsGeneratingShort] = useState(false);
-  const [linkType, setLinkType] = useState<'short' | 'offline'>('short');
+  const [shortSlug, setShortSlug] = useState<string>('');
 
   useEffect(() => {
     if (!isOpen) return;
 
-    if (initialSlug) {
-      setShortSlug(initialSlug);
-      return;
-    }
+    // Use initial slug or generate a clean human-readable slug (e.g. alex24-k9x)
+    const slug = initialSlug || generateSceneSlug(scene.recipientName, scene.age);
+    setShortSlug(slug);
 
-    // Auto-generate short link via Supabase if configured
-    if (isSupabaseConfigured && !shortSlug) {
-      setIsGeneratingShort(true);
-      saveSceneToSupabase(scene)
-        .then((record) => {
-          if (record && (record.slug || record.id)) {
-            setShortSlug(record.slug || record.id);
-          }
-        })
-        .catch((err) => {
-          console.warn('Could not auto-generate short link in Supabase, using compressed fallback:', err);
-        })
-        .finally(() => {
-          setIsGeneratingShort(false);
-        });
+    // Save to local cache so link opens instantly anywhere locally
+    try {
+      localStorage.setItem(`ebirthy_scene_${slug}`, JSON.stringify(scene));
+    } catch {}
+
+    // Also persist to Supabase in the background if configured
+    if (isSupabaseConfigured) {
+      saveSceneToSupabase(scene, undefined, undefined, slug).catch((err) => {
+        console.warn('Background Supabase short-link sync notice:', err);
+      });
     }
   }, [isOpen, initialSlug, scene]);
 
   if (!isOpen) return null;
 
   const origin = typeof window !== 'undefined' ? window.location.origin : '';
-  const shortUrl = shortSlug ? `${origin}/c/${shortSlug}` : `${origin}/celebrate?c=${compressScene(scene)}`;
-  const offlineUrl = `${origin}/celebrate?c=${compressScene(scene)}`;
-  const activeUrl = linkType === 'short' ? shortUrl : offlineUrl;
+  const shareUrl = `${origin}/c/${shortSlug || 'celebration'}`;
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(activeUrl);
+    navigator.clipboard.writeText(shareUrl);
     setCopied(true);
     audio.playSFX('sparkle');
     setTimeout(() => setCopied(false), 2500);
   };
 
   const handleWhatsAppShare = () => {
-    const text = `[ CELEBRATION DISPATCH ] Hey ${scene.recipientName}! I created an interactive birthday celebration experience for you: ${activeUrl}`;
+    const text = `[ CELEBRATION DISPATCH ] Hey ${scene.recipientName}! I created an interactive birthday celebration experience for you: ${shareUrl}`;
     window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
   };
 
   const handleOpenLive = () => {
-    window.open(activeUrl, '_blank');
+    window.open(shareUrl, '_blank');
   };
 
   return (
@@ -82,7 +72,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({ scene, isOpen, slug: ini
         <div className="flex items-center justify-between border-b-2 border-[#1c1917] pb-3 mb-6">
           <span className="font-mono text-xs font-bold uppercase tracking-widest text-amber-600 flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5" />
-            [ SHARE DISPATCH // SHORT LINK ]
+            [ SHORT CELEBRATION LINK ]
           </span>
           <button
             onClick={onClose}
@@ -93,60 +83,26 @@ export const ShareModal: React.FC<ShareModalProps> = ({ scene, isOpen, slug: ini
         </div>
 
         <h3 className="text-xl sm:text-2xl font-bold uppercase tracking-tight text-[#1c1917]">
-          SHARE CELEBRATION WITH {scene.recipientName}
+          SHARE DISPATCH FOR {scene.recipientName}
         </h3>
         <p className="font-mono text-xs text-zinc-600 mt-1 font-medium">
-          Send this concise link to let them experience the interactive birthday scene.
+          Send this clean short link to let them launch the interactive birthday scene.
         </p>
 
-        {/* Link Format Switcher */}
-        <div className="mt-4 flex items-center gap-2 bg-[#f7f4ed] p-1 border-2 border-[#1c1917]">
-          <button
-            type="button"
-            onClick={() => setLinkType('short')}
-            className={`flex-1 py-1.5 font-mono text-[11px] font-bold uppercase transition-colors cursor-pointer border ${
-              linkType === 'short'
-                ? 'bg-amber-400 text-[#1c1917] border-[#1c1917] shadow-[1px_1px_0px_#1c1917]'
-                : 'text-zinc-600 border-transparent hover:text-black'
-            }`}
-          >
-            [ SHORT LINK // CLEAN ]
-          </button>
-          <button
-            type="button"
-            onClick={() => setLinkType('offline')}
-            className={`flex-1 py-1.5 font-mono text-[11px] font-bold uppercase transition-colors cursor-pointer border ${
-              linkType === 'offline'
-                ? 'bg-amber-400 text-[#1c1917] border-[#1c1917] shadow-[1px_1px_0px_#1c1917]'
-                : 'text-zinc-600 border-transparent hover:text-black'
-            }`}
-          >
-            [ COMPRESSED OFFLINE ]
-          </button>
-        </div>
-
-        {/* Share URL Box */}
-        <div className="mt-4 p-2.5 bg-[#f7f4ed] border-2 border-[#1c1917] flex items-center justify-between gap-2 shadow-[3px_3px_0px_#1c1917]">
+        {/* Short URL Box */}
+        <div className="mt-5 p-2.5 bg-[#f7f4ed] border-2 border-[#1c1917] flex items-center justify-between gap-2 shadow-[3px_3px_0px_#1c1917]">
           <div className="flex items-center gap-2 overflow-hidden flex-1 pl-1">
             <LinkIcon className="w-4 h-4 text-amber-600 flex-shrink-0" />
-            {isGeneratingShort ? (
-              <div className="flex items-center gap-2 text-xs font-mono text-zinc-500">
-                <Loader2 className="w-3.5 h-3.5 animate-spin text-amber-600" />
-                <span>GENERATING SHORT SLUG...</span>
-              </div>
-            ) : (
-              <input
-                type="text"
-                readOnly
-                value={activeUrl}
-                className="w-full bg-transparent text-xs text-[#1c1917] font-mono focus:outline-none select-all overflow-hidden text-ellipsis font-bold"
-              />
-            )}
+            <input
+              type="text"
+              readOnly
+              value={shareUrl}
+              className="w-full bg-transparent text-xs sm:text-sm text-[#1c1917] font-mono focus:outline-none select-all overflow-hidden text-ellipsis font-extrabold"
+            />
           </div>
           <button
             onClick={handleCopy}
-            disabled={isGeneratingShort}
-            className="px-4 py-2 bg-amber-400 hover:bg-amber-300 text-[#1c1917] font-mono font-bold text-xs uppercase border-2 border-[#1c1917] shadow-[2px_2px_0px_#1c1917] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none flex items-center gap-1.5 flex-shrink-0 cursor-pointer disabled:opacity-50"
+            className="px-4 py-2 bg-amber-400 hover:bg-amber-300 text-[#1c1917] font-mono font-bold text-xs uppercase border-2 border-[#1c1917] shadow-[2px_2px_0px_#1c1917] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none flex items-center gap-1.5 flex-shrink-0 cursor-pointer"
           >
             {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
             <span>{copied ? 'COPIED' : 'COPY'}</span>
@@ -174,9 +130,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({ scene, isOpen, slug: ini
 
         <div className="mt-6 pt-3 border-t-2 border-[#1c1917]/20 text-center">
           <span className="font-mono text-[9px] text-zinc-500 uppercase tracking-widest font-semibold">
-            {linkType === 'short'
-              ? 'CLEAN UNIQUE SLUG // PERSISTENT SUPABASE RECORD'
-              : 'COMPACT LZW COMPRESSED // ZERO SERVER DEPENDENCY'}
+            FORMAT: [NAME][DATE] · INSTANT LIVE PLAYBACK
           </span>
         </div>
       </div>

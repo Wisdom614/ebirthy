@@ -26,7 +26,8 @@ import {
   Loader2,
   LogIn,
   LogOut,
-  ArrowLeft
+  ArrowLeft,
+  MoreHorizontal
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -38,6 +39,7 @@ function StudioContent() {
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [previewDevice, setPreviewDevice] = useState<'desktop' | 'mobile'>('desktop');
   const [showMobilePreview, setShowMobilePreview] = useState(false);
 
@@ -135,32 +137,32 @@ function StudioContent() {
   return (
     <div className="min-h-screen bg-[#f7f4ed] text-[#1c1917] flex flex-col font-sans">
       {/* Swiss Architectural Top Navbar */}
-      <header className="h-16 border-b-2 border-[#1c1917] bg-white px-4 sm:px-6 flex items-center justify-between sticky top-0 z-40 gap-3">
+      <header className="h-16 border-b-2 border-[#1c1917] bg-white px-3 sm:px-6 flex items-center justify-between sticky top-0 z-40 gap-2">
         {/* Left: Brand / Title */}
-        <div className="flex items-center gap-3 flex-shrink-0">
+        <div className="flex items-center gap-2 sm:gap-3 flex-shrink min-w-0">
           <Link
             href="/"
-            className="p-2 bg-[#f7f4ed] hover:bg-[#eeeae0] border-2 border-[#1c1917] text-[#1c1917] transition-colors shadow-[2px_2px_0px_#1c1917] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none"
+            className="p-2 bg-[#f7f4ed] hover:bg-[#eeeae0] border-2 border-[#1c1917] text-[#1c1917] transition-colors shadow-[2px_2px_0px_#1c1917] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none flex-shrink-0"
             title="Back to Home"
           >
             <ArrowLeft className="w-4 h-4" />
           </Link>
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 bg-amber-400 border-2 border-[#1c1917] text-[#1c1917] font-mono font-extrabold text-xs flex items-center justify-center shadow-[2px_2px_0px_#1c1917]">
+          <div className="flex items-center gap-2 min-w-0">
+            <div className="w-7 h-7 bg-amber-400 border-2 border-[#1c1917] text-[#1c1917] font-mono font-extrabold text-xs hidden xs:flex items-center justify-center shadow-[2px_2px_0px_#1c1917] flex-shrink-0">
               01
             </div>
-            <div>
-              <h1 className="font-mono font-extrabold text-xs sm:text-sm uppercase tracking-tight text-[#1c1917]">
-                BIRTHDAY STUDIO
+            <div className="min-w-0">
+              <h1 className="font-mono font-extrabold text-xs sm:text-sm uppercase tracking-tight text-[#1c1917] truncate">
+                <span className="hidden sm:inline">BIRTHDAY </span>STUDIO
               </h1>
-              <span className="font-mono text-[9px] text-amber-700 block uppercase font-bold tracking-wider">
+              <span className="font-mono text-[9px] text-amber-700 block uppercase font-bold tracking-wider truncate">
                 VIP: {scene.recipientName}
               </span>
             </div>
           </div>
         </div>
 
-        {/* Center: Presets Quick Bar (Hidden on smaller screens) */}
+        {/* Center: Presets Quick Bar (Hidden on medium/small screens) */}
         <div className="hidden 2xl:flex items-center gap-1.5 px-3 py-1 bg-[#f7f4ed] border-2 border-[#1c1917]">
           <span className="font-mono text-[10px] text-stone-600 uppercase font-extrabold">PRESETS:</span>
           {Object.entries(PRESET_TEMPLATES).map(([key, preset]) => (
@@ -174,8 +176,8 @@ function StudioContent() {
           ))}
         </div>
 
-        {/* Right: Cloud, Auth & Action Controls */}
-        <div className="flex items-center gap-2 flex-shrink-0">
+        {/* Right Desktop Controls (md:flex) */}
+        <div className="hidden md:flex items-center gap-2 flex-shrink-0">
           {/* Cloud Save Button */}
           <button
             onClick={handleSaveToCloud}
@@ -194,7 +196,7 @@ function StudioContent() {
             ) : (
               <Cloud className="w-3.5 h-3.5 text-amber-600" />
             )}
-            <span className="hidden sm:inline">{savedSuccess ? 'SAVED' : 'SAVE CLOUD'}</span>
+            <span>{savedSuccess ? 'SAVED' : 'SAVE CLOUD'}</span>
           </button>
 
           {/* My Scenes Drawer Button */}
@@ -210,7 +212,7 @@ function StudioContent() {
           {user ? (
             <button
               onClick={handleSignOut}
-              className="p-2 bg-white hover:bg-rose-100 border-2 border-[#1c1917] text-zinc-700 hover:text-rose-700 transition-colors cursor-pointer hidden sm:block shadow-[2px_2px_0px_#1c1917]"
+              className="p-2 bg-white hover:bg-rose-100 border-2 border-[#1c1917] text-zinc-700 hover:text-rose-700 transition-colors cursor-pointer shadow-[2px_2px_0px_#1c1917]"
               title={`Signed in as ${user.email} (Click to Sign Out)`}
             >
               <LogOut className="w-4 h-4" />
@@ -218,21 +220,12 @@ function StudioContent() {
           ) : (
             <button
               onClick={() => setIsAuthModalOpen(true)}
-              className="px-2.5 py-1.5 bg-white hover:bg-[#eeeae0] border-2 border-[#1c1917] font-mono text-xs uppercase text-[#1c1917] font-bold transition-colors cursor-pointer hidden sm:flex items-center gap-1 shadow-[2px_2px_0px_#1c1917]"
+              className="px-2.5 py-1.5 bg-white hover:bg-[#eeeae0] border-2 border-[#1c1917] font-mono text-xs uppercase text-[#1c1917] font-bold transition-colors cursor-pointer flex items-center gap-1 shadow-[2px_2px_0px_#1c1917]"
             >
               <LogIn className="w-3.5 h-3.5 text-amber-600" />
               <span>SIGN IN</span>
             </button>
           )}
-
-          {/* Mobile Preview Toggle */}
-          <button
-            onClick={() => setShowMobilePreview(!showMobilePreview)}
-            className="md:hidden px-2.5 py-1.5 bg-white border-2 border-[#1c1917] font-mono text-xs uppercase text-[#1c1917] font-bold flex items-center gap-1 shadow-[2px_2px_0px_#1c1917]"
-          >
-            <Eye className="w-3.5 h-3.5" />
-            <span>{showMobilePreview ? 'EDIT' : 'PREVIEW'}</span>
-          </button>
 
           {/* Share Modal Trigger */}
           <button
@@ -246,11 +239,94 @@ function StudioContent() {
           {/* Full View Live Link */}
           <button
             onClick={handleLaunchLive}
-            className="hidden sm:flex px-3.5 py-1.5 bg-white hover:bg-[#eeeae0] text-[#1c1917] border-2 border-[#1c1917] font-mono font-bold text-xs uppercase shadow-[3px_3px_0px_#1c1917] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none items-center gap-1.5 transition-all cursor-pointer"
+            className="px-3.5 py-1.5 bg-white hover:bg-[#eeeae0] text-[#1c1917] border-2 border-[#1c1917] font-mono font-bold text-xs uppercase shadow-[3px_3px_0px_#1c1917] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none items-center gap-1.5 transition-all cursor-pointer flex"
           >
             <Play className="w-3.5 h-3.5 text-amber-600" />
             <span>[ FULL VIEW ]</span>
           </button>
+        </div>
+
+        {/* Right Mobile Compact Controls (< md) */}
+        <div className="flex md:hidden items-center gap-1.5 flex-shrink-0 relative">
+          {/* Mobile Preview Toggle */}
+          <button
+            onClick={() => setShowMobilePreview(!showMobilePreview)}
+            className="px-2 py-1.5 bg-white border-2 border-[#1c1917] font-mono text-[11px] uppercase text-[#1c1917] font-bold flex items-center gap-1 shadow-[2px_2px_0px_#1c1917]"
+          >
+            <Eye className="w-3.5 h-3.5" />
+            <span>{showMobilePreview ? 'EDIT' : 'PREVIEW'}</span>
+          </button>
+
+          {/* Mobile Share Button (Always Visible) */}
+          <button
+            onClick={() => setIsShareModalOpen(true)}
+            className="px-2.5 py-1.5 bg-amber-400 hover:bg-amber-300 text-[#1c1917] border-2 border-[#1c1917] font-mono font-bold text-[11px] uppercase shadow-[2px_2px_0px_#1c1917] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none flex items-center gap-1 cursor-pointer"
+          >
+            <Share2 className="w-3.5 h-3.5" />
+            <span>SHARE</span>
+          </button>
+
+          {/* More Actions Menu Button */}
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="p-1.5 bg-white border-2 border-[#1c1917] text-[#1c1917] shadow-[2px_2px_0px_#1c1917] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none cursor-pointer"
+            title="More Options"
+          >
+            <MoreHorizontal className="w-4 h-4" />
+          </button>
+
+          {/* Mobile Dropdown Popover */}
+          {isMobileMenuOpen && (
+            <div
+              className="absolute right-0 top-12 w-48 bg-white border-2 border-[#1c1917] shadow-[4px_4px_0px_#1c1917] p-2 flex flex-col gap-1.5 z-50 animate-in fade-in zoom-in-95 duration-100"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              <button
+                onClick={handleSaveToCloud}
+                disabled={isSaving}
+                className="w-full px-2.5 py-2 text-left font-mono text-xs font-bold uppercase hover:bg-[#eeeae0] flex items-center gap-2 text-[#1c1917]"
+              >
+                <Cloud className="w-3.5 h-3.5 text-amber-600" />
+                <span>SAVE TO CLOUD</span>
+              </button>
+
+              <button
+                onClick={() => setIsDrawerOpen(true)}
+                className="w-full px-2.5 py-2 text-left font-mono text-xs font-bold uppercase hover:bg-[#eeeae0] flex items-center gap-2 text-[#1c1917]"
+              >
+                <FolderHeart className="w-3.5 h-3.5 text-amber-600" />
+                <span>MY SAVED SCENES</span>
+              </button>
+
+              <button
+                onClick={handleLaunchLive}
+                className="w-full px-2.5 py-2 text-left font-mono text-xs font-bold uppercase hover:bg-[#eeeae0] flex items-center gap-2 text-[#1c1917]"
+              >
+                <Play className="w-3.5 h-3.5 text-amber-600" />
+                <span>LAUNCH FULL VIEW</span>
+              </button>
+
+              <div className="border-t border-[#1c1917]/20 my-0.5" />
+
+              {user ? (
+                <button
+                  onClick={handleSignOut}
+                  className="w-full px-2.5 py-2 text-left font-mono text-xs font-bold uppercase text-rose-700 hover:bg-rose-50 flex items-center gap-2"
+                >
+                  <LogOut className="w-3.5 h-3.5" />
+                  <span>SIGN OUT</span>
+                </button>
+              ) : (
+                <button
+                  onClick={() => setIsAuthModalOpen(true)}
+                  className="w-full px-2.5 py-2 text-left font-mono text-xs font-bold uppercase text-amber-700 hover:bg-amber-50 flex items-center gap-2"
+                >
+                  <LogIn className="w-3.5 h-3.5" />
+                  <span>SIGN IN / REGISTER</span>
+                </button>
+              )}
+            </div>
+          )}
         </div>
       </header>
 
@@ -266,10 +342,10 @@ function StudioContent() {
           {/* Navigation Sub-Tabs */}
           <div className="p-2 border-b-2 border-[#1c1917] flex items-center gap-1.5 overflow-x-auto bg-[#eeeae0] sticky top-0 z-20">
             {[
-              { id: 'details', label: '[ 01 // DETAILS ]' },
-              { id: 'theme', label: '[ 02 // PALETTE ]' },
-              { id: 'effects', label: '[ 03 // PHYSICS ]' },
-              { id: 'gallery', label: '[ 04 // MEDIA ]' }
+              { id: 'details', label: '01 · DETAILS' },
+              { id: 'theme', label: '02 · PALETTE' },
+              { id: 'effects', label: '03 · PHYSICS' },
+              { id: 'gallery', label: '04 · MEDIA' }
             ].map((tab) => {
               const isActive = activeTab === tab.id;
               return (
@@ -307,7 +383,7 @@ function StudioContent() {
           <div className="h-12 border-b-2 border-[#1c1917] bg-white px-4 flex items-center justify-between z-20">
             <div className="flex items-center gap-2">
               <span className="w-2.5 h-2.5 bg-amber-400 border border-[#1c1917]" />
-              <span className="font-mono text-xs font-bold uppercase text-[#1c1917]">[ SIMULATOR // LIVE VIEW ]</span>
+              <span className="font-mono text-xs font-bold uppercase text-[#1c1917]">[ SIMULATOR · LIVE VIEW ]</span>
             </div>
 
             {/* Device Switcher */}

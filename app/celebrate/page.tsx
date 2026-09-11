@@ -105,7 +105,7 @@ function CelebrateContent() {
             </button>
 
             <span className="mt-4 font-mono text-[10px] text-zinc-500 uppercase tracking-widest font-semibold">
-              &gt;&gt; AUDIO SYSTEM READY // TURN ON SOUND
+              &gt;&gt; AUDIO SYSTEM READY · TURN ON SOUND
             </span>
           </div>
 

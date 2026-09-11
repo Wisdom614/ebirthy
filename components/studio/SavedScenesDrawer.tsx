@@ -157,7 +157,7 @@ export const SavedScenesDrawer: React.FC<SavedScenesDrawerProps> = ({
         </div>
 
         <div className="pt-4 border-t-2 border-[#1c1917] text-center font-mono text-[9px] uppercase tracking-widest text-zinc-500 font-bold">
-          SUPABASE PERSISTENCE ENGINE // VER_2.4
+          SUPABASE PERSISTENCE ENGINE · VER_2.4
         </div>
       </div>
     </div>

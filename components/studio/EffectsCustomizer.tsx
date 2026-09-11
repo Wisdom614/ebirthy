@@ -13,7 +13,7 @@ export const EffectsCustomizer: React.FC<EffectsCustomizerProps> = ({ scene, onC
     <div className="space-y-6">
       <div className="border-b-2 border-[#1c1917] pb-3">
         <span className="font-mono text-[10px] uppercase font-bold tracking-widest text-amber-600 block mb-1">
-          [ 03 // MECHANICAL CONTROLS & PHYSICS ]
+          [ 03 · PARTY CONTROLS & PHYSICS ]
         </span>
         <h3 className="text-sm font-bold uppercase tracking-tight text-[#1c1917]">
           Interactive Party Features
@@ -148,7 +148,7 @@ export const EffectsCustomizer: React.FC<EffectsCustomizerProps> = ({ scene, onC
                     giftContent: { ...scene.giftContent, title: e.target.value }
                   })
                 }
-                placeholder="e.g. SPECIAL BIRTHDAY REVEAL // PRIZE 01"
+                placeholder="e.g. SPECIAL BIRTHDAY REVEAL · PRIZE 01"
                 className="w-full px-3.5 py-2 bg-[#f7f4ed] border-2 border-[#1c1917] text-[#1c1917] font-mono text-xs focus:outline-none focus:border-amber-500 shadow-[2px_2px_0px_#1c1917]"
               />
             </div>

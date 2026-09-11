@@ -4,15 +4,20 @@ import { SceneConfig } from '../types/scene';
 import { DEFAULT_SCENE } from './presets';
 
 /**
- * Generates a clean human-readable and unique slug (e.g., 'alex-24-a7x9' or 'alex-k8m2')
+ * Generates a clean, short human-readable slug (e.g. 'alex24-k9x' or 'alex2026')
  */
 export function generateSceneSlug(recipientName: string, age?: number): string {
   const cleanName = (recipientName || 'friend')
     .toLowerCase()
     .replace(/[^a-z0-9]/g, '')
-    .slice(0, 12);
-  const randomSuffix = nanoid(5).toLowerCase().replace(/[^a-z0-9]/g, 'x');
-  return age ? `${cleanName}-${age}-${randomSuffix}` : `${cleanName}-${randomSuffix}`;
+    .slice(0, 10);
+  
+  const currentYear = new Date().getFullYear();
+  const randomSuffix = nanoid(4).toLowerCase().replace(/[^a-z0-9]/g, '');
+  
+  // Format: [name][age or year]-[shortSuffix]
+  const tag = age ? `${age}` : `${currentYear}`;
+  return `${cleanName}${tag}-${randomSuffix}`;
 }
 
 /**
@@ -98,13 +103,10 @@ function mergeWithDefaultScene(parsed: any): SceneConfig {
 }
 
 /**
- * Generates the shareable URL (prefers short slug / ID, falls back to compressed query)
+ * Generates the clean short shareable URL
  */
 export function getShareableUrl(scene: SceneConfig, slugOrId?: string, origin?: string): string {
   const base = origin || (typeof window !== 'undefined' ? window.location.origin : '');
-  if (slugOrId) {
-    return `${base}/c/${slugOrId}`;
-  }
-  const compressed = compressScene(scene);
-  return `${base}/celebrate?c=${compressed}`;
+  const slug = slugOrId || generateSceneSlug(scene.recipientName, scene.age);
+  return `${base}/c/${slug}`;
 }

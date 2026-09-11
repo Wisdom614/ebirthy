@@ -87,8 +87,8 @@ export default function HomePage() {
         
         {/* Header Metadata Pill */}
         <div className="inline-flex items-center gap-2 px-3 py-1 bg-white border-2 border-[#1c1917] font-mono text-[10px] font-bold uppercase tracking-widest text-[#1c1917] mb-8 shadow-[2px_2px_0px_#1c1917]">
-          <span>[ RELEASE // EDITION 2026 ]</span>
-          <span className="text-zinc-400">/</span>
+          <span>[ RELEASE · EDITION 2026 ]</span>
+          <span className="text-zinc-400">·</span>
           <span>[ WARM LINEN & CHARCOAL INK ]</span>
         </div>
 
@@ -141,7 +141,7 @@ export default function HomePage() {
           <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between border-b-2 border-[#1c1917] pb-4 mb-10 gap-4">
             <div>
               <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-amber-700 block mb-1">
-                [ CATALOG ARCHIVE // CURATED PRESETS ]
+                [ CATALOG ARCHIVE · CURATED PRESETS ]
               </span>
               <h2 className="text-2xl sm:text-3xl font-black uppercase text-[#1c1917] tracking-tight">
                 CELEBRATION SCENE TEMPLATES
@@ -173,7 +173,7 @@ export default function HomePage() {
                       </span>
                     </div>
 
-                    <span className="font-mono text-[9px] text-zinc-500 uppercase font-bold">PRESET // 0{idx + 1}</span>
+                    <span className="font-mono text-[9px] text-zinc-500 uppercase font-bold">PRESET 0{idx + 1}</span>
                     <h3 className="font-mono font-bold text-sm uppercase text-[#1c1917] mt-1 group-hover:text-amber-600 transition-colors">
                       {template.name}
                     </h3>
@@ -218,7 +218,7 @@ export default function HomePage() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="p-6 bg-white border-2 border-[#1c1917] shadow-[4px_4px_0px_#1c1917]">
-            <span className="font-mono text-[10px] text-amber-700 font-bold uppercase block mb-2">[ 01 // AUDIO & SENSORS ]</span>
+            <span className="font-mono text-[10px] text-amber-700 font-bold uppercase block mb-2">[ 01 · AUDIO & SENSORS ]</span>
             <h3 className="font-mono font-bold text-base uppercase text-[#1c1917] mb-2">MIC BLOWING & CAKE</h3>
             <p className="font-mono text-xs text-zinc-600 leading-relaxed font-medium">
               Extinguish candles with real microphone breath detection or precision click triggers with simulated smoke physics and fanfare.
@@ -226,7 +226,7 @@ export default function HomePage() {
           </div>
 
           <div className="p-6 bg-white border-2 border-[#1c1917] shadow-[4px_4px_0px_#1c1917]">
-            <span className="font-mono text-[10px] text-amber-700 font-bold uppercase block mb-2">[ 02 // REVEAL PAYLOAD ]</span>
+            <span className="font-mono text-[10px] text-amber-700 font-bold uppercase block mb-2">[ 02 · REVEAL PAYLOAD ]</span>
             <h3 className="font-mono font-bold text-base uppercase text-[#1c1917] mb-2">CLASSIFIED PARCEL</h3>
             <p className="font-mono text-xs text-zinc-600 leading-relaxed font-medium">
               3D interactive parcel with mechanical unboxing unsealing custom secret messages, promises, and VIP birthday voucher codes.
@@ -234,7 +234,7 @@ export default function HomePage() {
           </div>
 
           <div className="p-6 bg-white border-2 border-[#1c1917] shadow-[4px_4px_0px_#1c1917]">
-            <span className="font-mono text-[10px] text-amber-700 font-bold uppercase block mb-2">[ 03 // PERSISTENCE ]</span>
+            <span className="font-mono text-[10px] text-amber-700 font-bold uppercase block mb-2">[ 03 · PERSISTENCE ]</span>
             <h3 className="font-mono font-bold text-base uppercase text-[#1c1917] mb-2">SUPABASE & CLOUDINARY</h3>
             <p className="font-mono text-xs text-zinc-600 leading-relaxed font-medium">
               Full cloud database persistence with real-time view counters, authentication, and direct Cloudinary image uploads.
@@ -260,7 +260,7 @@ export default function HomePage() {
         </Link>
 
         <span className="mt-8 font-mono text-[9px] uppercase tracking-widest text-zinc-500 font-bold">
-          BIRTHDAY SCENE STUDIO // INTERNATIONAL TYPOGRAPHIC SYSTEM // 2026
+          BIRTHDAY SCENE STUDIO · INTERNATIONAL TYPOGRAPHIC SYSTEM · 2026
         </span>
       </footer>
     </div>
