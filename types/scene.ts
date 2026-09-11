@@ -22,6 +22,7 @@ export interface SceneConfig {
   senderName: string;
   relationship: string;
   age?: number;
+  birthDate?: string;
   headline: string;
   wishes: string;
   letterText: string;

@@ -50,6 +50,30 @@ export const DetailsForm: React.FC<DetailsFormProps> = ({ scene, onChange }) => 
           />
         </div>
 
+        {/* Birth Date */}
+        <div>
+          <label className="block font-mono text-[11px] uppercase font-bold tracking-wider text-[#1c1917] mb-1.5">
+            BIRTH DATE (OPTIONAL)
+          </label>
+          <input
+            type="date"
+            value={scene.birthDate || ''}
+            onChange={(e) => {
+              const val = e.target.value;
+              const updates: Partial<SceneConfig> = { birthDate: val };
+              if (val && !scene.age) {
+                const birthYear = new Date(val).getFullYear();
+                const currentYear = new Date().getFullYear();
+                if (birthYear && currentYear > birthYear) {
+                  updates.age = currentYear - birthYear;
+                }
+              }
+              onChange(updates);
+            }}
+            className="w-full px-3.5 py-2.5 bg-white border-2 border-[#1c1917] text-[#1c1917] font-mono text-sm focus:outline-none focus:border-amber-500 shadow-[2px_2px_0px_#1c1917]"
+          />
+        </div>
+
         {/* Age Turning */}
         <div>
           <label className="block font-mono text-[11px] uppercase font-bold tracking-wider text-[#1c1917] mb-1.5">

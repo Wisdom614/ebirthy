@@ -102,11 +102,18 @@ export const KeepsakePosterModal: React.FC<KeepsakePosterModalProps> = ({
             className="w-full max-w-[480px] bg-[#f7f4ed] border-4 border-[#1c1917] p-6 sm:p-8 flex flex-col justify-between shadow-[8px_8px_0px_#1c1917] relative text-[#1c1917] aspect-[3/4.2]"
           >
             {/* Top Structural Header */}
-            <div className="border-b-2 border-[#1c1917] pb-3 flex items-center justify-between">
+            <div className="border-b-2 border-[#1c1917] pb-3 flex items-center justify-between gap-2 flex-wrap">
               <BrandLogo size="sm" showSubtitle={true} href="" />
-              <span className="font-mono text-[9px] font-bold px-2 py-0.5 bg-white border border-[#1c1917] uppercase shadow-sm">
-                EDITION · {scene.age ? `${scene.age} YEARS` : 'MILESTONE'}
-              </span>
+              <div className="flex items-center gap-1.5">
+                {scene.birthDate && (
+                  <span className="font-mono text-[9px] font-bold px-2 py-0.5 bg-amber-100 text-amber-900 border border-[#1c1917] uppercase shadow-sm">
+                    BORN {new Date(scene.birthDate + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase()}
+                  </span>
+                )}
+                <span className="font-mono text-[9px] font-bold px-2 py-0.5 bg-white border border-[#1c1917] uppercase shadow-sm">
+                  EDITION · {scene.age ? `${scene.age} YEARS` : 'MILESTONE'}
+                </span>
+              </div>
             </div>
 
             {/* Poster Main Body */}
@@ -149,11 +156,20 @@ export const KeepsakePosterModal: React.FC<KeepsakePosterModalProps> = ({
             </div>
 
             {/* Bottom Signature & Verification Seal */}
-            <div className="pt-3 border-t-2 border-[#1c1917] flex items-end justify-between font-mono text-[9px]">
+            <div className="pt-3 border-t-2 border-[#1c1917] flex items-end justify-between font-mono text-[9px] gap-2">
               <div className="text-left">
                 <span className="text-zinc-500 uppercase block font-semibold">HONORED SENDER</span>
                 <span className="font-bold text-xs uppercase text-[#1c1917]">~ {scene.senderName || 'A Close Friend'}</span>
               </div>
+
+              {scene.birthDate && (
+                <div className="text-center">
+                  <span className="text-zinc-500 uppercase block font-semibold">BORN DATE</span>
+                  <span className="font-bold text-[11px] uppercase text-[#1c1917]">
+                    {new Date(scene.birthDate + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase()}
+                  </span>
+                </div>
+              )}
 
               <div className="text-right">
                 <span className="text-zinc-500 uppercase block font-semibold">VERIFIED DATE</span>

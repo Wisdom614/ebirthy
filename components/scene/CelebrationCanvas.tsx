@@ -189,8 +189,16 @@ export const CelebrationCanvas: React.FC<CelebrationCanvasProps> = ({
       {/* Swiss Hero Celebration Spotlight */}
       <section className="relative z-20 w-full max-w-4xl px-4 pt-8 pb-4 text-center flex flex-col items-center">
         {/* Technical Dispatch Metadata */}
-        <div className="inline-flex items-center gap-2 px-3 py-1 bg-white border-2 border-[#1c1917] font-mono text-[10px] uppercase font-bold tracking-widest text-[#1c1917] mb-5 shadow-[2px_2px_0px_#1c1917]">
+        <div className="inline-flex items-center gap-2 px-3 py-1 bg-white border-2 border-[#1c1917] font-mono text-[10px] uppercase font-bold tracking-widest text-[#1c1917] mb-5 shadow-[2px_2px_0px_#1c1917] flex-wrap justify-center">
           <span>[ EDITION · {scene.age ? `${scene.age}_YEARS` : 'SPECIAL_MILESTONE'} ]</span>
+          {scene.birthDate && (
+            <>
+              <span className="text-zinc-400">·</span>
+              <span className="text-amber-700 font-extrabold">
+                BORN {new Date(scene.birthDate + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase()}
+              </span>
+            </>
+          )}
           {scene.relationship && (
             <>
               <span className="text-zinc-400">·</span>

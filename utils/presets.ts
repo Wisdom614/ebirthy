@@ -73,6 +73,7 @@ export const DEFAULT_SCENE: SceneConfig = {
   senderName: 'Your Best Friend',
   relationship: 'Best Friend',
   age: 24,
+  birthDate: '2002-09-11',
   headline: 'ANOTHER YEAR OF BEING ABSOLUTELY LEGENDARY',
   wishes: 'May your year ahead be packed with bold moves, unstoppable laughter, huge milestones, and pure excellence.',
   letterText: "Happy Birthday! ✦\n\nI wanted to take a moment to celebrate the incredible human being you are. Thank you for always bringing so much energy, focus, and genuine kindness everywhere you go.\n\nMake a big wish today—this year is going to be your greatest chapter yet.",

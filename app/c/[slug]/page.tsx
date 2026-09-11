@@ -138,9 +138,16 @@ export default function ShortLinkCelebratePage() {
               <BrandLogo size="lg" showSubtitle={true} href="" />
             </div>
 
-            <span className="font-mono text-[10px] uppercase tracking-widest text-amber-700 font-bold mb-2">
-              [ SPECIAL BIRTHDAY DISPATCH ]
-            </span>
+            <div className="flex items-center gap-1.5 mb-2 flex-wrap justify-center">
+              <span className="font-mono text-[10px] uppercase tracking-widest text-amber-700 font-bold">
+                [ SPECIAL BIRTHDAY DISPATCH ]
+              </span>
+              {scene.birthDate && (
+                <span className="font-mono text-[9px] uppercase px-1.5 py-0.5 bg-amber-100 text-amber-900 border border-amber-300 font-bold">
+                  BORN {new Date(scene.birthDate + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' }).toUpperCase()}
+                </span>
+              )}
+            </div>
 
             <h1 className="text-3xl sm:text-4xl font-extrabold uppercase tracking-tight text-[#1c1917]">
               FOR {scene.recipientName}
