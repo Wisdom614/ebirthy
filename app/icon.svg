@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- Swiss Architectural Charcoal Shadow -->
+  <rect x="8" y="8" width="48" height="48" fill="#1c1917" />
+  
+  <!-- Main Ochre Paper Plate -->
+  <rect x="4" y="4" width="48" height="48" fill="#f59e0b" stroke="#1c1917" stroke-width="3" />
+  
+  <!-- Architectural Candle Flame / Star Sparkle -->
+  <path d="M28 10 L30 16 L36 18 L30 20 L28 26 L26 20 L20 18 L26 16 Z" fill="#1c1917" />
+  
+  <!-- Lowercase 'e' Modernist Geometry -->
+  <!-- Top bar -->
+  <rect x="18" y="30" width="20" height="4" fill="#1c1917" />
+  <!-- Left curve wall -->
+  <rect x="18" y="30" width="4" height="14" fill="#1c1917" />
+  <!-- Middle cross bar -->
+  <rect x="18" y="36" width="18" height="3" fill="#1c1917" />
+  <!-- Bottom base bar -->
+  <rect x="18" y="41" width="20" height="4" fill="#1c1917" />
+  <!-- Right upper cap -->
+  <rect x="34" y="30" width="4" height="7" fill="#1c1917" />
+
+  <!-- Accent Period Dot -->
+  <rect x="40" y="41" width="4" height="4" fill="#1c1917" />
+</svg>

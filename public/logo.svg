@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 50" width="240" height="50">
+  <!-- Brand Icon Badge -->
+  <g transform="translate(2, 2)">
+    <!-- Shadow -->
+    <rect x="5" y="5" width="38" height="38" fill="#1c1917" />
+    <!-- Main Box -->
+    <rect x="0" y="0" width="38" height="38" fill="#f59e0b" stroke="#1c1917" stroke-width="2.5" />
+    <!-- Candle Flame / Sparkle -->
+    <path d="M19 6 L21 11 L26 13 L21 15 L19 20 L17 15 L12 13 L17 11 Z" fill="#1c1917" />
+    <!-- 'e' letter geometry -->
+    <rect x="11" y="22" width="14" height="3" fill="#1c1917" />
+    <rect x="11" y="22" width="3" height="11" fill="#1c1917" />
+    <rect x="11" y="26" width="12" height="2.5" fill="#1c1917" />
+    <rect x="11" y="30" width="14" height="3" fill="#1c1917" />
+    <rect x="22" y="22" width="3" height="5" fill="#1c1917" />
+    <rect x="27" y="30" width="3" height="3" fill="#1c1917" />
+  </g>
+
+  <!-- Typography: EBIRTHY -->
+  <text x="56" y="26" font-family="'Geist Mono', monospace, sans-serif" font-weight="900" font-size="20" letter-spacing="-0.04em" fill="#1c1917">EBIRTHY</text>
+  <text x="56" y="39" font-family="'Geist Mono', monospace, sans-serif" font-weight="700" font-size="8" letter-spacing="0.16em" fill="#b45309">SWISS EDITORIAL STUDIO</text>
+</svg>

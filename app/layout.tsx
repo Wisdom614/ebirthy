@@ -13,8 +13,13 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Birthday Scene Studio - Swiss Editorial Celebration Creator",
-  description: "Create, customize, and share personalized architectural birthday celebration scenes with blowable candles, faceted balloons, 3D gifts, and animated audio.",
+  title: "ebirthy - Swiss Editorial Birthday Celebration Studio",
+  description: "Create, customize, and share personalized architectural birthday celebration scenes with interactive candles, memory archives, voice notes, and 300 DPI keepsake posters.",
+  icons: {
+    icon: "/icon.svg",
+    shortcut: "/icon.svg",
+    apple: "/icon.svg"
+  }
 };
 
 export default function RootLayout({

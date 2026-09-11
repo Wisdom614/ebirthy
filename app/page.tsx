@@ -6,6 +6,7 @@ import { PRESET_TEMPLATES, THEME_DEFINITIONS } from '../utils/presets';
 import { encodeScene } from '../utils/sceneEncoder';
 import { audio } from '../utils/audioManager';
 import confetti from 'canvas-confetti';
+import { BrandLogo } from '../components/ui/BrandLogo';
 import {
   Wand2,
   Play,
@@ -48,19 +49,7 @@ export default function HomePage() {
     <div className="min-h-screen bg-[#f7f4ed] text-[#1c1917] flex flex-col font-sans selection:bg-amber-400 selection:text-black">
       {/* Swiss Architectural Top Navigation */}
       <nav className="h-16 border-b-2 border-[#1c1917] bg-white px-6 sm:px-12 flex items-center justify-between sticky top-0 z-50">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-amber-400 border-2 border-[#1c1917] text-[#1c1917] flex items-center justify-center shadow-[2px_2px_0px_#1c1917]">
-            <Sparkles className="w-4 h-4" />
-          </div>
-          <div>
-            <span className="font-mono font-black text-sm tracking-tight uppercase text-[#1c1917] block leading-none">
-              BIRTHDAY STUDIO
-            </span>
-            <span className="font-mono text-[9px] text-amber-700 uppercase tracking-widest block mt-0.5 font-bold">
-              SWISS EDITORIAL SYSTEM
-            </span>
-          </div>
-        </div>
+        <BrandLogo size="md" />
 
         <div className="flex items-center gap-3">
           <button

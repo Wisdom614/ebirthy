@@ -15,6 +15,7 @@ import { MemoryGalleryEditor } from '../../components/studio/MemoryGalleryEditor
 import { ShareModal } from '../../components/studio/ShareModal';
 import { AuthModal } from '../../components/auth/AuthModal';
 import { SavedScenesDrawer } from '../../components/studio/SavedScenesDrawer';
+import { BrandLogo } from '../../components/ui/BrandLogo';
 import { audio } from '../../utils/audioManager';
 import {
   Share2,
@@ -148,15 +149,13 @@ function StudioContent() {
             <ArrowLeft className="w-4 h-4" />
           </Link>
           <div className="flex items-center gap-2 min-w-0">
-            <div className="w-7 h-7 bg-amber-400 border-2 border-[#1c1917] text-[#1c1917] font-mono font-extrabold text-xs hidden xs:flex items-center justify-center shadow-[2px_2px_0px_#1c1917] flex-shrink-0">
-              01
-            </div>
-            <div className="min-w-0">
+            <BrandLogo size="sm" showSubtitle={false} href="" />
+            <div className="min-w-0 border-l-2 border-[#1c1917]/30 pl-2">
               <h1 className="font-mono font-extrabold text-xs sm:text-sm uppercase tracking-tight text-[#1c1917] truncate">
-                <span className="hidden sm:inline">BIRTHDAY </span>STUDIO
+                <span className="hidden sm:inline">STUDIO · </span>VIP
               </h1>
               <span className="font-mono text-[9px] text-amber-700 block uppercase font-bold tracking-wider truncate">
-                VIP: {scene.recipientName}
+                {scene.recipientName}
               </span>
             </div>
           </div>
