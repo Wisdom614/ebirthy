@@ -1,13 +1,13 @@
-# ebirthy 🎂
+# ebirthy
 > **Architectural Swiss Brutalist Interactive Birthday Celebration Studio & Player**
 
 **ebirthy** is a modern Next.js 16 web application that lets users compose, personalize, and share dynamic, interactive birthday celebration experiences. Designed with a high-contrast **Swiss International Typographic / Architectural Light System** (warm linen paper, deep charcoal ink, and strict 0px straight edges).
 
 ---
 
-## ✨ Features
+## [ FEATURES ]
 
-- **🎨 Architectural Studio (`/studio`)**:
+- **[ STUDIO // CREATOR ] (`/studio`)**:
   - Customize recipient identity, VIP title, headline, and personalized wishes.
   - Choose between curated Swiss themes (*Warm Linen & Ochre*, *Bauhaus Vermillion*, *Sandstone & Sage*, *Swiss Cobalt*, *Obsidian Monolith*).
   - Physics toggles for layered cakes, geometric diamond balloons, confetti cannons, and particle fireworks.
@@ -15,25 +15,25 @@
   - Photographic Memory Plates uploaded via Cloudinary.
   - Live desktop and mobile responsive simulator preview.
 
-- **🍰 Interactive 3D Celebration Stage (`/celebrate` & `/c/[slug]`)**:
+- **[ CELEBRATION STAGE ] (`/celebrate` & `/c/[slug]`)**:
   - **Interactive Cake & Candles**: Tap to blow individual candles or use **Microphone Audio Breath Detection** to blow all candles with real sound.
   - **Unboxing Secret Gift Parcel**: Tap-to-unseal surprise reward with VIP voucher code and confetti bursts.
   - **Photo Memory Reel**: Polaroid-style photo plates with pin markers and modal inspection.
   - **Cinematic Sealed Letter**: Break the wax seal to trigger typewriter message reveal.
   - **Procedural Audio Synthesizer**: Web Audio API engine with multi-track melodies (Lo-Fi, Orchestral, Synthwave, Festive) and SFX (pop, blow, horn, chime, sparkle).
 
-- **🔗 Concise Share Links (`/c/[slug]`)**:
+- **[ SHORT SHARE LINKS ] (`/c/[slug]`)**:
   - Auto-generated short human-readable slugs persisted in **Supabase** (e.g. `/c/alex-24-x8k2`).
   - Offline standalone LZ-String compression (`?c=...`) for database-free sharing.
   - 1-click WhatsApp dispatch and clipboard sharing.
 
-- **☁️ Cloud & Persistence**:
+- **[ PERSISTENCE & MEDIA ]**:
   - **Supabase Database & Auth**: Cloud saving, user workspaces, and live view counters.
   - **Cloudinary**: Direct image uploads for memory photo plates.
 
 ---
 
-## 🛠️ Tech Stack
+## [ TECH STACK ]
 
 - **Framework**: [Next.js 16 (App Router)](https://nextjs.org/) + React 19 + TypeScript
 - **Styling**: [Tailwind CSS v4](https://tailwindcss.com/) with strict `0px` border-radius Swiss design system
@@ -45,7 +45,7 @@
 
 ---
 
-## 🚀 Getting Started
+## [ GETTING STARTED ]
 
 ### 1. Clone & Install Dependencies
 ```bash
@@ -84,7 +84,7 @@ Open [http://localhost:3000](http://localhost:3000) to view the application.
 
 ---
 
-## 📁 Project Structure
+## [ REPOSITORY STRUCTURE ]
 
 ```
 ├── app/
@@ -109,5 +109,5 @@ Open [http://localhost:3000](http://localhost:3000) to view the application.
 
 ---
 
-## 📜 License
+## [ LICENSE ]
 MIT License. Built for creating memorable celebrations.

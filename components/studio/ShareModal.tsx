@@ -62,7 +62,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({ scene, isOpen, slug: ini
   };
 
   const handleWhatsAppShare = () => {
-    const text = `🎉 Hey ${scene.recipientName}! I created an interactive birthday celebration experience for you: ${activeUrl}`;
+    const text = `[ CELEBRATION DISPATCH ] Hey ${scene.recipientName}! I created an interactive birthday celebration experience for you: ${activeUrl}`;
     window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
   };
 

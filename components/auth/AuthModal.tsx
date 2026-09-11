@@ -41,7 +41,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
         if (error) throw error;
         setSuccessMsg(
           data.session
-            ? 'Account created successfully! 🎉'
+            ? 'Account created successfully! [ OK ]'
             : 'Account registered. Please check email for verification.'
         );
         audio.playSFX('sparkle');

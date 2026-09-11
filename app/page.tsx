@@ -10,7 +10,12 @@ import {
   Wand2,
   Play,
   PartyPopper,
-  ArrowRight
+  ArrowRight,
+  Scroll,
+  Compass,
+  Leaf,
+  Zap,
+  Sparkles
 } from 'lucide-react';
 
 export default function HomePage() {
@@ -24,13 +29,28 @@ export default function HomePage() {
     });
   };
 
+  const renderPresetIcon = (iconName: string) => {
+    switch (iconName) {
+      case 'scroll':
+        return <Scroll className="w-4 h-4 text-amber-800" />;
+      case 'compass':
+        return <Compass className="w-4 h-4 text-rose-700" />;
+      case 'leaf':
+        return <Leaf className="w-4 h-4 text-emerald-800" />;
+      case 'zap':
+        return <Zap className="w-4 h-4 text-blue-700" />;
+      default:
+        return <Sparkles className="w-4 h-4 text-amber-700" />;
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#f7f4ed] text-[#1c1917] flex flex-col font-sans selection:bg-amber-400 selection:text-black">
       {/* Swiss Architectural Top Navigation */}
       <nav className="h-16 border-b-2 border-[#1c1917] bg-white px-6 sm:px-12 flex items-center justify-between sticky top-0 z-50">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-amber-400 border-2 border-[#1c1917] text-[#1c1917] font-mono font-black text-sm flex items-center justify-center shadow-[2px_2px_0px_#1c1917]">
-            ★
+          <div className="w-8 h-8 bg-amber-400 border-2 border-[#1c1917] text-[#1c1917] flex items-center justify-center shadow-[2px_2px_0px_#1c1917]">
+            <Sparkles className="w-4 h-4" />
           </div>
           <div>
             <span className="font-mono font-black text-sm tracking-tight uppercase text-[#1c1917] block leading-none">
@@ -145,7 +165,9 @@ export default function HomePage() {
                   <div>
                     {/* Header Strip */}
                     <div className={`h-20 -mx-5 -mt-5 ${theme.backgroundClass} p-3 flex items-center justify-between border-b-2 border-[#1c1917] mb-4`}>
-                      <span className="text-2xl">{template.icon}</span>
+                      <div className="w-8 h-8 bg-white border-2 border-[#1c1917] shadow-[2px_2px_0px_#1c1917] flex items-center justify-center">
+                        {renderPresetIcon(template.iconName)}
+                      </div>
                       <span className="font-mono text-[9px] font-bold px-2 py-0.5 bg-white text-[#1c1917] border border-[#1c1917] uppercase shadow-sm">
                         {template.tag}
                       </span>

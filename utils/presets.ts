@@ -75,7 +75,7 @@ export const DEFAULT_SCENE: SceneConfig = {
   age: 24,
   headline: 'ANOTHER YEAR OF BEING ABSOLUTELY LEGENDARY',
   wishes: 'May your year ahead be packed with bold moves, unstoppable laughter, huge milestones, and pure excellence.',
-  letterText: "Happy Birthday! ✨\n\nI wanted to take a moment to celebrate the incredible human being you are. Thank you for always bringing so much energy, focus, and genuine kindness everywhere you go.\n\nMake a big wish today—this year is going to be your greatest chapter yet.",
+  letterText: "Happy Birthday! ✦\n\nI wanted to take a moment to celebrate the incredible human being you are. Thank you for always bringing so much energy, focus, and genuine kindness everywhere you go.\n\nMake a big wish today—this year is going to be your greatest chapter yet.",
   fontStyle: 'modern',
   theme: 'gold',
   primaryColor: '#f59e0b',
@@ -124,11 +124,11 @@ export const DEFAULT_SCENE: SceneConfig = {
   autoPlayCelebration: true
 };
 
-export const PRESET_TEMPLATES: Record<string, { name: string; tag: string; icon: string; config: SceneConfig }> = {
+export const PRESET_TEMPLATES: Record<string, { name: string; tag: string; iconName: 'scroll' | 'compass' | 'leaf' | 'zap'; config: SceneConfig }> = {
   'warm-linen': {
     name: 'Warm Linen & Ochre',
     tag: 'EDITION // 01',
-    icon: '📜',
+    iconName: 'scroll',
     config: {
       ...DEFAULT_SCENE,
       recipientName: 'Alex',
@@ -145,7 +145,7 @@ export const PRESET_TEMPLATES: Record<string, { name: string; tag: string; icon:
   'bauhaus-vermillion': {
     name: 'Bauhaus Vermillion',
     tag: 'EDITION // 02',
-    icon: '📐',
+    iconName: 'compass',
     config: {
       ...DEFAULT_SCENE,
       recipientName: 'Sam',
@@ -163,7 +163,7 @@ export const PRESET_TEMPLATES: Record<string, { name: string; tag: string; icon:
   'sandstone-sage': {
     name: 'Sandstone & Sage',
     tag: 'EDITION // 03',
-    icon: '🌿',
+    iconName: 'leaf',
     config: {
       ...DEFAULT_SCENE,
       recipientName: 'Chloe',
@@ -180,7 +180,7 @@ export const PRESET_TEMPLATES: Record<string, { name: string; tag: string; icon:
   'swiss-cobalt': {
     name: 'Swiss Cobalt',
     tag: 'EDITION // 04',
-    icon: '⚡',
+    iconName: 'zap',
     config: {
       ...DEFAULT_SCENE,
       recipientName: 'David',
