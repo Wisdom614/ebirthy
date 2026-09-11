@@ -54,6 +54,9 @@ export interface SceneConfig {
   // Personal Voice Note
   voiceNoteUrl?: string;
   voiceNoteDuration?: number;
+
+  // Recipient Thank-You Memo
+  recipientThankYouNote?: string;
   
   // Audio & Atmosphere
   musicTrack: 'festive' | 'chill-lofi' | 'orchestral' | 'synthwave' | 'acoustic' | 'none';
@@ -70,6 +73,12 @@ export interface GuestbookEntry {
   sender_name: string;
   message: string;
   stamp: GuestbookStamp;
+  reactions?: {
+    heart?: number;
+    cheers?: number;
+    star?: number;
+  };
+  is_pinned?: boolean;
   created_at: string;
 }
 

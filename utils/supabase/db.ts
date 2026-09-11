@@ -199,3 +199,62 @@ export async function saveGuestbookEntry(entry: import('../../types/scene').Gues
     return true;
   }
 }
+
+/**
+ * Updates an entry's reaction tally or pin status in local cache
+ */
+export function updateGuestbookEntryReaction(
+  sceneSlug: string,
+  entryId: string,
+  reactionType: 'heart' | 'cheers' | 'star'
+): { [key: string]: number } {
+  const localKey = `${LOCAL_GUESTBOOK_PREFIX}${sceneSlug}`;
+  let updatedReactions: { [key: string]: number } = {};
+
+  if (typeof window !== 'undefined') {
+    try {
+      const existing = localStorage.getItem(localKey);
+      const list = existing ? JSON.parse(existing) : [];
+      const updatedList = list.map((item: any) => {
+        if (item.id === entryId) {
+          const currentReactions = item.reactions || {};
+          const currentCount = currentReactions[reactionType] || 0;
+          item.reactions = {
+            ...currentReactions,
+            [reactionType]: currentCount + 1
+          };
+          updatedReactions = item.reactions;
+        }
+        return item;
+      });
+      localStorage.setItem(localKey, JSON.stringify(updatedList));
+    } catch {}
+  }
+
+  return updatedReactions;
+}
+
+/**
+ * Toggles an entry's pinned status in local cache
+ */
+export function toggleGuestbookPin(sceneSlug: string, entryId: string): boolean {
+  const localKey = `${LOCAL_GUESTBOOK_PREFIX}${sceneSlug}`;
+  let isPinned = false;
+
+  if (typeof window !== 'undefined') {
+    try {
+      const existing = localStorage.getItem(localKey);
+      const list = existing ? JSON.parse(existing) : [];
+      const updatedList = list.map((item: any) => {
+        if (item.id === entryId) {
+          item.is_pinned = !item.is_pinned;
+          isPinned = item.is_pinned;
+        }
+        return item;
+      });
+      localStorage.setItem(localKey, JSON.stringify(updatedList));
+    } catch {}
+  }
+
+  return isPinned;
+}
