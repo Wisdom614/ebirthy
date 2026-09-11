@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { audio } from '../../utils/audioManager';
-import { Mail, Feather } from 'lucide-react';
+import { Feather, Play, Pause, Volume2 } from 'lucide-react';
 
 interface CinematicLetterProps {
   senderName: string;
@@ -10,16 +10,24 @@ interface CinematicLetterProps {
   letterText: string;
   themeClass?: string;
   fontStyle?: 'playful' | 'elegant' | 'modern' | 'handwritten';
+  voiceNoteUrl?: string;
+  voiceNoteDuration?: number;
 }
 
 export const CinematicLetter: React.FC<CinematicLetterProps> = ({
   senderName,
   recipientName,
   letterText,
-  fontStyle = 'modern'
+  fontStyle = 'modern',
+  voiceNoteUrl,
+  voiceNoteDuration = 0
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [displayedText, setDisplayedText] = useState('');
+  const [isPlayingAudio, setIsPlayingAudio] = useState(false);
+  const [playProgress, setPlayProgress] = useState(0);
+
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const fontClass = {
     playful: 'font-mono text-zinc-900',
@@ -38,6 +46,10 @@ export const CinematicLetter: React.FC<CinematicLetterProps> = ({
   useEffect(() => {
     if (!isOpen) {
       setDisplayedText('');
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+      setIsPlayingAudio(false);
       return;
     }
 
@@ -53,8 +65,54 @@ export const CinematicLetter: React.FC<CinematicLetterProps> = ({
     return () => clearInterval(interval);
   }, [isOpen, letterText]);
 
+  // Audio event listeners
+  useEffect(() => {
+    const player = audioRef.current;
+    if (!player) return;
+
+    const handleTimeUpdate = () => {
+      if (player.duration) {
+        setPlayProgress(player.currentTime / player.duration);
+      }
+    };
+
+    const handleEnded = () => {
+      setIsPlayingAudio(false);
+      setPlayProgress(0);
+    };
+
+    player.addEventListener('timeupdate', handleTimeUpdate);
+    player.addEventListener('ended', handleEnded);
+
+    return () => {
+      player.removeEventListener('timeupdate', handleTimeUpdate);
+      player.removeEventListener('ended', handleEnded);
+    };
+  }, [voiceNoteUrl]);
+
+  const toggleVoiceNote = () => {
+    if (!audioRef.current) return;
+    if (isPlayingAudio) {
+      audioRef.current.pause();
+      setIsPlayingAudio(false);
+    } else {
+      audioRef.current
+        .play()
+        .then(() => setIsPlayingAudio(true))
+        .catch(() => setIsPlayingAudio(false));
+    }
+  };
+
+  const formatSec = (sec: number) => {
+    const m = Math.floor(sec / 60);
+    const s = Math.floor(sec % 60);
+    return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+  };
+
   return (
     <div className="flex flex-col items-center justify-center p-4 w-full max-w-xl mx-auto">
+      {voiceNoteUrl && <audio ref={audioRef} src={voiceNoteUrl} preload="auto" />}
+
       {!isOpen ? (
         /* Sealed Straight Architectural Parcel */
         <div
@@ -98,7 +156,6 @@ export const CinematicLetter: React.FC<CinematicLetterProps> = ({
       ) : (
         /* Unfolded Straight Letterpress Memorandum */
         <div className="relative w-full bg-[#fcfaf4] border-2 border-black p-6 sm:p-8 shadow-[8px_8px_0px_#000] text-black animate-in fade-in duration-200">
-          
           {/* Header */}
           <div className="flex items-center justify-between border-b-2 border-black pb-4 mb-4">
             <div className="flex items-center gap-2">
@@ -107,10 +164,65 @@ export const CinematicLetter: React.FC<CinematicLetterProps> = ({
                 PERSONAL DISPATCH · MEMORANDUM
               </span>
             </div>
-            <span className="font-mono text-[10px] text-zinc-600 uppercase">
+            <span className="font-mono text-[10px] text-zinc-600 uppercase font-bold">
               STATUS: READ_ONLY
             </span>
           </div>
+
+          {/* Voice Note Audio Deck Component */}
+          {voiceNoteUrl && (
+            <div className="mb-6 p-4 bg-[#f0ede4] border-2 border-[#1c1917] shadow-[3px_3px_0px_#1c1917] space-y-2.5">
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-amber-700 flex items-center gap-1.5">
+                  <Volume2 className="w-3.5 h-3.5" />
+                  [ VOICE GREETING ATTACHED ]
+                </span>
+                <span className="font-mono text-[10px] font-bold text-zinc-600">
+                  {formatSec(voiceNoteDuration || 15)}
+                </span>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={toggleVoiceNote}
+                  className="p-2.5 bg-amber-400 hover:bg-amber-300 text-[#1c1917] border-2 border-[#1c1917] shadow-[2px_2px_0px_#1c1917] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none cursor-pointer flex-shrink-0"
+                >
+                  {isPlayingAudio ? (
+                    <Pause className="w-4 h-4 fill-current" />
+                  ) : (
+                    <Play className="w-4 h-4 fill-current" />
+                  )}
+                </button>
+
+                {/* Animated Equalizer Waveform */}
+                <div className="flex-1 flex flex-col gap-1.5">
+                  <div className="flex items-end gap-1 h-5 overflow-hidden">
+                    {[30, 60, 90, 45, 80, 100, 70, 50, 85, 40, 95, 65, 85, 40, 75, 55, 90, 60].map((h, i) => (
+                      <span
+                        key={i}
+                        className={`w-1 transition-all ${
+                          isPlayingAudio ? 'bg-[#1c1917] animate-pulse' : 'bg-zinc-400'
+                        }`}
+                        style={{
+                          height: isPlayingAudio ? `${h}%` : '25%',
+                          animationDuration: `${0.3 + (i % 4) * 0.15}s`
+                        }}
+                      />
+                    ))}
+                  </div>
+
+                  {/* Progress Line */}
+                  <div className="w-full bg-zinc-300 h-1.5 border border-[#1c1917] overflow-hidden">
+                    <div
+                      className="bg-amber-500 h-full transition-all duration-100"
+                      style={{ width: `${playProgress * 100}%` }}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
           <h3 className="font-mono text-base font-bold text-black uppercase mb-3">
             DEAR {recipientName},
@@ -126,7 +238,9 @@ export const CinematicLetter: React.FC<CinematicLetterProps> = ({
 
           {/* Signoff */}
           <div className="mt-8 pt-4 border-t-2 border-black flex items-center justify-between">
-            <span className="font-mono text-[10px] text-zinc-600 uppercase">WITH ALL RESPECT & WISHES</span>
+            <span className="font-mono text-[10px] text-zinc-600 uppercase font-semibold">
+              WITH ALL RESPECT & WISHES
+            </span>
             <p className="font-mono text-sm font-bold uppercase text-black">
               ~ {senderName}
             </p>
@@ -135,7 +249,7 @@ export const CinematicLetter: React.FC<CinematicLetterProps> = ({
           <div className="mt-4 text-center">
             <button
               onClick={() => setIsOpen(false)}
-              className="font-mono text-[10px] text-zinc-500 hover:text-black uppercase tracking-wider cursor-pointer"
+              className="font-mono text-[10px] text-zinc-500 hover:text-black uppercase tracking-wider cursor-pointer font-semibold"
             >
               [ RE-SEAL ENVELOPE ]
             </button>
@@ -145,3 +259,4 @@ export const CinematicLetter: React.FC<CinematicLetterProps> = ({
     </div>
   );
 };
+

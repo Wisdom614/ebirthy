@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { SceneConfig, FontStyle } from '../../types/scene';
+import { VoiceNoteRecorder } from './VoiceNoteRecorder';
 
 interface DetailsFormProps {
   scene: SceneConfig;
@@ -137,6 +138,13 @@ export const DetailsForm: React.FC<DetailsFormProps> = ({ scene, onChange }) => 
           className="w-full px-3.5 py-2.5 bg-white border-2 border-[#1c1917] text-[#1c1917] font-mono text-sm focus:outline-none focus:border-amber-500 shadow-[2px_2px_0px_#1c1917] resize-none"
         />
       </div>
+
+      {/* Voice Note Recorder */}
+      <VoiceNoteRecorder
+        voiceNoteUrl={scene.voiceNoteUrl}
+        voiceNoteDuration={scene.voiceNoteDuration}
+        onChange={onChange}
+      />
 
       {/* Midnight Reveal Time-Lock */}
       <div className="p-4 bg-white border-2 border-[#1c1917] shadow-[3px_3px_0px_#1c1917] space-y-3">

@@ -190,13 +190,15 @@ export const CelebrationCanvas: React.FC<CelebrationCanvasProps> = ({
         )}
 
         {/* Letter Section */}
-        {scene.letterText && (activeTab === 'all' || activeTab === 'letter') && (
+        {(scene.letterText || scene.voiceNoteUrl) && (activeTab === 'all' || activeTab === 'letter') && (
           <div className="w-full flex flex-col items-center border-2 border-[#1c1917] p-6 bg-white shadow-[4px_4px_0px_#1c1917]">
             <CinematicLetter
               senderName={scene.senderName}
               recipientName={scene.recipientName}
-              letterText={scene.letterText}
+              letterText={scene.letterText || ''}
               fontStyle={scene.fontStyle}
+              voiceNoteUrl={scene.voiceNoteUrl}
+              voiceNoteDuration={scene.voiceNoteDuration}
             />
           </div>
         )}

@@ -51,6 +51,10 @@ export interface SceneConfig {
   enableTimeLock?: boolean;
   unlockDateTime?: string;
   
+  // Personal Voice Note
+  voiceNoteUrl?: string;
+  voiceNoteDuration?: number;
+  
   // Audio & Atmosphere
   musicTrack: 'festive' | 'chill-lofi' | 'orchestral' | 'synthwave' | 'acoustic' | 'none';
   enableConfettiCannon: boolean;

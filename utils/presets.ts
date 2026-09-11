@@ -124,7 +124,9 @@ export const DEFAULT_SCENE: SceneConfig = {
   autoPlayCelebration: true,
   enableGuestbook: true,
   enableTimeLock: false,
-  unlockDateTime: ''
+  unlockDateTime: '',
+  voiceNoteUrl: '',
+  voiceNoteDuration: 0
 };
 
 export const PRESET_TEMPLATES: Record<string, { name: string; tag: string; iconName: 'scroll' | 'compass' | 'leaf' | 'zap'; config: SceneConfig }> = {
