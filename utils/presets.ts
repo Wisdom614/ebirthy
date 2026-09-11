@@ -55,16 +55,16 @@ export const THEME_DEFINITIONS: Record<ThemeId, ThemeDefinition> = {
   },
   retro: {
     id: 'retro',
-    name: 'Obsidian Monolith',
-    description: 'Dark architectural carbon for users seeking midnight celebration atmosphere.',
-    backgroundClass: 'bg-[#0f1115] grid-bg text-white',
-    cardClass: 'bg-[#181a20] border-2 border-amber-400 text-white shadow-[4px_4px_0px_#000]',
+    name: 'Architectural Stone & Gold',
+    description: 'Structured tactile stone paper, rich amber gold, and high-contrast charcoal ink.',
+    backgroundClass: 'bg-[#eeeae0] grid-bg text-[#1c1917]',
+    cardClass: 'bg-[#ffffff] border-2 border-[#1c1917] text-[#1c1917] shadow-[4px_4px_0px_#1c1917]',
     accentClass: 'from-amber-400 to-yellow-500',
     textGlow: 'none',
     defaultPrimary: '#f59e0b',
-    defaultSecondary: '#fbbf24',
+    defaultSecondary: '#1c1917',
     defaultMusic: 'festive',
-    particlesColor: ['#f59e0b', '#fbbf24', '#ffffff', '#dc2626', '#3b82f6']
+    particlesColor: ['#f59e0b', '#d97706', '#1c1917', '#dc2626', '#3b82f6']
   }
 };
 
