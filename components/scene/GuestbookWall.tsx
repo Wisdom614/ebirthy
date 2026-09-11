@@ -23,7 +23,6 @@ import {
   MessageSquare,
   Send,
   Download,
-  Share2,
   Pin,
   Smile,
   Edit3
@@ -405,14 +404,14 @@ export const GuestbookWall: React.FC<GuestbookWallProps> = ({
 
               {/* Interactive Reaction & Timestamp Footer */}
               <div className="mt-4 pt-3 border-t border-[#1c1917]/15 flex items-center justify-between flex-wrap gap-2">
-                {/* Micro Reactions Deck */}
+                {/* Micro Reactions Deck - Clean Vector Icons, No Emojis */}
                 <div className="flex items-center gap-1.5">
                   <button
                     onClick={(e) => handleReaction(entry.id, 'heart', e)}
                     className="px-2 py-0.5 bg-white hover:bg-rose-50 border border-[#1c1917] font-mono text-[10px] font-bold text-[#1c1917] shadow-[1px_1px_0px_#1c1917] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none flex items-center gap-1 cursor-pointer transition-colors"
                     title="Send love reaction"
                   >
-                    <span>❤️</span>
+                    <Heart className="w-3 h-3 text-rose-600 fill-rose-600" />
                     <span>{entry.reactions?.heart || 0}</span>
                   </button>
 
@@ -421,7 +420,7 @@ export const GuestbookWall: React.FC<GuestbookWallProps> = ({
                     className="px-2 py-0.5 bg-white hover:bg-amber-50 border border-[#1c1917] font-mono text-[10px] font-bold text-[#1c1917] shadow-[1px_1px_0px_#1c1917] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none flex items-center gap-1 cursor-pointer transition-colors"
                     title="Toast / Cheers"
                   >
-                    <span>🥂</span>
+                    <Flame className="w-3 h-3 text-amber-600" />
                     <span>{entry.reactions?.cheers || 0}</span>
                   </button>
 
@@ -430,7 +429,7 @@ export const GuestbookWall: React.FC<GuestbookWallProps> = ({
                     className="px-2 py-0.5 bg-white hover:bg-yellow-50 border border-[#1c1917] font-mono text-[10px] font-bold text-[#1c1917] shadow-[1px_1px_0px_#1c1917] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none flex items-center gap-1 cursor-pointer transition-colors"
                     title="Sparkle star"
                   >
-                    <span>🌟</span>
+                    <Star className="w-3 h-3 text-yellow-500 fill-yellow-500" />
                     <span>{entry.reactions?.star || 0}</span>
                   </button>
                 </div>

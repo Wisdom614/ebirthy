@@ -12,6 +12,7 @@ import { SurpriseGiftBox } from './SurpriseGiftBox';
 import { FireworksCanvas } from './FireworksCanvas';
 import { PolaroidReel } from './PolaroidReel';
 import { SoundController } from './SoundController';
+import { KeepsakePosterModal } from './KeepsakePosterModal';
 import { PartyPopper, Share2, Image as ImageIcon } from 'lucide-react';
 
 const CinematicLetter = dynamic(
@@ -20,10 +21,6 @@ const CinematicLetter = dynamic(
 );
 const GuestbookWall = dynamic(
   () => import('./GuestbookWall').then((m) => m.GuestbookWall),
-  { ssr: false }
-);
-const KeepsakePosterModal = dynamic(
-  () => import('./KeepsakePosterModal').then((m) => m.KeepsakePosterModal),
   { ssr: false }
 );
 
@@ -103,7 +100,7 @@ export const CelebrationCanvas: React.FC<CelebrationCanvasProps> = ({
             title="Download commemorative keepsake poster"
           >
             <ImageIcon className="w-4 h-4 text-[#1c1917]" />
-            <span>[ 🖼️ KEEPSAKE POSTER ]</span>
+            <span>[ KEEPSAKE POSTER ]</span>
           </button>
 
           {onShareClick && (
@@ -164,7 +161,7 @@ export const CelebrationCanvas: React.FC<CelebrationCanvasProps> = ({
           scene.letterText ? { id: 'letter', label: '[ PERSONAL MEMO ]' } : null,
           scene.enablePhotoReel && scene.photos.length > 0 ? { id: 'photos', label: '[ ARCHIVE REEL ]' } : null,
           scene.enableGuestbook !== false ? { id: 'guestbook', label: '[ WISHES BOARD ]' } : null,
-          { id: 'poster', label: '[ 🖼️ POSTER EXPORT ]' }
+          { id: 'poster', label: '[ POSTER EXPORT ]' }
         ]
           .filter(Boolean)
           .map(tab => (
@@ -206,7 +203,7 @@ export const CelebrationCanvas: React.FC<CelebrationCanvasProps> = ({
               className="w-full md:w-auto px-6 py-4 bg-amber-400 hover:bg-amber-300 text-[#1c1917] font-mono font-black text-sm uppercase tracking-wider border-2 border-[#1c1917] shadow-[4px_4px_0px_#1c1917] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all flex items-center justify-center gap-2.5 flex-shrink-0 cursor-pointer"
             >
               <ImageIcon className="w-5 h-5 text-[#1c1917]" />
-              <span>[ 🖼️ GET PRINTABLE POSTER ]</span>
+              <span>[ GET PRINTABLE POSTER ]</span>
             </button>
           </div>
         )}
@@ -274,7 +271,7 @@ export const CelebrationCanvas: React.FC<CelebrationCanvasProps> = ({
         title="Download high-resolution 300 DPI keepsake poster"
       >
         <ImageIcon className="w-4 h-4 text-[#1c1917]" />
-        <span>[ 🖼️ KEEPSAKE POSTER ]</span>
+        <span>[ KEEPSAKE POSTER ]</span>
       </button>
 
       {/* Footer Branding */}
