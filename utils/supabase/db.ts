@@ -52,7 +52,7 @@ export async function saveSceneToSupabase(
   } else {
     const { data, error } = await supabase
       .from('scenes')
-      .insert([payload])
+      .upsert([payload], { onConflict: 'slug' })
       .select()
       .single();
 

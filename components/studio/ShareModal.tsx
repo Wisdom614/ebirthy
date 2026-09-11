@@ -18,6 +18,8 @@ interface ShareModalProps {
 export const ShareModal: React.FC<ShareModalProps> = ({ scene, isOpen, slug: initialSlug, onClose }) => {
   const [copied, setCopied] = useState(false);
   const [shortSlug, setShortSlug] = useState<string>('');
+  const [cloudStatus, setCloudStatus] = useState<'saving' | 'synced' | 'local_only' | 'error'>('saving');
+  const [cloudErrorMsg, setCloudErrorMsg] = useState<string>('');
 
   useEffect(() => {
     if (!isOpen) return;
@@ -26,16 +28,25 @@ export const ShareModal: React.FC<ShareModalProps> = ({ scene, isOpen, slug: ini
     const slug = initialSlug || generateSceneSlug(scene.recipientName, scene.age);
     setShortSlug(slug);
 
-    // Save to local cache so link opens instantly anywhere locally
+    // Save to local cache so link opens instantly on this device
     try {
       localStorage.setItem(`ebirthy_scene_${slug}`, JSON.stringify(scene));
     } catch {}
 
-    // Also persist to Supabase in the background if configured
+    // Persist to Supabase so it can be opened on any phone or device anywhere
     if (isSupabaseConfigured) {
-      saveSceneToSupabase(scene, undefined, undefined, slug).catch((err) => {
-        console.warn('Background Supabase short-link sync notice:', err);
-      });
+      setCloudStatus('saving');
+      saveSceneToSupabase(scene, undefined, undefined, slug)
+        .then(() => {
+          setCloudStatus('synced');
+        })
+        .catch((err) => {
+          console.error('Supabase save error:', err);
+          setCloudStatus('error');
+          setCloudErrorMsg(err?.message || 'Database sync error');
+        });
+    } else {
+      setCloudStatus('local_only');
     }
   }, [isOpen, initialSlug, scene]);
 
@@ -69,7 +80,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({ scene, isOpen, slug: ini
         onClick={(e) => e.stopPropagation()}
         className="relative max-w-lg w-full bg-white border-2 border-[#1c1917] p-6 sm:p-8 shadow-[8px_8px_0px_#1c1917] text-[#1c1917] animate-in zoom-in-95 duration-150"
       >
-        <div className="flex items-center justify-between border-b-2 border-[#1c1917] pb-3 mb-6">
+        <div className="flex items-center justify-between border-b-2 border-[#1c1917] pb-3 mb-4">
           <span className="font-mono text-xs font-bold uppercase tracking-widest text-amber-600 flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5" />
             [ SHORT CELEBRATION LINK ]
@@ -85,12 +96,40 @@ export const ShareModal: React.FC<ShareModalProps> = ({ scene, isOpen, slug: ini
         <h3 className="text-xl sm:text-2xl font-bold uppercase tracking-tight text-[#1c1917]">
           SHARE DISPATCH FOR {scene.recipientName}
         </h3>
-        <p className="font-mono text-xs text-zinc-600 mt-1 font-medium">
-          Send this clean short link to let them launch the interactive birthday scene.
-        </p>
+        
+        {/* Status Indicator */}
+        <div className="mt-2 mb-3">
+          {cloudStatus === 'saving' && (
+            <span className="font-mono text-[11px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 border border-amber-300 inline-block animate-pulse">
+              [ SYNCING TO CLOUD VAULT... ]
+            </span>
+          )}
+          {cloudStatus === 'synced' && (
+            <span className="font-mono text-[11px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 border border-emerald-300 inline-flex items-center gap-1">
+              <Check className="w-3 h-3 text-emerald-600" />
+              [ SAVED TO CLOUD VAULT · ACCESSIBLE ON ANY DEVICE ]
+            </span>
+          )}
+          {cloudStatus === 'local_only' && (
+            <div className="p-2.5 bg-amber-50 border-2 border-amber-400 text-amber-950 text-xs font-mono">
+              <p className="font-bold">⚠️ Cloud Database not configured in environment variables.</p>
+              <p className="text-[11px] text-amber-900 mt-0.5">
+                This link works only on this browser until <code>NEXT_PUBLIC_SUPABASE_URL</code> and <code>NEXT_PUBLIC_SUPABASE_ANON_KEY</code> are added to your <code>.env</code> file and hosting platform.
+              </p>
+            </div>
+          )}
+          {cloudStatus === 'error' && (
+            <div className="p-2.5 bg-rose-50 border-2 border-rose-400 text-rose-950 text-xs font-mono">
+              <p className="font-bold">⚠️ Cloud sync failed: {cloudErrorMsg}</p>
+              <p className="text-[11px] text-rose-900 mt-0.5">
+                Please ensure your Supabase database tables and RLS policies are created.
+              </p>
+            </div>
+          )}
+        </div>
 
         {/* Short URL Box */}
-        <div className="mt-5 p-2.5 bg-[#f7f4ed] border-2 border-[#1c1917] flex items-center justify-between gap-2 shadow-[3px_3px_0px_#1c1917]">
+        <div className="mt-4 p-2.5 bg-[#f7f4ed] border-2 border-[#1c1917] flex items-center justify-between gap-2 shadow-[3px_3px_0px_#1c1917]">
           <div className="flex items-center gap-2 overflow-hidden flex-1 pl-1">
             <LinkIcon className="w-4 h-4 text-amber-600 flex-shrink-0" />
             <input
@@ -124,7 +163,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({ scene, isOpen, slug: ini
             className="w-full py-3 bg-white hover:bg-[#eeeae0] text-[#1c1917] font-mono font-bold text-xs uppercase border-2 border-[#1c1917] shadow-[3px_3px_0px_#1c1917] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none flex items-center justify-center gap-2 transition-all cursor-pointer"
           >
             <ExternalLink className="w-4 h-4 text-amber-600" />
-            <span>OPEN LIVE VIEWPORT</span>
+            <span>OPEN LIVE SCENE</span>
           </button>
         </div>
 
