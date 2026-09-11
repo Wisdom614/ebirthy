@@ -6,6 +6,7 @@ import { THEME_DEFINITIONS } from '../../utils/presets';
 import { audio } from '../../utils/audioManager';
 import confetti from 'canvas-confetti';
 import { X, Download, Printer, Loader2, Sparkles, Image as ImageIcon } from 'lucide-react';
+import { BrandLogo } from '../ui/BrandLogo';
 
 interface KeepsakePosterModalProps {
   isOpen: boolean;
@@ -76,10 +77,10 @@ export const KeepsakePosterModal: React.FC<KeepsakePosterModalProps> = ({
       >
         {/* Modal Header */}
         <div className="flex items-center justify-between border-b-2 border-[#1c1917] pb-3 mb-4 flex-shrink-0">
-          <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 bg-amber-400 border border-[#1c1917]" />
-            <span className="font-mono text-xs font-bold uppercase tracking-widest text-[#1c1917]">
-              [ COMMEMORATIVE KEEPSAKE POSTER EXPORTER ]
+          <div className="flex items-center gap-3">
+            <BrandLogo size="sm" showSubtitle={false} href="" />
+            <span className="hidden sm:inline font-mono text-xs font-bold uppercase tracking-widest text-[#1c1917] border-l-2 border-[#1c1917] pl-3">
+              [ KEEPSAKE POSTER EXPORTER ]
             </span>
           </div>
 
@@ -102,9 +103,7 @@ export const KeepsakePosterModal: React.FC<KeepsakePosterModalProps> = ({
           >
             {/* Top Structural Header */}
             <div className="border-b-2 border-[#1c1917] pb-3 flex items-center justify-between">
-              <span className="font-mono text-[9px] font-black uppercase tracking-widest text-amber-700">
-                EBIRTHY · EDITORIAL ARCHIVE
-              </span>
+              <BrandLogo size="sm" showSubtitle={true} href="" />
               <span className="font-mono text-[9px] font-bold px-2 py-0.5 bg-white border border-[#1c1917] uppercase shadow-sm">
                 EDITION · {scene.age ? `${scene.age} YEARS` : 'MILESTONE'}
               </span>
@@ -123,8 +122,8 @@ export const KeepsakePosterModal: React.FC<KeepsakePosterModalProps> = ({
                   />
                 </div>
               ) : (
-                <div className="w-16 h-16 bg-amber-400 border-2 border-[#1c1917] text-[#1c1917] flex items-center justify-center shadow-[3px_3px_0px_#1c1917] mb-4">
-                  <Sparkles className="w-8 h-8" />
+                <div className="p-3 bg-white border-2 border-[#1c1917] shadow-[3px_3px_0px_#1c1917] mb-4 flex items-center justify-center">
+                  <BrandLogo size="md" showSubtitle={false} href="" />
                 </div>
               )}
 

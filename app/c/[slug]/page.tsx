@@ -10,6 +10,7 @@ import { THEME_DEFINITIONS } from '../../../utils/presets';
 import { SceneConfig } from '../../../types/scene';
 import { audio } from '../../../utils/audioManager';
 import confetti from 'canvas-confetti';
+import { BrandLogo } from '../../../components/ui/BrandLogo';
 import { Sparkles, ArrowRight, Wand2, Loader2, AlertTriangle } from 'lucide-react';
 import Link from 'next/link';
 
@@ -138,8 +139,9 @@ export default function ShortLinkCelebratePage() {
           className={`min-h-screen ${theme.backgroundClass} flex flex-col items-center justify-center p-6 text-center select-none relative overflow-hidden`}
         >
           <div className="relative z-10 max-w-md w-full bg-white border-2 border-[#1c1917] p-8 shadow-[8px_8px_0px_#1c1917] flex flex-col items-center animate-in zoom-in-95 duration-200 text-[#1c1917]">
-            <div className="w-14 h-14 bg-amber-400 border-2 border-[#1c1917] text-[#1c1917] flex items-center justify-center shadow-[3px_3px_0px_#1c1917] mb-6">
-              <Sparkles className="w-7 h-7" />
+            {/* Custom Brand Logo Mark */}
+            <div className="mb-6">
+              <BrandLogo size="lg" showSubtitle={true} href="" />
             </div>
 
             <span className="font-mono text-[10px] uppercase tracking-widest text-amber-700 font-bold mb-2">

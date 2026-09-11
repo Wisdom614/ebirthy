@@ -234,6 +234,10 @@ export default function HomePage() {
 
       {/* Footer */}
       <footer className="mt-auto border-t-2 border-[#1c1917] bg-white py-12 px-6 sm:px-12 text-center flex flex-col items-center">
+        <div className="mb-4">
+          <BrandLogo size="md" showSubtitle={true} href="/" />
+        </div>
+
         <h3 className="text-xl sm:text-2xl font-black uppercase text-[#1c1917] tracking-tight">
           READY TO CONSTRUCT A CELEBRATION SCENE?
         </h3>

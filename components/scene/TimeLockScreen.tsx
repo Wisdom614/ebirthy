@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { audio } from '../../utils/audioManager';
 import confetti from 'canvas-confetti';
 import { Lock, Clock, Sparkles, KeyRound } from 'lucide-react';
+import { BrandLogo } from '../ui/BrandLogo';
 
 interface TimeLockScreenProps {
   recipientName: string;
@@ -87,9 +88,14 @@ export const TimeLockScreen: React.FC<TimeLockScreenProps> = ({
       className={`min-h-screen ${themeBackgroundClass} flex flex-col items-center justify-center p-6 text-center select-none relative overflow-hidden text-[#1c1917]`}
     >
       <div className="relative z-10 max-w-lg w-full bg-white border-2 border-[#1c1917] p-6 sm:p-10 shadow-[10px_10px_0px_#1c1917] flex flex-col items-center animate-in zoom-in-95 duration-200">
+        {/* Brand Logo Header */}
+        <div className="mb-4">
+          <BrandLogo size="md" showSubtitle={true} href="" />
+        </div>
+
         {/* Top Lock Icon Badge */}
-        <div className="w-16 h-16 bg-amber-400 border-2 border-[#1c1917] text-[#1c1917] flex items-center justify-center shadow-[4px_4px_0px_#1c1917] mb-6">
-          <Lock className="w-8 h-8" />
+        <div className="w-14 h-14 bg-amber-400 border-2 border-[#1c1917] text-[#1c1917] flex items-center justify-center shadow-[3px_3px_0px_#1c1917] mb-4">
+          <Lock className="w-7 h-7" />
         </div>
 
         {/* Security / Status Tag */}

@@ -7,6 +7,7 @@ import { saveSceneToSupabase } from '../../utils/supabase/db';
 import { isSupabaseConfigured } from '../../utils/supabase/client';
 import { audio } from '../../utils/audioManager';
 import { X, Copy, Check, ExternalLink, Send, Link as LinkIcon, Sparkles } from 'lucide-react';
+import { BrandLogo } from '../ui/BrandLogo';
 
 interface ShareModalProps {
   scene: SceneConfig;
@@ -81,10 +82,12 @@ export const ShareModal: React.FC<ShareModalProps> = ({ scene, isOpen, slug: ini
         className="relative max-w-lg w-full bg-white border-2 border-[#1c1917] p-6 sm:p-8 shadow-[8px_8px_0px_#1c1917] text-[#1c1917] animate-in zoom-in-95 duration-150"
       >
         <div className="flex items-center justify-between border-b-2 border-[#1c1917] pb-3 mb-4">
-          <span className="font-mono text-xs font-bold uppercase tracking-widest text-amber-600 flex items-center gap-1.5">
-            <Sparkles className="w-3.5 h-3.5" />
-            [ SHORT CELEBRATION LINK ]
-          </span>
+          <div className="flex items-center gap-3">
+            <BrandLogo size="sm" showSubtitle={false} href="" />
+            <span className="hidden sm:inline font-mono text-xs font-bold uppercase tracking-widest text-amber-700 border-l-2 border-[#1c1917] pl-3">
+              [ SHORT LINK DISPATCH ]
+            </span>
+          </div>
           <button
             onClick={onClose}
             className="p-1 bg-white hover:bg-[#eeeae0] text-[#1c1917] border-2 border-[#1c1917] transition-colors cursor-pointer shadow-[1px_1px_0px_#1c1917]"

@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { supabase, isSupabaseConfigured } from '../../utils/supabase/client';
 import { audio } from '../../utils/audioManager';
 import { X, Mail, Lock } from 'lucide-react';
+import { BrandLogo } from '../ui/BrandLogo';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -81,9 +82,12 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess
         className="relative max-w-md w-full bg-white border-2 border-[#1c1917] p-6 sm:p-8 shadow-[8px_8px_0px_#1c1917] text-[#1c1917] animate-in zoom-in-95 duration-150"
       >
         <div className="flex items-center justify-between border-b-2 border-[#1c1917] pb-3 mb-6">
-          <span className="font-mono text-xs font-bold uppercase tracking-widest text-amber-600">
-            [ USER AUTHENTICATION ]
-          </span>
+          <div className="flex items-center gap-3">
+            <BrandLogo size="sm" showSubtitle={false} href="" />
+            <span className="hidden sm:inline font-mono text-xs font-bold uppercase tracking-widest text-amber-700 border-l-2 border-[#1c1917] pl-3">
+              [ AUTHENTICATION ]
+            </span>
+          </div>
           <button
             onClick={onClose}
             className="p-1 bg-white hover:bg-[#eeeae0] text-[#1c1917] border-2 border-[#1c1917] transition-colors cursor-pointer"

@@ -5,6 +5,7 @@ import { fetchUserScenes, deleteSceneFromSupabase, SavedSceneRecord } from '../.
 import { SceneConfig } from '../../types/scene';
 import { audio } from '../../utils/audioManager';
 import { X, Trash2, Eye, Clock } from 'lucide-react';
+import { BrandLogo } from '../ui/BrandLogo';
 
 interface SavedScenesDrawerProps {
   isOpen: boolean;
@@ -68,11 +69,14 @@ export const SavedScenesDrawer: React.FC<SavedScenesDrawerProps> = ({
         <div>
           {/* Header */}
           <div className="flex items-center justify-between pb-4 border-b-2 border-[#1c1917]">
-            <div>
-              <span className="font-mono text-[9px] uppercase font-bold tracking-widest text-amber-600 block">
-                [ USER DATABASE ARCHIVE ]
-              </span>
-              <h3 className="font-mono font-bold text-base uppercase text-[#1c1917]">MY SAVED SCENES</h3>
+            <div className="flex items-center gap-3">
+              <BrandLogo size="sm" showSubtitle={false} href="" />
+              <div className="border-l-2 border-[#1c1917] pl-3">
+                <span className="font-mono text-[9px] uppercase font-bold tracking-widest text-amber-600 block">
+                  [ DATABASE ARCHIVE ]
+                </span>
+                <h3 className="font-mono font-bold text-sm uppercase text-[#1c1917]">MY SAVED SCENES</h3>
+              </div>
             </div>
             <button
               onClick={onClose}
