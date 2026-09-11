@@ -17,6 +17,7 @@ import { KeepsakePosterModal } from './KeepsakePosterModal';
 import { LifeChronometer } from './LifeChronometer';
 import { BrandLogo } from '../ui/BrandLogo';
 import { formatBirthDayMonth } from '../../utils/dateFormatter';
+import { trackEvent } from '../../utils/analytics/tracker';
 import {
   PartyPopper,
   Share2,
@@ -79,12 +80,25 @@ export const CelebrationCanvas: React.FC<CelebrationCanvasProps> = ({
   const [completedStages, setCompletedStages] = useState<Record<string, boolean>>({});
   const [isPosterModalOpen, setIsPosterModalOpen] = useState(false);
 
+  useEffect(() => {
+    trackEvent('celebration_viewed', {
+      recipient: scene.recipientName,
+      theme: scene.theme,
+      slug: slug || 'preview'
+    });
+  }, [scene.recipientName, scene.theme, slug]);
+
   const activeStage = availableStages[currentStageIndex] || availableStages[0];
 
   const markStageCompleted = (stageId: StageId) => {
     if (!completedStages[stageId]) {
       setCompletedStages((prev) => ({ ...prev, [stageId]: true }));
       audio.playSFX('sparkle');
+      trackEvent(`stage_${stageId}_completed`, {
+        recipient: scene.recipientName,
+        stage: stageId,
+        slug: slug || 'preview'
+      });
     }
   };
 
@@ -103,12 +117,14 @@ export const CelebrationCanvas: React.FC<CelebrationCanvasProps> = ({
   };
 
   const triggerConfettiCannon = () => {
+    trackEvent('confetti_cannon_fired', { recipient: scene.recipientName, slug: slug || 'preview' });
     startTenSecondGrandCelebration(theme.particlesColor);
   };
 
   const triggerReactionCheer = () => {
     audio.playSFX('sparkle');
     audio.playSFX('cheer');
+    trackEvent('cheer_reaction', { recipient: scene.recipientName, slug: slug || 'preview' });
     confetti({
       particleCount: 60,
       spread: 80,

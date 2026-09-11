@@ -8,6 +8,7 @@ import confetti from 'canvas-confetti';
 import { X, Download, Printer, Loader2, Sparkles, Image as ImageIcon } from 'lucide-react';
 import { BrandLogo } from '../ui/BrandLogo';
 import { formatBirthDayMonth } from '../../utils/dateFormatter';
+import { trackEvent } from '../../utils/analytics/tracker';
 
 interface KeepsakePosterModalProps {
   isOpen: boolean;
@@ -50,6 +51,12 @@ export const KeepsakePosterModal: React.FC<KeepsakePosterModalProps> = ({
       link.href = dataUrl;
       link.click();
 
+      trackEvent('poster_downloaded', {
+        recipient: scene.recipientName,
+        theme: scene.theme,
+        slug: slug || 'preview'
+      });
+
       confetti({
         particleCount: 50,
         spread: 60,
@@ -64,6 +71,10 @@ export const KeepsakePosterModal: React.FC<KeepsakePosterModalProps> = ({
 
   const handlePrint = () => {
     audio.playSFX('chime');
+    trackEvent('poster_printed', {
+      recipient: scene.recipientName,
+      slug: slug || 'preview'
+    });
     window.print();
   };
 

@@ -84,6 +84,8 @@ export const metadata: Metadata = {
   }
 };
 
+import { AnalyticsProvider } from "../components/analytics/AnalyticsProvider";
+
 export default function RootLayout({
   children,
 }: {
@@ -125,7 +127,9 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col bg-[#f7f4ed] text-[#1c1917] selection:bg-amber-400 selection:text-black">
-        {children}
+        <AnalyticsProvider>
+          {children}
+        </AnalyticsProvider>
       </body>
     </html>
   );

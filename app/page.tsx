@@ -228,9 +228,13 @@ export default function HomePage() {
           <span>[ LAUNCH CREATOR STUDIO NOW ]</span>
         </Link>
 
-        <span className="mt-8 font-mono text-[9px] uppercase tracking-widest text-zinc-500 font-bold">
-          BIRTHDAY SCENE STUDIO · INTERNATIONAL TYPOGRAPHIC SYSTEM · 2026
-        </span>
+        <div className="mt-8 flex items-center justify-center gap-4 flex-wrap font-mono text-[9px] uppercase tracking-widest text-zinc-500 font-bold">
+          <span>BIRTHDAY SCENE STUDIO · INTERNATIONAL TYPOGRAPHIC SYSTEM · 2026</span>
+          <span>·</span>
+          <Link href="/admin/analytics" className="hover:text-amber-700 underline underline-offset-2 transition-colors">
+            [ TELEMETRY & ANALYTICS ]
+          </Link>
+        </div>
       </footer>
     </div>
   );

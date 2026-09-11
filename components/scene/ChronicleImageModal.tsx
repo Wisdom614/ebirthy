@@ -8,6 +8,8 @@ import confetti from 'canvas-confetti';
 import { X, Download, Loader2, Sparkles, Image as ImageIcon, Camera } from 'lucide-react';
 import { BrandLogo } from '../ui/BrandLogo';
 
+import { trackEvent } from '../../utils/analytics/tracker';
+
 interface ChronicleImageModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -49,6 +51,11 @@ export const ChronicleImageModal: React.FC<ChronicleImageModalProps> = ({
       link.download = `${safeName}-life-chronicle-card.png`;
       link.href = dataUrl;
       link.click();
+
+      trackEvent('chronicle_card_downloaded', {
+        recipient: recipientName,
+        total_days: chronicle.totalDays
+      });
 
       confetti({
         particleCount: 60,

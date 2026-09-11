@@ -32,6 +32,8 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 
+import { trackEvent } from '../../utils/analytics/tracker';
+
 function StudioContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -138,6 +140,11 @@ function StudioContent() {
         if (record) {
           setCurrentSceneId(record.id);
           const targetSlug = record.slug || record.id;
+          trackEvent('scene_launched', {
+            recipient: scene.recipientName,
+            theme: scene.theme,
+            slug: targetSlug
+          });
           router.push(`/c/${targetSlug}`);
           return;
         }

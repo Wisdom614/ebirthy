@@ -162,3 +162,89 @@ CREATE POLICY "Public can sign guestbook"
   FOR INSERT
   WITH CHECK (true);
 
+-- ==============================================================================
+-- 11. Visitor Sessions & Real-Time Analytics Telemetry
+-- ==============================================================================
+CREATE TABLE IF NOT EXISTS public.visitor_sessions (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  visitor_id TEXT NOT NULL,
+  path TEXT NOT NULL,
+  referrer TEXT DEFAULT '',
+  device_type TEXT DEFAULT 'desktop',
+  browser TEXT DEFAULT '',
+  os TEXT DEFAULT '',
+  screen_size TEXT DEFAULT '',
+  duration_seconds INTEGER DEFAULT 0,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  last_ping_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_sessions_visitor_id ON public.visitor_sessions (visitor_id);
+CREATE INDEX IF NOT EXISTS idx_sessions_path ON public.visitor_sessions (path);
+CREATE INDEX IF NOT EXISTS idx_sessions_created_at ON public.visitor_sessions (created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_sessions_last_ping ON public.visitor_sessions (last_ping_at DESC);
+
+ALTER TABLE public.visitor_sessions ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Public can insert sessions" ON public.visitor_sessions;
+CREATE POLICY "Public can insert sessions"
+  ON public.visitor_sessions
+  FOR INSERT
+  WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Public can update own session" ON public.visitor_sessions;
+CREATE POLICY "Public can update own session"
+  ON public.visitor_sessions
+  FOR UPDATE
+  USING (true)
+  WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Public can read sessions" ON public.visitor_sessions;
+CREATE POLICY "Public can read sessions"
+  ON public.visitor_sessions
+  FOR SELECT
+  USING (true);
+
+-- ==============================================================================
+-- 12. User Activity & Interaction Events
+-- ==============================================================================
+CREATE TABLE IF NOT EXISTS public.analytics_events (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  session_id UUID REFERENCES public.visitor_sessions(id) ON DELETE CASCADE,
+  visitor_id TEXT NOT NULL,
+  path TEXT NOT NULL,
+  event_name TEXT NOT NULL,
+  event_data JSONB DEFAULT '{}'::jsonb,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_events_session_id ON public.analytics_events (session_id);
+CREATE INDEX IF NOT EXISTS idx_events_name ON public.analytics_events (event_name);
+CREATE INDEX IF NOT EXISTS idx_events_path ON public.analytics_events (path);
+CREATE INDEX IF NOT EXISTS idx_events_created_at ON public.analytics_events (created_at DESC);
+
+ALTER TABLE public.analytics_events ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Public can insert analytics events" ON public.analytics_events;
+CREATE POLICY "Public can insert analytics events"
+  ON public.analytics_events
+  FOR INSERT
+  WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Public can read analytics events" ON public.analytics_events;
+CREATE POLICY "Public can read analytics events"
+  ON public.analytics_events
+  FOR SELECT
+  USING (true);
+
+-- 13. Stored Procedure to update session duration (heartbeat)
+CREATE OR REPLACE FUNCTION public.ping_visitor_session(p_session_id UUID, p_duration_seconds INTEGER)
+RETURNS VOID AS $$
+BEGIN
+  UPDATE public.visitor_sessions
+  SET duration_seconds = GREATEST(duration_seconds, p_duration_seconds),
+      last_ping_at = NOW()
+  WHERE id = p_session_id;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
