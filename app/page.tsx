@@ -74,13 +74,6 @@ export default function HomePage() {
       {/* Hero Poster Section */}
       <section className="relative pt-16 pb-20 px-6 sm:px-12 flex flex-col items-center text-center overflow-hidden border-b-2 border-[#1c1917] bg-[#f7f4ed] grid-bg">
         
-        {/* Header Metadata Pill */}
-        <div className="inline-flex items-center gap-2 px-3 py-1 bg-white border-2 border-[#1c1917] font-mono text-[10px] font-bold uppercase tracking-widest text-[#1c1917] mb-8 shadow-[2px_2px_0px_#1c1917]">
-          <span>[ RELEASE · EDITION 2026 ]</span>
-          <span className="text-zinc-400">·</span>
-          <span>[ WARM LINEN & CHARCOAL INK ]</span>
-        </div>
-
         {/* Main Headline */}
         <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black max-w-5xl tracking-tighter leading-[0.95] uppercase text-[#1c1917]">
           PRECISION CRAFTED <br />
