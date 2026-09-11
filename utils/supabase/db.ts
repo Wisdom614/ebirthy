@@ -28,7 +28,7 @@ export async function saveSceneToSupabase(
     throw new Error('Supabase is not configured. Please add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY to .env');
   }
 
-  const slug = customSlug || generateSceneSlug(scene.recipientName, scene.age);
+  const slug = customSlug || generateSceneSlug(scene.recipientName, scene.birthDate || scene.age);
 
   const payload = {
     recipient_name: scene.recipientName || 'Friend',

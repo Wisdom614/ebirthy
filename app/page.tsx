@@ -137,8 +137,6 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {Object.entries(PRESET_TEMPLATES).map(([key, template], idx) => {
               const theme = THEME_DEFINITIONS[template.config.theme];
-              const encoded = encodeScene(template.config);
-
               return (
                 <div
                   key={key}
@@ -166,14 +164,14 @@ export default function HomePage() {
 
                   <div className="mt-6 pt-4 border-t-2 border-[#1c1917]/20 flex items-center gap-2">
                     <Link
-                      href={`/celebrate?data=${encoded}`}
+                      href={`/celebrate?preset=${key}`}
                       className="flex-1 py-2 bg-[#f7f4ed] hover:bg-[#eeeae0] text-[#1c1917] font-mono text-xs font-bold uppercase border-2 border-[#1c1917] flex items-center justify-center gap-1 transition-colors"
                     >
                       <Play className="w-3 h-3 text-amber-600" />
                       VIEW
                     </Link>
                     <Link
-                      href={`/studio?data=${encoded}`}
+                      href={`/studio?preset=${key}`}
                       className="flex-1 py-2 bg-amber-400 hover:bg-amber-300 text-[#1c1917] font-mono text-xs font-bold uppercase border-2 border-[#1c1917] shadow-[2px_2px_0px_#1c1917] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none flex items-center justify-center gap-1 transition-colors"
                     >
                       <Wand2 className="w-3 h-3" />

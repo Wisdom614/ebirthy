@@ -3,7 +3,7 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { SceneConfig } from '../../types/scene';
-import { DEFAULT_SCENE, THEME_DEFINITIONS } from '../../utils/presets';
+import { DEFAULT_SCENE, THEME_DEFINITIONS, PRESET_TEMPLATES } from '../../utils/presets';
 import { decodeScene } from '../../utils/sceneEncoder';
 import { fetchSceneById } from '../../utils/supabase/db';
 import { CelebrationCanvas } from '../../components/scene/CelebrationCanvas';
@@ -26,11 +26,15 @@ function CelebrateContent() {
   const [isTimeLocked, setIsTimeLocked] = useState(false);
 
   useEffect(() => {
+    const preset = searchParams.get('preset');
     const c = searchParams.get('c');
     const data = searchParams.get('data');
     const id = searchParams.get('id');
 
-    if (c || data) {
+    if (preset && PRESET_TEMPLATES[preset]) {
+      setScene(PRESET_TEMPLATES[preset].config);
+      setLoading(false);
+    } else if (c || data) {
       const decoded = decodeScene(c || data || '');
       setScene(decoded);
       if (decoded.enableTimeLock && decoded.unlockDateTime) {

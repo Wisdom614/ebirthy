@@ -4,7 +4,7 @@ import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { SceneConfig } from '../../types/scene';
 import { DEFAULT_SCENE, PRESET_TEMPLATES } from '../../utils/presets';
-import { decodeScene, encodeScene } from '../../utils/sceneEncoder';
+import { decodeScene, encodeScene, generateSceneSlug } from '../../utils/sceneEncoder';
 import { supabase, isSupabaseConfigured } from '../../utils/supabase/client';
 import { saveSceneToSupabase, fetchSceneById } from '../../utils/supabase/db';
 import { CelebrationCanvas } from '../../components/scene/CelebrationCanvas';
@@ -54,13 +54,16 @@ function StudioContent() {
     title?: string;
     description?: string;
   }>({ defaultMode: 'signin' });
-  const [pendingShareAfterAuth, setPendingShareAfterAuth] = useState(false);
+  const [pendingActionAfterAuth, setPendingActionAfterAuth] = useState<'share' | 'launch' | null>(null);
 
   useEffect(() => {
+    const preset = searchParams.get('preset');
     const data = searchParams.get('data');
     const id = searchParams.get('id');
 
-    if (data) {
+    if (preset && PRESET_TEMPLATES[preset]) {
+      setScene(PRESET_TEMPLATES[preset].config);
+    } else if (data) {
       const decoded = decodeScene(data);
       setScene(decoded);
     } else if (id) {
@@ -107,7 +110,7 @@ function StudioContent() {
       title: 'SIGN IN TO STUDIO',
       description: 'Access your cloud vault and managed celebration scenes.'
     });
-    setPendingShareAfterAuth(false);
+    setPendingActionAfterAuth(null);
     setIsAuthModalOpen(true);
   };
 
@@ -118,20 +121,68 @@ function StudioContent() {
         title: 'SIGN UP TO SHARE LINK',
         description: `Create a free creator account to generate, save, and share your celebration link for ${scene.recipientName || 'your friend'}.`
       });
-      setPendingShareAfterAuth(true);
+      setPendingActionAfterAuth('share');
       setIsAuthModalOpen(true);
       return;
     }
     setIsShareModalOpen(true);
   };
 
-  const handleAuthSuccess = (authenticatedUser?: any) => {
-    if (authenticatedUser) {
-      setUser(authenticatedUser);
+  const executeLaunchLive = async (activeUser?: any) => {
+    const effectiveUser = activeUser || user;
+
+    if (isSupabaseConfigured && effectiveUser) {
+      setIsSaving(true);
+      try {
+        const record = await saveSceneToSupabase(scene, effectiveUser.id, currentSceneId);
+        if (record) {
+          setCurrentSceneId(record.id);
+          const targetSlug = record.slug || record.id;
+          router.push(`/c/${targetSlug}`);
+          return;
+        }
+      } catch (err: any) {
+        console.error('Failed to save before launching full view:', err);
+      } finally {
+        setIsSaving(false);
+      }
     }
-    if (pendingShareAfterAuth) {
-      setPendingShareAfterAuth(false);
+
+    // Local fallback
+    const slug = currentSceneId || generateSceneSlug(scene.recipientName, scene.birthDate);
+    try {
+      localStorage.setItem(`ebirthy_scene_${slug}`, JSON.stringify(scene));
+    } catch {}
+    router.push(`/c/${slug}`);
+  };
+
+  const handleLaunchLive = () => {
+    if (isSupabaseConfigured && !user) {
+      setAuthModalConfig({
+        defaultMode: 'signup',
+        title: 'SIGN UP TO LAUNCH FULL SCENE',
+        description: `Create a free creator account to save your celebration and launch the official live view for ${scene.recipientName || 'your friend'}.`
+      });
+      setPendingActionAfterAuth('launch');
+      setIsAuthModalOpen(true);
+      return;
+    }
+
+    executeLaunchLive();
+  };
+
+  const handleAuthSuccess = async (authenticatedUser?: any) => {
+    const activeUser = authenticatedUser || user;
+    if (activeUser) {
+      setUser(activeUser);
+    }
+    const action = pendingActionAfterAuth;
+    setPendingActionAfterAuth(null);
+
+    if (action === 'share') {
       setIsShareModalOpen(true);
+    } else if (action === 'launch') {
+      await executeLaunchLive(activeUser);
     }
   };
 
@@ -147,7 +198,7 @@ function StudioContent() {
         title: 'SIGN UP TO SAVE SCENE',
         description: 'Create an account to save and manage scenes in your cloud vault.'
       });
-      setPendingShareAfterAuth(false);
+      setPendingActionAfterAuth(null);
       setIsAuthModalOpen(true);
       return;
     }
@@ -174,11 +225,6 @@ function StudioContent() {
       await supabase.auth.signOut();
       setUser(null);
     }
-  };
-
-  const handleLaunchLive = () => {
-    const encoded = encodeScene(scene);
-    router.push(`/celebrate?data=${encoded}`);
   };
 
   return (
@@ -496,7 +542,7 @@ function StudioContent() {
             title: 'SIGN UP TO SHARE LINK',
             description: `Create a free creator account to generate, save, and share your celebration link for ${scene.recipientName || 'your friend'}.`
           });
-          setPendingShareAfterAuth(true);
+          setPendingActionAfterAuth('share');
           setIsAuthModalOpen(true);
         }}
       />
@@ -509,7 +555,7 @@ function StudioContent() {
         description={authModalConfig.description}
         onClose={() => {
           setIsAuthModalOpen(false);
-          setPendingShareAfterAuth(false);
+          setPendingActionAfterAuth(null);
         }}
         onSuccess={handleAuthSuccess}
       />

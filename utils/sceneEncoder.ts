@@ -4,9 +4,9 @@ import { SceneConfig } from '../types/scene';
 import { DEFAULT_SCENE } from './presets';
 
 /**
- * Generates a clean, short human-readable slug (e.g. 'alex24-k9x' or 'alex2026')
+ * Generates a clean, short human-readable slug (e.g. 'alex1305-k9x' or 'alex2026-w8k')
  */
-export function generateSceneSlug(recipientName: string, age?: number): string {
+export function generateSceneSlug(recipientName: string, birthDateOrAge?: string | number): string {
   const cleanName = (recipientName || 'friend')
     .toLowerCase()
     .replace(/[^a-z0-9]/g, '')
@@ -15,8 +15,14 @@ export function generateSceneSlug(recipientName: string, age?: number): string {
   const currentYear = new Date().getFullYear();
   const randomSuffix = nanoid(4).toLowerCase().replace(/[^a-z0-9]/g, '');
   
-  // Format: [name][age or year]-[shortSuffix]
-  const tag = age ? `${age}` : `${currentYear}`;
+  let tag = `${currentYear}`;
+  if (typeof birthDateOrAge === 'string' && birthDateOrAge) {
+    const cleanDate = birthDateOrAge.replace(/[^0-9]/g, '').slice(-4);
+    if (cleanDate) tag = cleanDate;
+  } else if (typeof birthDateOrAge === 'number') {
+    tag = `${birthDateOrAge}`;
+  }
+
   return `${cleanName}${tag}-${randomSuffix}`;
 }
 
