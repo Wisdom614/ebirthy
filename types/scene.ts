@@ -45,11 +45,24 @@ export interface SceneConfig {
   enablePhotoReel: boolean;
   photos: PhotoMemory[];
   
+  enableGuestbook?: boolean;
+  
   // Audio & Atmosphere
   musicTrack: 'festive' | 'chill-lofi' | 'orchestral' | 'synthwave' | 'acoustic' | 'none';
   enableConfettiCannon: boolean;
   enableFireworks: boolean;
   autoPlayCelebration: boolean;
+}
+
+export type GuestbookStamp = 'celebrate' | 'fire' | 'heart' | 'star' | 'zap' | 'cake';
+
+export interface GuestbookEntry {
+  id: string;
+  scene_slug: string;
+  sender_name: string;
+  message: string;
+  stamp: GuestbookStamp;
+  created_at: string;
 }
 
 export interface ThemeDefinition {

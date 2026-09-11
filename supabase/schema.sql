@@ -132,3 +132,33 @@ CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
   FOR EACH ROW
   EXECUTE FUNCTION public.handle_new_user();
+
+-- ==============================================================================
+-- 10. Community Guestbook Wishes Wall
+-- ==============================================================================
+CREATE TABLE IF NOT EXISTS public.guestbook_entries (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  scene_slug TEXT NOT NULL,
+  sender_name TEXT NOT NULL,
+  message TEXT NOT NULL,
+  stamp TEXT NOT NULL DEFAULT 'celebrate',
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_guestbook_slug ON public.guestbook_entries (scene_slug);
+CREATE INDEX IF NOT EXISTS idx_guestbook_created_at ON public.guestbook_entries (created_at DESC);
+
+ALTER TABLE public.guestbook_entries ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Public can view guestbook entries" ON public.guestbook_entries;
+CREATE POLICY "Public can view guestbook entries"
+  ON public.guestbook_entries
+  FOR SELECT
+  USING (true);
+
+DROP POLICY IF EXISTS "Public can sign guestbook" ON public.guestbook_entries;
+CREATE POLICY "Public can sign guestbook"
+  ON public.guestbook_entries
+  FOR INSERT
+  WITH CHECK (true);
+

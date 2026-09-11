@@ -12,21 +12,24 @@ import { FireworksCanvas } from './FireworksCanvas';
 import { PolaroidReel } from './PolaroidReel';
 import { CinematicLetter } from './CinematicLetter';
 import { SoundController } from './SoundController';
+import { GuestbookWall } from './GuestbookWall';
 import { PartyPopper, Share2 } from 'lucide-react';
 
 interface CelebrationCanvasProps {
   scene: SceneConfig;
   previewMode?: boolean;
   onShareClick?: () => void;
+  slug?: string;
 }
 
 export const CelebrationCanvas: React.FC<CelebrationCanvasProps> = ({
   scene,
   previewMode = false,
-  onShareClick
+  onShareClick,
+  slug
 }) => {
   const theme = THEME_DEFINITIONS[scene.theme] || THEME_DEFINITIONS.gold;
-  const [activeTab, setActiveTab] = useState<'all' | 'cake' | 'gift' | 'letter' | 'photos'>('all');
+  const [activeTab, setActiveTab] = useState<'all' | 'cake' | 'gift' | 'letter' | 'photos' | 'guestbook'>('all');
 
   const triggerConfettiCannon = () => {
     audio.playSFX('horn');
@@ -134,7 +137,8 @@ export const CelebrationCanvas: React.FC<CelebrationCanvasProps> = ({
           scene.enableCake ? { id: 'cake', label: '[ CAKE & CANDLES ]' } : null,
           scene.enableGift ? { id: 'gift', label: '[ SECRET PARCEL ]' } : null,
           scene.letterText ? { id: 'letter', label: '[ PERSONAL MEMO ]' } : null,
-          scene.enablePhotoReel && scene.photos.length > 0 ? { id: 'photos', label: '[ ARCHIVE REEL ]' } : null
+          scene.enablePhotoReel && scene.photos.length > 0 ? { id: 'photos', label: '[ ARCHIVE REEL ]' } : null,
+          scene.enableGuestbook !== false ? { id: 'guestbook', label: '[ WISHES BOARD ]' } : null
         ]
           .filter(Boolean)
           .map(tab => (
@@ -193,6 +197,17 @@ export const CelebrationCanvas: React.FC<CelebrationCanvasProps> = ({
               recipientName={scene.recipientName}
               letterText={scene.letterText}
               fontStyle={scene.fontStyle}
+            />
+          </div>
+        )}
+
+        {/* Community Wishes Guestbook Section */}
+        {scene.enableGuestbook !== false && (activeTab === 'all' || activeTab === 'guestbook') && (
+          <div className="w-full flex flex-col items-center border-2 border-[#1c1917] p-6 bg-white shadow-[4px_4px_0px_#1c1917]">
+            <GuestbookWall
+              sceneSlug={slug || scene.id || scene.recipientName?.toLowerCase().replace(/\s+/g, '-') || 'celebrate'}
+              recipientName={scene.recipientName}
+              themeAccent={scene.primaryColor}
             />
           </div>
         )}

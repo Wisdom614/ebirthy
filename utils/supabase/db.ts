@@ -118,3 +118,84 @@ export async function deleteSceneFromSupabase(sceneId: string): Promise<boolean>
 
   return !error;
 }
+
+const LOCAL_GUESTBOOK_PREFIX = 'ebirthy_guestbook_';
+
+/**
+ * Fetches guestbook entries for a given scene slug
+ */
+export async function fetchGuestbookEntries(sceneSlug: string): Promise<import('../../types/scene').GuestbookEntry[]> {
+  const localKey = `${LOCAL_GUESTBOOK_PREFIX}${sceneSlug}`;
+  let localEntries: import('../../types/scene').GuestbookEntry[] = [];
+  if (typeof window !== 'undefined') {
+    try {
+      const cached = localStorage.getItem(localKey);
+      if (cached) localEntries = JSON.parse(cached);
+    } catch {}
+  }
+
+  if (!isSupabaseConfigured || !supabase) {
+    return localEntries;
+  }
+
+  try {
+    const { data, error } = await supabase
+      .from('guestbook_entries')
+      .select('*')
+      .eq('scene_slug', sceneSlug)
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.warn('Supabase guestbook fetch notice, using local cache:', error);
+      return localEntries;
+    }
+
+    // Merge and deduplicate by id
+    const combined = [...(data || []), ...localEntries];
+    const unique = Array.from(new Map(combined.map(item => [item.id, item])).values());
+    unique.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+    return unique;
+  } catch {
+    return localEntries;
+  }
+}
+
+/**
+ * Adds a new signature/wish to the guestbook
+ */
+export async function saveGuestbookEntry(entry: import('../../types/scene').GuestbookEntry): Promise<boolean> {
+  const localKey = `${LOCAL_GUESTBOOK_PREFIX}${entry.scene_slug}`;
+  if (typeof window !== 'undefined') {
+    try {
+      const existing = localStorage.getItem(localKey);
+      const list = existing ? JSON.parse(existing) : [];
+      list.unshift(entry);
+      localStorage.setItem(localKey, JSON.stringify(list));
+    } catch {}
+  }
+
+  if (!isSupabaseConfigured || !supabase) {
+    return true;
+  }
+
+  try {
+    const { error } = await supabase
+      .from('guestbook_entries')
+      .insert([{
+        id: entry.id,
+        scene_slug: entry.scene_slug,
+        sender_name: entry.sender_name,
+        message: entry.message,
+        stamp: entry.stamp,
+        created_at: entry.created_at
+      }]);
+
+    if (error) {
+      console.warn('Guestbook cloud persist notice:', error);
+    }
+    return true;
+  } catch (err) {
+    console.warn('Guestbook save error:', err);
+    return true;
+  }
+}

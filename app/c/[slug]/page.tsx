@@ -163,6 +163,7 @@ export default function ShortLinkCelebratePage() {
         <div className="flex-1 flex flex-col">
           <CelebrationCanvas
             scene={scene}
+            slug={slug}
             onShareClick={() => setIsShareOpen(true)}
           />
 

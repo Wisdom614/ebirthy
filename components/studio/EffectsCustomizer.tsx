@@ -228,6 +228,25 @@ export const EffectsCustomizer: React.FC<EffectsCustomizerProps> = ({ scene, onC
           </button>
         </div>
       </div>
+
+      {/* Community Wishes Guestbook Wall Controls */}
+      <div className="p-4 bg-white border-2 border-[#1c1917] shadow-[3px_3px_0px_#1c1917] flex items-center justify-between">
+        <div>
+          <h4 className="font-mono font-bold text-xs uppercase text-[#1c1917]">[ COMMUNITY WISHES BOARD ]</h4>
+          <p className="font-mono text-[10px] text-zinc-600 uppercase font-semibold">Allow friends to sign guestbook & stamp wishes</p>
+        </div>
+        <button
+          type="button"
+          onClick={() => onChange({ enableGuestbook: scene.enableGuestbook === false ? true : false })}
+          className={`px-3 py-1 font-mono text-[10px] font-bold uppercase border-2 transition-all cursor-pointer ${
+            scene.enableGuestbook !== false
+              ? 'bg-amber-400 text-[#1c1917] border-[#1c1917] shadow-[2px_2px_0px_#1c1917]'
+              : 'bg-[#eeeae0] text-zinc-600 border-[#1c1917]'
+          }`}
+        >
+          {scene.enableGuestbook !== false ? '[ ENABLED ]' : '[ DISABLED ]'}
+        </button>
+      </div>
     </div>
   );
 };
