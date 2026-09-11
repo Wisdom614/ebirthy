@@ -8,6 +8,7 @@ import { decodeScene } from '../../utils/sceneEncoder';
 import { fetchSceneById } from '../../utils/supabase/db';
 import { CelebrationCanvas } from '../../components/scene/CelebrationCanvas';
 import { ShareModal } from '../../components/studio/ShareModal';
+import { TimeLockScreen } from '../../components/scene/TimeLockScreen';
 import { audio } from '../../utils/audioManager';
 import confetti from 'canvas-confetti';
 import { Sparkles, ArrowRight, Wand2, Loader2 } from 'lucide-react';
@@ -19,6 +20,7 @@ function CelebrateContent() {
   const [loading, setLoading] = useState(true);
   const [hasStarted, setHasStarted] = useState(false);
   const [isShareOpen, setIsShareOpen] = useState(false);
+  const [isTimeLocked, setIsTimeLocked] = useState(false);
 
   useEffect(() => {
     const c = searchParams.get('c');
@@ -28,11 +30,17 @@ function CelebrateContent() {
     if (c || data) {
       const decoded = decodeScene(c || data || '');
       setScene(decoded);
+      if (decoded.enableTimeLock && decoded.unlockDateTime) {
+        setIsTimeLocked(new Date() < new Date(decoded.unlockDateTime));
+      }
       setLoading(false);
     } else if (id) {
       fetchSceneById(id).then((record) => {
         if (record && record.config) {
           setScene(record.config);
+          if (record.config.enableTimeLock && record.config.unlockDateTime) {
+            setIsTimeLocked(new Date() < new Date(record.config.unlockDateTime));
+          }
         }
         setLoading(false);
       });
@@ -66,6 +74,17 @@ function CelebrateContent() {
         <Loader2 className="w-8 h-8 text-amber-600 animate-spin" />
         <span>[ LOADING CELEBRATION DATA... ]</span>
       </div>
+    );
+  }
+
+  if (isTimeLocked && scene.unlockDateTime) {
+    return (
+      <TimeLockScreen
+        recipientName={scene.recipientName}
+        unlockDateTime={scene.unlockDateTime}
+        onUnlock={() => setIsTimeLocked(false)}
+        themeBackgroundClass={theme.backgroundClass}
+      />
     );
   }
 

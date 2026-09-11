@@ -47,6 +47,10 @@ export interface SceneConfig {
   
   enableGuestbook?: boolean;
   
+  // Midnight Reveal Time-Lock
+  enableTimeLock?: boolean;
+  unlockDateTime?: string;
+  
   // Audio & Atmosphere
   musicTrack: 'festive' | 'chill-lofi' | 'orchestral' | 'synthwave' | 'acoustic' | 'none';
   enableConfettiCannon: boolean;

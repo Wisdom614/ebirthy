@@ -122,7 +122,9 @@ export const DEFAULT_SCENE: SceneConfig = {
   enableConfettiCannon: true,
   enableFireworks: true,
   autoPlayCelebration: true,
-  enableGuestbook: true
+  enableGuestbook: true,
+  enableTimeLock: false,
+  unlockDateTime: ''
 };
 
 export const PRESET_TEMPLATES: Record<string, { name: string; tag: string; iconName: 'scroll' | 'compass' | 'leaf' | 'zap'; config: SceneConfig }> = {

@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { fetchSceneById } from '../../../utils/supabase/db';
 import { CelebrationCanvas } from '../../../components/scene/CelebrationCanvas';
 import { ShareModal } from '../../../components/studio/ShareModal';
+import { TimeLockScreen } from '../../../components/scene/TimeLockScreen';
 import { THEME_DEFINITIONS } from '../../../utils/presets';
 import { SceneConfig } from '../../../types/scene';
 import { audio } from '../../../utils/audioManager';
@@ -22,6 +23,7 @@ export default function ShortLinkCelebratePage() {
   const [error, setError] = useState<string | null>(null);
   const [hasStarted, setHasStarted] = useState(false);
   const [isShareOpen, setIsShareOpen] = useState(false);
+  const [isTimeLocked, setIsTimeLocked] = useState(false);
 
   useEffect(() => {
     if (!slug) return;
@@ -59,6 +61,13 @@ export default function ShortLinkCelebratePage() {
         setLoading(false);
       });
   }, [slug]);
+
+  useEffect(() => {
+    if (scene?.enableTimeLock && scene?.unlockDateTime) {
+      const isLocked = new Date() < new Date(scene.unlockDateTime);
+      setIsTimeLocked(isLocked);
+    }
+  }, [scene]);
 
   const handleStartCelebration = () => {
     if (!scene) return;
@@ -109,6 +118,17 @@ export default function ShortLinkCelebratePage() {
   }
 
   const theme = THEME_DEFINITIONS[scene.theme] || THEME_DEFINITIONS.gold;
+
+  if (isTimeLocked && scene.unlockDateTime) {
+    return (
+      <TimeLockScreen
+        recipientName={scene.recipientName}
+        unlockDateTime={scene.unlockDateTime}
+        onUnlock={() => setIsTimeLocked(false)}
+        themeBackgroundClass={theme.backgroundClass}
+      />
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#f7f4ed] text-[#1c1917] relative flex flex-col">
