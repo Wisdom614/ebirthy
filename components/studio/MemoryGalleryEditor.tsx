@@ -144,17 +144,17 @@ export const MemoryGalleryEditor: React.FC<MemoryGalleryEditorProps> = ({ scene,
                       <div className="absolute inset-0 bg-white/90 flex flex-col items-center justify-center gap-2 text-[#1c1917] font-mono">
                         <Loader2 className="w-6 h-6 animate-spin text-amber-600" />
                         <span className="text-[10px] uppercase font-bold tracking-wider">
-                          UPLOADING TO CLOUDINARY...
+                          UPLOADING PHOTO...
                         </span>
                       </div>
                     )}
                   </div>
 
-                  {/* Cloudinary File Upload Button */}
+                  {/* Photo Upload Button */}
                   <div>
                     <label className="w-full py-2 px-3 bg-[#f7f4ed] hover:bg-[#eeeae0] border-2 border-[#1c1917] text-[#1c1917] font-mono text-xs font-bold uppercase flex items-center justify-center gap-2 cursor-pointer shadow-[2px_2px_0px_#1c1917] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all">
                       <Upload className="w-3.5 h-3.5 text-amber-600" />
-                      <span>UPLOAD IMAGE (CLOUDINARY)</span>
+                      <span>UPLOAD PHOTOGRAPH</span>
                       <input
                         type="file"
                         accept="image/*"

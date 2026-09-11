@@ -89,7 +89,7 @@ export const SavedScenesDrawer: React.FC<SavedScenesDrawerProps> = ({
               </div>
               <h4 className="font-mono font-bold text-sm uppercase text-[#1c1917]">AUTHENTICATION REQUIRED</h4>
               <p className="font-mono text-xs text-zinc-600 max-w-xs mx-auto font-medium">
-                Sign in to persist scenes to your Supabase account and monitor live view metrics.
+                Sign in to save your custom celebration scenes and track recipient view metrics in real time.
               </p>
               <button
                 onClick={() => {
@@ -103,7 +103,7 @@ export const SavedScenesDrawer: React.FC<SavedScenesDrawerProps> = ({
             </div>
           ) : loading ? (
             <div className="py-20 text-center font-mono text-xs text-zinc-500 uppercase font-semibold">
-              LOADING ARCHIVES FROM SUPABASE...
+              LOADING SAVED CELEBRATION SCENES...
             </div>
           ) : scenes.length === 0 ? (
             <div className="py-16 text-center space-y-3">
@@ -157,7 +157,7 @@ export const SavedScenesDrawer: React.FC<SavedScenesDrawerProps> = ({
         </div>
 
         <div className="pt-4 border-t-2 border-[#1c1917] text-center font-mono text-[9px] uppercase tracking-widest text-zinc-500 font-bold">
-          SUPABASE PERSISTENCE ENGINE · VER_2.4
+          CLOUD PERSISTENCE VAULT · VER_2.4
         </div>
       </div>
     </div>

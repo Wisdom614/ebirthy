@@ -96,7 +96,7 @@ function StudioContent() {
 
   const handleSaveToCloud = async () => {
     if (!isSupabaseConfigured) {
-      alert('Supabase is not configured yet. Please ensure NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY are set in .env');
+      alert('Cloud storage sync is currently offline. Your celebration scene is saved in your local session and short links.');
       return;
     }
 
@@ -187,7 +187,7 @@ function StudioContent() {
                 ? 'bg-emerald-400 text-[#1c1917]'
                 : 'bg-[#f7f4ed] hover:bg-[#eeeae0] text-[#1c1917]'
             }`}
-            title="Save to Supabase Cloud"
+            title="Save to Cloud Vault"
           >
             {isSaving ? (
               <Loader2 className="w-3.5 h-3.5 animate-spin" />

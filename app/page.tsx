@@ -235,9 +235,9 @@ export default function HomePage() {
 
           <div className="p-6 bg-white border-2 border-[#1c1917] shadow-[4px_4px_0px_#1c1917]">
             <span className="font-mono text-[10px] text-amber-700 font-bold uppercase block mb-2">[ 03 · PERSISTENCE ]</span>
-            <h3 className="font-mono font-bold text-base uppercase text-[#1c1917] mb-2">SUPABASE & CLOUDINARY</h3>
+            <h3 className="font-mono font-bold text-base uppercase text-[#1c1917] mb-2">CLOUD SYNC & VAULT</h3>
             <p className="font-mono text-xs text-zinc-600 leading-relaxed font-medium">
-              Full cloud database persistence with real-time view counters, authentication, and direct Cloudinary image uploads.
+              Encrypted cloud persistence with real-time recipient view counters, creator accounts, and instant asset synchronization.
             </p>
           </div>
         </div>
