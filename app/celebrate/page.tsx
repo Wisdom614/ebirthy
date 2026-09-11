@@ -10,6 +10,7 @@ import { CelebrationCanvas } from '../../components/scene/CelebrationCanvas';
 import { ShareModal } from '../../components/studio/ShareModal';
 import { TimeLockScreen } from '../../components/scene/TimeLockScreen';
 import { audio } from '../../utils/audioManager';
+import { startTenSecondGrandCelebration } from '../../utils/celebrationEffects';
 import confetti from 'canvas-confetti';
 import { Sparkles, ArrowRight, Wand2, Loader2 } from 'lucide-react';
 import Link from 'next/link';
@@ -54,17 +55,9 @@ function CelebrateContent() {
     setHasStarted(true);
 
     audio.playMusic(scene.musicTrack);
-    audio.playSFX('horn');
-    audio.playSFX('cheer');
 
     const theme = THEME_DEFINITIONS[scene.theme] || THEME_DEFINITIONS.gold;
-
-    confetti({
-      particleCount: 100,
-      spread: 80,
-      origin: { y: 0.6 },
-      colors: theme.particlesColor
-    });
+    startTenSecondGrandCelebration(theme.particlesColor);
   };
 
   const theme = THEME_DEFINITIONS[scene.theme] || THEME_DEFINITIONS.gold;

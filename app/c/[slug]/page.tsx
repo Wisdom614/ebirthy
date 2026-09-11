@@ -9,6 +9,7 @@ import { TimeLockScreen } from '../../../components/scene/TimeLockScreen';
 import { THEME_DEFINITIONS } from '../../../utils/presets';
 import { SceneConfig } from '../../../types/scene';
 import { audio } from '../../../utils/audioManager';
+import { startTenSecondGrandCelebration } from '../../../utils/celebrationEffects';
 import confetti from 'canvas-confetti';
 import { BrandLogo } from '../../../components/ui/BrandLogo';
 import { Sparkles, ArrowRight, Wand2, Loader2, AlertTriangle } from 'lucide-react';
@@ -75,16 +76,9 @@ export default function ShortLinkCelebratePage() {
     setHasStarted(true);
 
     audio.playMusic(scene.musicTrack);
-    audio.playSFX('horn');
-    audio.playSFX('cheer');
 
     const theme = THEME_DEFINITIONS[scene.theme] || THEME_DEFINITIONS.gold;
-    confetti({
-      particleCount: 100,
-      spread: 80,
-      origin: { y: 0.6 },
-      colors: theme.particlesColor
-    });
+    startTenSecondGrandCelebration(theme.particlesColor);
   };
 
   if (loading) {

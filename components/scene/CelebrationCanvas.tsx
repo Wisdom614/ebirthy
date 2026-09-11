@@ -6,6 +6,7 @@ import confetti from 'canvas-confetti';
 import { SceneConfig } from '../../types/scene';
 import { THEME_DEFINITIONS } from '../../utils/presets';
 import { audio } from '../../utils/audioManager';
+import { startTenSecondGrandCelebration } from '../../utils/celebrationEffects';
 import { InteractiveCake } from './InteractiveCake';
 import { FloatingBalloons } from './FloatingBalloons';
 import { SurpriseGiftBox } from './SurpriseGiftBox';
@@ -100,23 +101,7 @@ export const CelebrationCanvas: React.FC<CelebrationCanvasProps> = ({
   };
 
   const triggerConfettiCannon = () => {
-    audio.playSFX('horn');
-    audio.playSFX('cheer');
-
-    confetti({
-      particleCount: 90,
-      angle: 60,
-      spread: 70,
-      origin: { x: 0, y: 0.8 },
-      colors: theme.particlesColor
-    });
-    confetti({
-      particleCount: 90,
-      angle: 120,
-      spread: 70,
-      origin: { x: 1, y: 0.8 },
-      colors: theme.particlesColor
-    });
+    startTenSecondGrandCelebration(theme.particlesColor);
   };
 
   const triggerReactionCheer = () => {
