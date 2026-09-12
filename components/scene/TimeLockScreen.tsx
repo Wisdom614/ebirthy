@@ -21,6 +21,8 @@ import { BrandLogo } from '../ui/BrandLogo';
 import { TimeLockAtmosphere } from './TimeLockAtmosphere';
 import { Vault3DCore } from './Vault3DCore';
 import { TimeLockArcade } from './TimeLockArcade';
+import { TimeLockTeaserHUD } from './TimeLockTeaserHUD';
+import { PhotoMemory } from '../../types/scene';
 import {
   generateGoogleCalendarUrl,
   downloadIcsFile
@@ -32,6 +34,11 @@ interface TimeLockScreenProps {
   onUnlock: () => void;
   themeBackgroundClass?: string;
   senderName?: string;
+  relationship?: string;
+  age?: number;
+  birthDate?: string;
+  photos?: PhotoMemory[];
+  giftPhotoUrl?: string;
 }
 
 interface TimeRemaining {
@@ -73,7 +80,12 @@ export const TimeLockScreen: React.FC<TimeLockScreenProps> = ({
   recipientName,
   unlockDateTime,
   onUnlock,
-  senderName
+  senderName,
+  relationship,
+  age,
+  birthDate,
+  photos,
+  giftPhotoUrl
 }) => {
   const [timeLeft, setTimeLeft] = useState<TimeRemaining>(() =>
     calculateTimeRemaining(unlockDateTime)
@@ -413,7 +425,19 @@ export const TimeLockScreen: React.FC<TimeLockScreenProps> = ({
           />
         </div>
 
-        {/* 5. Interactive Pre-Celebration Reaction Station */}
+        {/* 5. Memory Sneak Peek & Celebration Telemetry HUD */}
+        <TimeLockTeaserHUD
+          recipientName={recipientName}
+          senderName={senderName}
+          relationship={relationship}
+          age={age}
+          birthDate={birthDate}
+          photos={photos}
+          giftPhotoUrl={giftPhotoUrl}
+          unlockDateTime={unlockDateTime}
+        />
+
+        {/* 6. Interactive Pre-Celebration Reaction Station */}
         <div className="flex flex-col items-center gap-2 mt-1 max-w-md w-full">
           <span className="font-mono text-[10px] text-zinc-700 uppercase tracking-widest font-bold flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-amber-600" />

@@ -121,6 +121,11 @@ export default function ShortLinkCelebratePage() {
         recipientName={scene.recipientName}
         unlockDateTime={scene.unlockDateTime}
         senderName={scene.senderName}
+        relationship={scene.relationship}
+        age={scene.age}
+        birthDate={scene.birthDate}
+        photos={scene.photos}
+        giftPhotoUrl={scene.giftContent?.photoUrl}
         onUnlock={() => setIsTimeLocked(false)}
         themeBackgroundClass={theme.backgroundClass}
       />
