@@ -413,11 +413,6 @@ export const ChronicleImageModal: React.FC<ChronicleImageModalProps> = ({
                         <Camera className="w-8 h-8 text-zinc-400" />
                       </div>
                     )}
-                    <div className="absolute -bottom-3 -right-3 w-14 h-14 rounded-full border border-amber-600/80 bg-amber-400/20 backdrop-blur-xs flex items-center justify-center rotate-[-15deg] pointer-events-none">
-                      <span className="font-mono text-[5px] font-black text-amber-900 uppercase text-center">
-                        OFFICIAL<br />PASSPORT
-                      </span>
-                    </div>
                   </div>
                   <span className="font-mono text-[7px] text-zinc-500 font-bold uppercase mt-1">
                     NATIONAL: EARTH
@@ -437,7 +432,7 @@ export const ChronicleImageModal: React.FC<ChronicleImageModalProps> = ({
                     </div>
                     <div>
                       <span className="text-[6px] text-zinc-500 uppercase block font-bold leading-none">SOLAR ORBITS</span>
-                      <span className="text-[9px] font-bold text-[#1c1917]">{chronicle.totalYears} YEARS</span>
+                      <span className="text-[9px] font-bold text-[#1c1917]">{chronicle.totalYears}</span>
                     </div>
                   </div>
 
@@ -515,7 +510,7 @@ export const ChronicleImageModal: React.FC<ChronicleImageModalProps> = ({
               <div className="space-y-1 font-mono text-[8px]">
                 <div className="bg-[#262320] border border-[#f59e0b]/40 px-2.5 py-1 flex items-center justify-between">
                   <span className="text-zinc-400">☀️ SOLAR ORBITS:</span>
-                  <span className="font-black text-amber-400">{chronicle.totalYears} YEARS</span>
+                  <span className="font-black text-amber-400">{chronicle.totalYears}</span>
                 </div>
                 <div className="bg-[#262320] border border-[#f59e0b]/40 px-2.5 py-1 flex items-center justify-between">
                   <span className="text-zinc-400">🌙 LUNAR PHASES:</span>
@@ -641,7 +636,7 @@ export const ChronicleImageModal: React.FC<ChronicleImageModalProps> = ({
                 </div>
                 <div className="flex justify-between">
                   <span>1. SOLAR ORBITS</span>
-                  <span className="font-bold">{chronicle.totalYears} YRS</span>
+                  <span className="font-bold">{chronicle.totalYears}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>2. LUNAR PHASES</span>
