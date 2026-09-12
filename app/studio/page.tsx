@@ -7,6 +7,7 @@ import { DEFAULT_SCENE, PRESET_TEMPLATES } from '../../utils/presets';
 import { decodeScene, encodeScene, generateSceneSlug } from '../../utils/sceneEncoder';
 import { supabase, isSupabaseConfigured } from '../../utils/supabase/client';
 import { saveSceneToSupabase, fetchSceneById } from '../../utils/supabase/db';
+import { getSceneEditStatus } from '../../utils/sceneExpiry';
 import { CelebrationCanvas } from '../../components/scene/CelebrationCanvas';
 import { DetailsForm } from '../../components/studio/DetailsForm';
 import { ThemeSelector } from '../../components/studio/ThemeSelector';
@@ -30,7 +31,10 @@ import {
   LogOut,
   ArrowLeft,
   MoreHorizontal,
-  Image as ImageIcon
+  Image as ImageIcon,
+  Copy,
+  Clock,
+  Lock
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -49,11 +53,15 @@ function StudioContent() {
   const [previewDevice, setPreviewDevice] = useState<'desktop' | 'mobile'>('desktop');
   const [showMobilePreview, setShowMobilePreview] = useState(false);
 
-  // User auth state
+  // User auth & persistence state
   const [user, setUser] = useState<any>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [savedSuccess, setSavedSuccess] = useState(false);
   const [currentSceneId, setCurrentSceneId] = useState<string | undefined>(undefined);
+  const [currentSceneCreatedAt, setCurrentSceneCreatedAt] = useState<string | undefined>(undefined);
+
+  const editStatus = getSceneEditStatus(currentSceneCreatedAt);
+
   const [authModalConfig, setAuthModalConfig] = useState<{
     defaultMode: 'signin' | 'signup';
     title?: string;
@@ -68,6 +76,8 @@ function StudioContent() {
 
     if (preset && PRESET_TEMPLATES[preset]) {
       setScene(PRESET_TEMPLATES[preset].config);
+      setCurrentSceneId(undefined);
+      setCurrentSceneCreatedAt(undefined);
     } else if (data) {
       const decoded = decodeScene(data);
       setScene(decoded);
@@ -76,6 +86,7 @@ function StudioContent() {
         if (record) {
           setScene(record.config);
           setCurrentSceneId(record.id);
+          setCurrentSceneCreatedAt(record.created_at);
         }
       });
     }
@@ -196,6 +207,12 @@ function StudioContent() {
     }
   };
 
+  const handleDuplicateAsNew = () => {
+    setCurrentSceneId(undefined);
+    setCurrentSceneCreatedAt(undefined);
+    audio.playSFX('sparkle');
+  };
+
   const handleSaveToCloud = async () => {
     if (!isSupabaseConfigured) {
       alert('Cloud storage sync is currently offline. Your celebration scene is saved in your local session and short links.');
@@ -213,11 +230,24 @@ function StudioContent() {
       return;
     }
 
+    // If current scene is past its 3-day edit window, prevent in-place update and fork into a new copy
+    if (currentSceneId && currentSceneCreatedAt && editStatus.isExpired) {
+      if (
+        confirm(
+          'This scene was created more than 3 days ago and is now finalized. Would you like to duplicate it into a new scene so you can continue editing?'
+        )
+      ) {
+        handleDuplicateAsNew();
+      }
+      return;
+    }
+
     setIsSaving(true);
     try {
       const result = await saveSceneToSupabase(scene, user?.id, currentSceneId);
       if (result) {
         setCurrentSceneId(result.id);
+        setCurrentSceneCreatedAt(result.created_at);
         setSavedSuccess(true);
         audio.playSFX('sparkle');
         setTimeout(() => setSavedSuccess(false), 3000);
@@ -260,6 +290,39 @@ function StudioContent() {
                 {scene.recipientName}
               </span>
             </div>
+
+            {/* 3-Day Creator Edit Window Status Indicator */}
+            {currentSceneId && (
+              <div className="hidden lg:flex items-center gap-1.5 border-l-2 border-[#1c1917]/30 pl-2">
+                {editStatus.canEdit ? (
+                  <span
+                    className="px-2 py-0.5 bg-emerald-50 border border-emerald-500 text-emerald-900 font-mono text-[9px] font-black uppercase flex items-center gap-1 shadow-xs"
+                    title="Creators can edit scene content for up to 3 days after creation"
+                  >
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                    <span>⏱️ EDIT WINDOW: {editStatus.formattedRemaining}</span>
+                  </span>
+                ) : (
+                  <div className="flex items-center gap-1.5">
+                    <span
+                      className="px-2 py-0.5 bg-zinc-100 border border-zinc-400 text-zinc-700 font-mono text-[9px] font-bold uppercase flex items-center gap-1"
+                      title="This scene is older than 3 days and is finalized. Duplicate to edit as a new scene."
+                    >
+                      <Lock className="w-2.5 h-2.5 text-zinc-500" />
+                      <span>FINALIZED</span>
+                    </span>
+                    <button
+                      onClick={handleDuplicateAsNew}
+                      className="px-2 py-0.5 bg-amber-400 hover:bg-amber-300 text-[#1c1917] border border-[#1c1917] font-mono text-[9px] font-black uppercase flex items-center gap-1 shadow-xs cursor-pointer active:translate-y-[1px]"
+                      title="Duplicate this scene into a fresh editable copy"
+                    >
+                      <Copy className="w-2.5 h-2.5" />
+                      <span>[ DUPLICATE TO EDIT ]</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
 
@@ -280,25 +343,36 @@ function StudioContent() {
         {/* Right Desktop Controls (md:flex) */}
         <div className="hidden md:flex items-center gap-2 flex-shrink-0">
           {/* Cloud Save Button */}
-          <button
-            onClick={handleSaveToCloud}
-            disabled={isSaving}
-            className={`px-3 py-1.5 font-mono text-xs font-bold uppercase border-2 border-[#1c1917] shadow-[2px_2px_0px_#1c1917] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all cursor-pointer flex items-center gap-1.5 ${
-              savedSuccess
-                ? 'bg-emerald-400 text-[#1c1917]'
-                : 'bg-[#f7f4ed] hover:bg-[#eeeae0] text-[#1c1917]'
-            }`}
-            title="Save to Cloud Vault"
-          >
-            {isSaving ? (
-              <Loader2 className="w-3.5 h-3.5 animate-spin" />
-            ) : savedSuccess ? (
-              <Check className="w-3.5 h-3.5" />
-            ) : (
-              <Cloud className="w-3.5 h-3.5 text-amber-600" />
-            )}
-            <span>{savedSuccess ? 'SAVED' : 'SAVE CLOUD'}</span>
-          </button>
+          {currentSceneId && editStatus.isExpired ? (
+            <button
+              onClick={handleDuplicateAsNew}
+              className="px-3 py-1.5 font-mono text-xs font-black uppercase border-2 border-[#1c1917] bg-amber-400 hover:bg-amber-300 text-[#1c1917] shadow-[2px_2px_0px_#1c1917] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all cursor-pointer flex items-center gap-1.5"
+              title="Duplicate and save as a new scene"
+            >
+              <Copy className="w-3.5 h-3.5" />
+              <span>DUPLICATE NEW</span>
+            </button>
+          ) : (
+            <button
+              onClick={handleSaveToCloud}
+              disabled={isSaving}
+              className={`px-3 py-1.5 font-mono text-xs font-bold uppercase border-2 border-[#1c1917] shadow-[2px_2px_0px_#1c1917] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all cursor-pointer flex items-center gap-1.5 ${
+                savedSuccess
+                  ? 'bg-emerald-400 text-[#1c1917]'
+                  : 'bg-[#f7f4ed] hover:bg-[#eeeae0] text-[#1c1917]'
+              }`}
+              title="Save to Cloud Vault (Editable for 3 days from creation)"
+            >
+              {isSaving ? (
+                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+              ) : savedSuccess ? (
+                <Check className="w-3.5 h-3.5" />
+              ) : (
+                <Cloud className="w-3.5 h-3.5 text-amber-600" />
+              )}
+              <span>{savedSuccess ? 'SAVED' : 'SAVE CLOUD'}</span>
+            </button>
+          )}
 
           {/* My Scenes Drawer Button */}
           <button
@@ -614,9 +688,10 @@ function StudioContent() {
         isOpen={isDrawerOpen}
         onClose={() => setIsDrawerOpen(false)}
         userId={user?.id}
-        onSelectScene={(selected, id) => {
+        onSelectScene={(selected, id, createdAt) => {
           setScene(selected);
           setCurrentSceneId(id);
+          setCurrentSceneCreatedAt(createdAt);
         }}
         onOpenAuth={() => setIsAuthModalOpen(true)}
       />

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { audio } from '../../utils/audioManager';
 import confetti from 'canvas-confetti';
-import { Lock, Clock, Sparkles, KeyRound } from 'lucide-react';
+import { Lock, Clock, Sparkles } from 'lucide-react';
 import { BrandLogo } from '../ui/BrandLogo';
 
 interface TimeLockScreenProps {
@@ -68,11 +68,6 @@ export const TimeLockScreen: React.FC<TimeLockScreenProps> = ({
 
     return () => clearInterval(timer);
   }, [unlockDateTime, onUnlock]);
-
-  const handleBypass = () => {
-    audio.playSFX('sparkle');
-    onUnlock();
-  };
 
   const pad = (n: number) => String(n).padStart(2, '0');
 
@@ -159,18 +154,8 @@ export const TimeLockScreen: React.FC<TimeLockScreenProps> = ({
         {/* Target Time Footnote */}
         <div className="mt-6 pt-4 border-t-2 border-[#1c1917]/20 w-full flex items-center justify-center gap-1.5 font-mono text-[10px] text-zinc-600 uppercase font-semibold">
           <Clock className="w-3.5 h-3.5 text-amber-600" />
-          <span>UNLOCKS: {formattedDate}</span>
+          <span>UNLOCKS AUTOMATICALLY: {formattedDate}</span>
         </div>
-
-        {/* Creator Preview Bypass Button */}
-        <button
-          type="button"
-          onClick={handleBypass}
-          className="mt-6 px-4 py-2 bg-[#f7f4ed] hover:bg-[#eeeae0] text-zinc-700 font-mono text-[10px] font-bold uppercase border-2 border-[#1c1917] shadow-[2px_2px_0px_#1c1917] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all flex items-center gap-1.5 cursor-pointer"
-        >
-          <KeyRound className="w-3 h-3 text-amber-600" />
-          <span>[ CREATOR PREVIEW · UNLOCK NOW ]</span>
-        </button>
       </div>
     </div>
   );

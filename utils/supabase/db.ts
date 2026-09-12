@@ -1,6 +1,7 @@
 import { supabase, isSupabaseConfigured } from './client';
 import { SceneConfig } from '../../types/scene';
 import { generateSceneSlug } from '../sceneEncoder';
+import { getSceneEditStatus } from '../sceneExpiry';
 
 export interface SavedSceneRecord {
   id: string;
@@ -16,7 +17,8 @@ export interface SavedSceneRecord {
 }
 
 /**
- * Saves or updates a scene in Supabase with a short unique slug
+ * Saves or updates a scene in Supabase with a short unique slug.
+ * Content can only be updated within 3 days (72 hours) of creation time.
  */
 export async function saveSceneToSupabase(
   scene: SceneConfig,
@@ -40,6 +42,24 @@ export async function saveSceneToSupabase(
   };
 
   if (existingId) {
+    // Check if the scene is within its 3-day creator editing window
+    const { data: existingScene, error: fetchErr } = await supabase
+      .from('scenes')
+      .select('id, created_at, user_id')
+      .eq('id', existingId)
+      .single();
+
+    if (fetchErr) {
+      console.warn('Could not verify existing scene timestamp, proceeding with update:', fetchErr);
+    } else if (existingScene?.created_at) {
+      const editStatus = getSceneEditStatus(existingScene.created_at);
+      if (!editStatus.canEdit) {
+        throw new Error(
+          `This scene is finalized and can no longer be edited. Creators have a 3-day window from creation to edit content. You can duplicate it to create a new scene.`
+        );
+      }
+    }
+
     const { data, error } = await supabase
       .from('scenes')
       .update(payload)

@@ -3,14 +3,15 @@
 import React, { useState, useEffect } from 'react';
 import { fetchUserScenes, deleteSceneFromSupabase, SavedSceneRecord } from '../../utils/supabase/db';
 import { SceneConfig } from '../../types/scene';
+import { getSceneEditStatus } from '../../utils/sceneExpiry';
 import { audio } from '../../utils/audioManager';
-import { X, Trash2, Eye, Clock } from 'lucide-react';
+import { X, Trash2, Eye, Clock, ShieldCheck, Lock } from 'lucide-react';
 import { BrandLogo } from '../ui/BrandLogo';
 
 interface SavedScenesDrawerProps {
   isOpen: boolean;
   onClose: () => void;
-  onSelectScene: (scene: SceneConfig, id: string) => void;
+  onSelectScene: (scene: SceneConfig, id: string, createdAt?: string) => void;
   userId?: string;
   onOpenAuth: () => void;
 }
@@ -118,44 +119,62 @@ export const SavedScenesDrawer: React.FC<SavedScenesDrawerProps> = ({
             </div>
           ) : (
             <div className="mt-6 space-y-3">
-              {scenes.map((record) => (
-                <div
-                  key={record.id}
-                  onClick={() => {
-                    onSelectScene(record.config, record.id);
-                    onClose();
-                  }}
-                  className="p-4 bg-white border-2 border-[#1c1917] hover:bg-[#eeeae0] transition-all cursor-pointer group shadow-[3px_3px_0px_#1c1917]"
-                >
-                  <div className="flex items-center justify-between mb-1">
-                    <h4 className="font-mono font-bold text-sm uppercase text-[#1c1917] group-hover:text-amber-600 transition-colors">
-                      FOR: {record.recipient_name}
-                    </h4>
-                    <button
-                      onClick={(e) => handleDelete(record.id, e)}
-                      className="p-1 text-rose-600 hover:bg-rose-100 border border-transparent hover:border-rose-600 transition-colors"
-                      title="Delete scene"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </div>
+              {scenes.map((record) => {
+                const editStatus = getSceneEditStatus(record.created_at);
+                return (
+                  <div
+                    key={record.id}
+                    onClick={() => {
+                      onSelectScene(record.config, record.id, record.created_at);
+                      onClose();
+                    }}
+                    className="p-4 bg-white border-2 border-[#1c1917] hover:bg-[#eeeae0] transition-all cursor-pointer group shadow-[3px_3px_0px_#1c1917]"
+                  >
+                    <div className="flex items-center justify-between mb-1">
+                      <h4 className="font-mono font-bold text-sm uppercase text-[#1c1917] group-hover:text-amber-600 transition-colors">
+                        FOR: {record.recipient_name}
+                      </h4>
+                      <button
+                        onClick={(e) => handleDelete(record.id, e)}
+                        className="p-1 text-rose-600 hover:bg-rose-100 border border-transparent hover:border-rose-600 transition-colors"
+                        title="Delete scene"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
 
-                  <p className="font-mono text-xs text-zinc-600 line-clamp-1 uppercase font-medium">
-                    {record.config.headline || record.config.wishes}
-                  </p>
+                    <p className="font-mono text-xs text-zinc-600 line-clamp-1 uppercase font-medium mb-2">
+                      {record.config.headline || record.config.wishes}
+                    </p>
 
-                  <div className="mt-3 pt-2 border-t border-[#1c1917]/20 flex items-center justify-between font-mono text-[10px] text-zinc-600 uppercase font-semibold">
-                    <span className="flex items-center gap-1 text-amber-700">
-                      <Eye className="w-3 h-3" />
-                      {record.view_count || 0} VIEWS
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Clock className="w-3 h-3" />
-                      {new Date(record.created_at).toLocaleDateString()}
-                    </span>
+                    {/* 3-Day Edit Status Badge */}
+                    <div className="mb-2">
+                      {editStatus.canEdit ? (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-emerald-50 border border-emerald-500 text-emerald-800 font-mono text-[8px] font-black uppercase">
+                          <ShieldCheck className="w-2.5 h-2.5" />
+                          <span>⏱️ {editStatus.formattedRemaining}</span>
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-zinc-100 border border-zinc-400 text-zinc-600 font-mono text-[8px] font-bold uppercase">
+                          <Lock className="w-2.5 h-2.5" />
+                          <span>🔒 FINALIZED (3-DAY WINDOW CLOSED)</span>
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="pt-2 border-t border-[#1c1917]/20 flex items-center justify-between font-mono text-[10px] text-zinc-600 uppercase font-semibold">
+                      <span className="flex items-center gap-1 text-amber-700">
+                        <Eye className="w-3 h-3" />
+                        {record.view_count || 0} VIEWS
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <Clock className="w-3 h-3" />
+                        {new Date(record.created_at).toLocaleDateString()}
+                      </span>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>
