@@ -21,7 +21,7 @@ import { BrandLogo } from '../ui/BrandLogo';
 import { formatBirthDayMonth } from '../../utils/dateFormatter';
 import { trackEvent } from '../../utils/analytics/tracker';
 
-export type PosterStyle = 'id_pass' | 'classic' | 'editorial' | 'polaroid' | 'monolith' | 'receipt';
+export type PosterStyle = 'classic' | 'editorial' | 'polaroid' | 'brutalist' | 'bauhaus' | 'luxury';
 
 interface KeepsakePosterModalProps {
   isOpen: boolean;
@@ -38,7 +38,7 @@ export const KeepsakePosterModal: React.FC<KeepsakePosterModalProps> = ({
 }) => {
   const posterRef = useRef<HTMLDivElement | null>(null);
   const [isExporting, setIsExporting] = useState(false);
-  const [posterStyle, setPosterStyle] = useState<PosterStyle>('id_pass');
+  const [posterStyle, setPosterStyle] = useState<PosterStyle>('classic');
 
   if (!isOpen) return null;
 
@@ -131,12 +131,12 @@ export const KeepsakePosterModal: React.FC<KeepsakePosterModalProps> = ({
           <div className="flex items-center gap-1.5 font-mono text-[10px] font-bold overflow-x-auto pb-1 max-w-full">
             {(
               [
-                { id: 'id_pass', label: '1. VIP CREDENTIAL PASS' },
-                { id: 'classic', label: '2. ORIGINAL CLASSIC' },
-                { id: 'editorial', label: '3. SWISS EDITORIAL' },
-                { id: 'polaroid', label: '4. VINTAGE POLAROID' },
-                { id: 'monolith', label: '5. OBSIDIAN MONOLITH' },
-                { id: 'receipt', label: '6. THERMAL RECEIPT' }
+                { id: 'classic', label: 'ORIGINAL CLASSIC' },
+                { id: 'editorial', label: 'SWISS EDITORIAL' },
+                { id: 'polaroid', label: 'VINTAGE POLAROID' },
+                { id: 'brutalist', label: 'BRUTALIST' },
+                { id: 'bauhaus', label: 'BAUHAUS ART' },
+                { id: 'luxury', label: 'ROYAL GILDED' }
               ] as { id: PosterStyle; label: string }[]
             ).map((s) => (
               <button
@@ -162,121 +162,7 @@ export const KeepsakePosterModal: React.FC<KeepsakePosterModalProps> = ({
         <div className="flex-1 overflow-y-auto p-2 sm:p-5 flex items-center justify-center bg-zinc-900/10 border-2 border-dashed border-[#1c1917]/30">
           
           {/* ========================================================
-              LAYOUT 1: VIP CREDENTIAL PASS (Official Summit VIP Pass)
-             ======================================================== */}
-          {posterStyle === 'id_pass' && (
-            <div
-              ref={posterRef}
-              id="printable-keepsake-poster-id-pass"
-              className="w-full max-w-[480px] bg-[#f8f6f0] border-4 border-[#1c1917] p-5 sm:p-7 flex flex-col justify-between shadow-[8px_8px_0px_#1c1917] relative text-[#1c1917] aspect-[3/4.2] select-none overflow-hidden rounded-2xl"
-            >
-              {/* Lanyard Slot Cutout */}
-              <div className="w-16 h-2.5 bg-[#1c1917] rounded-full mx-auto mb-2 opacity-90 shadow-inner" />
-
-              {/* Pass Top Header */}
-              <div className="border-b-2 border-[#1c1917] pb-2 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="w-7 h-7 bg-[#1c1917] text-amber-400 font-bold font-mono text-xs flex items-center justify-center rounded">
-                    ★
-                  </div>
-                  <div>
-                    <span className="font-mono text-[7px] text-zinc-500 uppercase font-black block leading-none tracking-wider">
-                      OFFICIAL CELEBRATION SUMMIT
-                    </span>
-                    <span className="font-mono text-xs font-black uppercase text-[#1c1917] leading-tight block">
-                      ALL-ACCESS VIP CREDENTIAL
-                    </span>
-                  </div>
-                </div>
-                <span className="bg-amber-400 text-[#1c1917] font-mono text-[9px] font-black px-2 py-0.5 border border-[#1c1917] rounded uppercase">
-                  VIP-{currentYear}
-                </span>
-              </div>
-
-              {/* Pass Body: Photo, EMV Chip & VIP Status */}
-              <div className="my-auto py-2 grid grid-cols-12 gap-3.5 items-center">
-                {/* Left: ID Photo & Smart Chip */}
-                <div className="col-span-5 flex flex-col items-center">
-                  <div className="w-full aspect-square bg-white border-2 border-[#1c1917] p-1 shadow-[4px_4px_0px_#1c1917] relative rounded-lg overflow-hidden">
-                    {primaryPhoto?.url ? (
-                      <img
-                        src={primaryPhoto.url}
-                        alt={scene.recipientName}
-                        className="w-full h-full object-cover grayscale contrast-125 rounded"
-                        crossOrigin="anonymous"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center bg-zinc-100 rounded">
-                        <Camera className="w-8 h-8 text-zinc-400" />
-                      </div>
-                    )}
-                    {/* Stamped Security Hologram */}
-                    <div className="absolute -bottom-3 -right-3 w-16 h-16 rounded-full border border-amber-600/80 bg-amber-400/25 backdrop-blur-xs flex items-center justify-center rotate-[-12deg] pointer-events-none">
-                      <span className="font-mono text-[6px] font-black text-amber-900 uppercase text-center leading-tight">
-                        VERIFIED<br />HONOREE<br />★ VIP ★
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Golden Smart Chip Graphic */}
-                  <div className="w-12 h-8 bg-gradient-to-tr from-amber-400 via-yellow-200 to-amber-500 border border-amber-700 rounded-md mt-2 shadow-xs relative flex items-center justify-center overflow-hidden">
-                    <div className="w-full h-[1px] bg-amber-700/60 absolute top-1/2 -translate-y-1/2" />
-                    <div className="h-full w-[1px] bg-amber-700/60 absolute left-1/3" />
-                    <div className="h-full w-[1px] bg-amber-700/60 absolute right-1/3" />
-                    <div className="w-4 h-4 rounded-full border border-amber-700/50" />
-                  </div>
-                </div>
-
-                {/* Right: VIP Fields */}
-                <div className="col-span-7 flex flex-col font-mono text-left space-y-1.5">
-                  <div className="bg-white border border-[#1c1917] p-1.5 rounded shadow-xs">
-                    <span className="text-[7px] text-zinc-500 uppercase block font-bold leading-none">HONORED GUEST / VIP</span>
-                    <span className="text-sm font-black uppercase text-[#1c1917] leading-tight block truncate">
-                      {scene.recipientName}
-                    </span>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-1.5">
-                    <div className="bg-white border border-[#1c1917] p-1 rounded shadow-xs">
-                      <span className="text-[6px] text-zinc-500 uppercase block font-bold leading-none">DATE</span>
-                      <span className="text-[9px] font-black text-amber-800 leading-tight block">
-                        {formatBirthDayMonth(scene.birthDate)}
-                      </span>
-                    </div>
-                    <div className="bg-white border border-[#1c1917] p-1 rounded shadow-xs">
-                      <span className="text-[6px] text-zinc-500 uppercase block font-bold leading-none">ACCESS</span>
-                      <span className="text-[9px] font-black text-[#1c1917] leading-tight block">
-                        LEVEL 01
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="bg-white border border-[#1c1917] p-1.5 rounded shadow-xs">
-                    <span className="text-[6px] text-zinc-500 uppercase block font-bold leading-none">HONORED BY</span>
-                    <span className="text-[10px] font-black uppercase text-amber-800 leading-tight block truncate">
-                      ~ {scene.senderName || 'A Close Friend'}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Tribute Quote Box */}
-              <div className="bg-white border-2 border-[#1c1917] p-2.5 rounded-lg shadow-xs my-1 text-left">
-                <p className="text-[11px] sm:text-xs text-zinc-800 font-sans italic line-clamp-2 leading-relaxed">
-                  "{scene.wishes || scene.letterText || 'Wishing you limitless health, joy, and incredible milestones in the year ahead.'}"
-                </p>
-              </div>
-
-              {/* Machine Readable Zone (MRZ Chevrons Strip) */}
-              <div className="bg-[#1c1917] text-amber-300 p-1.5 rounded-lg font-mono text-[7px] uppercase tracking-widest leading-tight">
-                <div className="truncate">IDVIP&lt;&lt;{(scene.recipientName || 'RECIPIENT').toUpperCase().replace(/\s+/g, '&lt;')}&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;</div>
-                <div className="truncate">VIP{currentYear}&lt;&lt;{(slug || '01').toUpperCase().slice(0, 6)}&lt;&lt;PASS&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;</div>
-              </div>
-            </div>
-          )}
-
-          {/* ========================================================
-              LAYOUT 2: ORIGINAL CLASSIC (The Beloved Initial Design)
+              LAYOUT 0: ORIGINAL CLASSIC (The Beloved Initial Design)
              ======================================================== */}
           {posterStyle === 'classic' && (
             <div
@@ -284,11 +170,13 @@ export const KeepsakePosterModal: React.FC<KeepsakePosterModalProps> = ({
               id="printable-keepsake-poster-classic"
               className="w-full max-w-[480px] bg-[#f7f4ed] border-4 border-[#1c1917] p-5 sm:p-7 flex flex-col justify-between shadow-[8px_8px_0px_#1c1917] relative text-[#1c1917] aspect-[3/4.2] select-none overflow-hidden"
             >
+              {/* Registration Corner Crosshairs */}
               <span className="absolute top-2 left-2 font-mono text-zinc-400 text-[10px] font-bold select-none">+</span>
               <span className="absolute top-2 right-2 font-mono text-zinc-400 text-[10px] font-bold select-none">+</span>
               <span className="absolute bottom-2 left-2 font-mono text-zinc-400 text-[10px] font-bold select-none">+</span>
               <span className="absolute bottom-2 right-2 font-mono text-zinc-400 text-[10px] font-bold select-none">+</span>
 
+              {/* Top Structural Header */}
               <div className="border-b-2 border-[#1c1917] pb-2.5 flex items-center justify-between gap-2 flex-wrap">
                 <BrandLogo size="sm" showSubtitle={true} href="" />
                 <div className="flex items-center gap-1.5 font-mono text-[9px] font-bold">
@@ -303,9 +191,12 @@ export const KeepsakePosterModal: React.FC<KeepsakePosterModalProps> = ({
                 </div>
               </div>
 
+              {/* Poster Main Body */}
               <div className="my-auto py-2.5 flex flex-col items-center text-center">
+                {/* Recipient Photo Plate Header */}
                 {primaryPhoto?.url ? (
                   <div className="w-32 h-32 sm:w-40 sm:h-40 bg-white border-2 border-[#1c1917] p-2 shadow-[4px_4px_0px_#1c1917] mb-2.5 relative">
+                    {/* Metal Pin Tag */}
                     <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-2 bg-zinc-800 border border-[#1c1917]" />
                     <img
                       src={primaryPhoto.url}
@@ -320,10 +211,12 @@ export const KeepsakePosterModal: React.FC<KeepsakePosterModalProps> = ({
                   </div>
                 )}
 
+                {/* Sub-label Title */}
                 <span className="font-mono text-[8px] sm:text-[9px] uppercase tracking-widest text-zinc-500 font-extrabold block mb-1">
                   COMMEMORATIVE BIRTHDAY EXHIBIT
                 </span>
 
+                {/* Main Headline */}
                 <h2 className="text-xl sm:text-2xl font-black uppercase tracking-tight leading-none">
                   HAPPY BIRTHDAY <br />
                   <span className="px-2.5 py-0.5 bg-amber-400 text-[#1c1917] border-2 border-[#1c1917] inline-block mt-1 shadow-[3px_3px_0px_#1c1917]">
@@ -331,17 +224,20 @@ export const KeepsakePosterModal: React.FC<KeepsakePosterModalProps> = ({
                   </span>
                 </h2>
 
+                {/* Headline Slogan Tag */}
                 {scene.headline && (
                   <p className="mt-2 font-mono text-[10px] sm:text-[11px] font-bold uppercase tracking-wider border-y border-[#1c1917]/40 py-1 w-full">
                     {scene.headline}
                   </p>
                 )}
 
+                {/* Personal Wishes Quote */}
                 <p className="mt-2 text-xs text-zinc-800 leading-relaxed font-sans font-semibold line-clamp-3 italic px-2">
                   "{scene.wishes || scene.letterText || 'Wishing you limitless health, joy, and incredible milestones in the year ahead.'}"
                 </p>
               </div>
 
+              {/* Bottom Signature & Archival Barcode Seal */}
               <div className="pt-2.5 border-t-2 border-[#1c1917] flex items-end justify-between font-mono text-[9px] gap-2">
                 <div className="text-left">
                   <span className="text-zinc-500 uppercase block font-semibold text-[7px]">HONORED SENDER</span>
@@ -368,7 +264,7 @@ export const KeepsakePosterModal: React.FC<KeepsakePosterModalProps> = ({
           )}
 
           {/* ========================================================
-              LAYOUT 3: SWISS EDITORIAL (Magazine / Masthead Layout)
+              LAYOUT 1: SWISS EDITORIAL (Magazine / Masthead Layout)
              ======================================================== */}
           {posterStyle === 'editorial' && (
             <div
@@ -473,7 +369,7 @@ export const KeepsakePosterModal: React.FC<KeepsakePosterModalProps> = ({
           )}
 
           {/* ========================================================
-              LAYOUT 4: VINTAGE POLAROID (Gallery Film / Vinyl Plate)
+              LAYOUT 2: VINTAGE POLAROID (Gallery Film / Vinyl Plate)
              ======================================================== */}
           {posterStyle === 'polaroid' && (
             <div
@@ -482,9 +378,11 @@ export const KeepsakePosterModal: React.FC<KeepsakePosterModalProps> = ({
               className="w-full max-w-[480px] bg-[#f4ede2] border-4 border-[#854d0e] p-5 sm:p-7 flex flex-col justify-between shadow-[8px_8px_0px_#854d0e] relative text-[#451a03] aspect-[3/4.2] select-none overflow-hidden"
             >
               <div className="flex items-center justify-between border-b border-[#854d0e]/40 pb-1.5 font-mono text-[8px] text-[#854d0e] font-bold">
-                <span>▶ KODAK SAFETY FILM 400</span>
-                <span>EXP 36 · {currentYear}</span>
-                <span>FRAME 24A</span>
+                <BrandLogo size="sm" showSubtitle={false} href="" variant="sepia" />
+                <div className="flex items-center gap-2">
+                  <span>EXP 36 · {currentYear}</span>
+                  <span>FRAME 24A</span>
+                </div>
               </div>
 
               <div className="my-auto py-2 flex flex-col items-center">
@@ -538,20 +436,20 @@ export const KeepsakePosterModal: React.FC<KeepsakePosterModalProps> = ({
           )}
 
           {/* ========================================================
-              LAYOUT 5: OBSIDIAN MONOLITH (High-Impact Poster Art)
+              LAYOUT 3: BRUTALIST MONOLITH (High-Impact Poster Art)
              ======================================================== */}
-          {posterStyle === 'monolith' && (
+          {posterStyle === 'brutalist' && (
             <div
               ref={posterRef}
-              id="printable-keepsake-poster-monolith"
+              id="printable-keepsake-poster-brutalist"
               className="w-full max-w-[480px] bg-[#12110e] border-4 border-[#f59e0b] p-5 sm:p-7 flex flex-col justify-between shadow-[8px_8px_0px_#f59e0b] relative text-[#f5f5f4] aspect-[3/4.2] select-none overflow-hidden"
             >
               <div className="border-b-2 border-[#f59e0b] pb-2 flex items-start justify-between">
                 <div>
-                  <span className="font-mono text-[8px] font-bold uppercase tracking-widest text-[#f59e0b] block">
-                    ORIGINAL CELEBRATION MANIFESTO
-                  </span>
-                  <h1 className="text-3xl sm:text-4xl font-black uppercase tracking-tighter leading-none text-white mt-1">
+                  <div className="mb-1.5">
+                    <BrandLogo size="sm" showSubtitle={true} href="" variant="light" />
+                  </div>
+                  <h1 className="text-2xl sm:text-3xl font-black uppercase tracking-tighter leading-none text-white mt-1">
                     HAPPY BIRTHDAY
                   </h1>
                 </div>
@@ -611,75 +509,151 @@ export const KeepsakePosterModal: React.FC<KeepsakePosterModalProps> = ({
           )}
 
           {/* ========================================================
-              LAYOUT 6: THERMAL RECEIPT (Modernist Itemized Poster)
+              LAYOUT 4: BAUHAUS ART (Geometric International Poster)
              ======================================================== */}
-          {posterStyle === 'receipt' && (
+          {posterStyle === 'bauhaus' && (
             <div
               ref={posterRef}
-              id="printable-keepsake-poster-receipt"
-              className="w-full max-w-[480px] bg-[#fffdf9] border-3 border-dashed border-[#1c1917] p-5 sm:p-7 flex flex-col justify-between shadow-[7px_7px_0px_#1c1917] relative text-[#1c1917] aspect-[3/4.2] font-mono select-none overflow-hidden"
+              id="printable-keepsake-poster-bauhaus"
+              className="w-full max-w-[480px] bg-[#fbf9f5] border-4 border-[#1e293b] p-5 sm:p-7 flex flex-col justify-between shadow-[8px_8px_0px_#1e293b] relative text-[#1e293b] aspect-[3/4.2] select-none overflow-hidden"
             >
-              <div className="text-center border-b-2 border-dashed border-[#1c1917] pb-2">
-                <span className="text-sm font-black tracking-widest block uppercase">
-                  *** CELEBRATION TRIBUTE RECEIPT ***
-                </span>
-                <span className="text-[9px] text-zinc-600 uppercase block mt-0.5">
-                  COMMEMORATIVE RECORD // VOL. {currentYear}
-                </span>
-                <span className="text-[8px] text-zinc-500 uppercase block">
-                  TRANSACTION ID: EB-{currentYear}-{(slug || '01').toUpperCase().slice(0, 8)}
-                </span>
+              {/* Geometric Bauhaus Header */}
+              <div className="flex items-center justify-between border-b-3 border-[#1e293b] pb-2.5 gap-2">
+                <BrandLogo size="sm" showSubtitle={false} href="" />
+                <div className="flex items-center gap-1.5">
+                  <span className="font-mono text-[7px] font-bold uppercase tracking-widest text-[#1e293b]/70 hidden sm:inline">
+                    EXHIBITION #{currentYear}
+                  </span>
+                  <div className="bg-[#2563eb] text-white font-mono text-[9px] font-black px-2 py-0.5">
+                    {formatBirthDayMonth(scene.birthDate)}
+                  </div>
+                </div>
               </div>
 
-              <div className="my-auto py-2 space-y-2">
-                <div className="flex items-center gap-3 bg-[#f7f4ed] border border-[#1c1917] p-2">
-                  {primaryPhoto?.url && (
-                    <div className="w-16 h-16 bg-white border border-[#1c1917] p-0.5 flex-shrink-0">
+              {/* Center Bauhaus Geometric Grid */}
+              <div className="my-auto py-2 grid grid-cols-12 gap-3 items-center">
+                {/* Left: Geometric Block & Portrait */}
+                <div className="col-span-6 relative">
+                  <div className="w-full aspect-square bg-[#fbbf24] border-3 border-[#1e293b] p-1.5 shadow-[4px_4px_0px_#1e293b] relative overflow-hidden">
+                    {primaryPhoto?.url ? (
                       <img
                         src={primaryPhoto.url}
                         alt={scene.recipientName}
-                        className="w-full h-full object-cover grayscale"
+                        className="w-full h-full object-cover grayscale contrast-150"
                         crossOrigin="anonymous"
                       />
-                    </div>
-                  )}
-                  <div className="flex-1 text-left">
-                    <span className="text-[7px] text-zinc-500 uppercase block">ITEM 01: VIP RECIPIENT</span>
-                    <span className="text-base font-black uppercase text-[#1c1917] leading-none block">
-                      {scene.recipientName}
-                    </span>
-                    <span className="text-[8px] text-amber-800 font-bold block mt-0.5">
-                      DATE OF BIRTH: {formatBirthDayMonth(scene.birthDate)}
-                    </span>
+                    ) : (
+                      <div className="w-full h-full bg-[#1e293b] flex items-center justify-center text-white">
+                        <Camera className="w-8 h-8" />
+                      </div>
+                    )}
+                  </div>
+                  <div className="absolute -bottom-2 -left-2 w-8 h-8 rounded-full bg-[#dc2626] border-2 border-[#1e293b] flex items-center justify-center text-white font-mono text-[8px] font-black">
+                    ★
                   </div>
                 </div>
 
-                <div className="bg-white border border-[#1c1917] p-2 text-left space-y-1 text-[9px]">
-                  <div className="flex justify-between border-b border-dotted border-zinc-300 pb-0.5">
-                    <span className="text-zinc-500">DEDICATED BY:</span>
-                    <span className="font-bold">{scene.senderName || 'A Close Friend'}</span>
-                  </div>
-                  <div className="flex justify-between border-b border-dotted border-zinc-300 pb-0.5">
-                    <span className="text-zinc-500">EVENT STATUS:</span>
-                    <span className="font-bold text-amber-800">ANNUAL CELEBRATION</span>
-                  </div>
-                  <div className="pt-1">
-                    <span className="text-zinc-500 block text-[7px] font-bold">PERSONAL MESSAGE:</span>
-                    <p className="text-[10px] italic text-zinc-800 leading-snug">
-                      "{scene.wishes || scene.letterText || 'Wishing you limitless health, joy, and incredible milestones in the year ahead.'}"
-                    </p>
+                {/* Right: Modernist Typography */}
+                <div className="col-span-6 text-left space-y-1">
+                  <span className="font-mono text-[8px] font-extrabold uppercase tracking-widest text-[#dc2626]">
+                    CELEBRATION DEPT.
+                  </span>
+                  <h2 className="text-2xl font-black uppercase tracking-tighter leading-tight text-[#1e293b]">
+                    HAPPY<br />BIRTHDAY
+                  </h2>
+                  <div className="bg-[#1e293b] text-white font-mono font-black text-xs uppercase px-2 py-0.5 inline-block">
+                    {scene.recipientName}
                   </div>
                 </div>
               </div>
 
-              <div className="border-t-2 border-dashed border-[#1c1917] pt-2 text-center">
-                <div className="flex justify-between font-black text-xs">
-                  <span>TOTAL CELEBRATION VALUE:</span>
-                  <span className="text-amber-700">PRICELESS (∞)</span>
+              {/* Bauhaus Graphic Quote Strip */}
+              <div className="bg-[#f1eee7] border-2 border-[#1e293b] p-2.5 my-1 text-left">
+                <p className="font-mono text-[10px] sm:text-[11px] text-[#1e293b] font-medium leading-snug line-clamp-2">
+                  "{scene.wishes || scene.letterText || 'Wishing you limitless health, joy, and grand artistic breakthroughs.'}"
+                </p>
+                <div className="mt-1 flex justify-between font-mono text-[8px] font-bold text-[#dc2626] border-t border-[#1e293b]/20 pt-0.5">
+                  <span>DEDICATION: {scene.senderName || 'HONORED FRIEND'}</span>
+                  <span>ORIGINAL PRINT</span>
                 </div>
-                <div className="mt-1 text-[9px] tracking-[0.35em] font-black overflow-hidden whitespace-nowrap">
-                  |||||| | |||||||| |||| | |||||| |||||
+              </div>
+
+              {/* Bauhaus Bottom Axis */}
+              <div className="border-t-3 border-[#1e293b] pt-1.5 flex items-center justify-between font-mono text-[8px] font-black">
+                <span className="text-[#2563eb]">FORM FOLLOWS CELEBRATION</span>
+                <span className="text-[#dc2626]">ARCHIV · {currentYear}</span>
+              </div>
+            </div>
+          )}
+
+          {/* ========================================================
+              LAYOUT 5: ROYAL GILDED (Fine-Art Gilded Monograph)
+             ======================================================== */}
+          {posterStyle === 'luxury' && (
+            <div
+              ref={posterRef}
+              id="printable-keepsake-poster-luxury"
+              className="w-full max-w-[480px] bg-[#0c131d] border-4 border-[#d4af37] p-5 sm:p-7 flex flex-col justify-between shadow-[8px_8px_0px_#d4af37] relative text-[#fbf8f0] aspect-[3/4.2] select-none overflow-hidden"
+            >
+              {/* Ornate Gold Double Border Frame */}
+              <div className="absolute inset-2 border border-[#d4af37]/40 pointer-events-none" />
+
+              {/* Royal Monograph Header */}
+              <div className="border-b border-[#d4af37]/60 pb-2.5 flex items-center justify-between relative">
+                <BrandLogo size="sm" showSubtitle={true} href="" variant="gold" />
+                <div className="text-right">
+                  <span className="font-serif text-[8px] uppercase tracking-[0.2em] text-[#d4af37] block">
+                    ROYAL MONOGRAPH
+                  </span>
+                  <span className="font-mono text-[8px] text-zinc-400">
+                    EDITION #{currentYear}
+                  </span>
                 </div>
+              </div>
+
+              {/* Center Fine-Art Portrait in Gold Filigree */}
+              <div className="my-auto py-2 flex flex-col items-center text-center">
+                <div className="w-32 h-32 sm:w-36 sm:h-36 bg-[#16202c] border-2 border-[#d4af37] p-1.5 shadow-[0px_0px_18px_rgba(212,175,55,0.25)] relative mb-2">
+                  <div className="absolute -top-1.5 -left-1.5 w-3 h-3 border-t-2 border-l-2 border-[#d4af37]" />
+                  <div className="absolute -top-1.5 -right-1.5 w-3 h-3 border-t-2 border-r-2 border-[#d4af37]" />
+                  <div className="absolute -bottom-1.5 -left-1.5 w-3 h-3 border-b-2 border-l-2 border-[#d4af37]" />
+                  <div className="absolute -bottom-1.5 -right-1.5 w-3 h-3 border-b-2 border-r-2 border-[#d4af37]" />
+                  {primaryPhoto?.url ? (
+                    <img
+                      src={primaryPhoto.url}
+                      alt={scene.recipientName}
+                      className="w-full h-full object-cover contrast-110 sepia-[0.1]"
+                      crossOrigin="anonymous"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-[#d4af37]">
+                      <Camera className="w-8 h-8" />
+                    </div>
+                  )}
+                </div>
+
+                <span className="font-serif text-lg sm:text-xl font-bold text-[#d4af37] tracking-wide">
+                  {scene.recipientName}
+                </span>
+                <span className="font-mono text-[8px] text-zinc-400 uppercase tracking-widest mt-0.5">
+                  COMMEMORATIVE ANNIVERSARY · {formatBirthDayMonth(scene.birthDate)}
+                </span>
+              </div>
+
+              {/* Regal Tribute Quote Block */}
+              <div className="border-t border-b border-[#d4af37]/40 py-2 my-1 text-center px-3">
+                <p className="font-serif italic text-xs sm:text-[13px] text-[#f2e6cb] leading-relaxed line-clamp-3">
+                  "{scene.wishes || scene.letterText || 'Wishing you limitless elegance, enduring wisdom, and splendid milestones.'}"
+                </p>
+                <span className="font-serif text-[9px] text-[#d4af37] uppercase tracking-wider mt-1 block">
+                  — Presented by {scene.senderName || 'An Honored Friend'} —
+                </span>
+              </div>
+
+              {/* Royal Footer Crest */}
+              <div className="pt-1 flex items-center justify-between font-mono text-[7px] text-[#d4af37]/80 uppercase">
+                <span>SEAL NO. #{currentYear}</span>
+                <span>AUTHENTICATED MONOGRAPH</span>
               </div>
             </div>
           )}
