@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { audio } from '../../utils/audioManager';
 import confetti from 'canvas-confetti';
-import { Music, Sparkles, RefreshCw, Trophy, Volume2 } from 'lucide-react';
+import { Music, Sparkles, RefreshCw, Trophy, Volume2, Keyboard } from 'lucide-react';
 
 interface PianoKey {
   note: string;
@@ -56,7 +56,7 @@ const HAPPY_BIRTHDAY_SONG = [
   { note: 'A4', lyric: 'Birth-' },
   { note: 'F4', lyric: 'day' },
   { note: 'G4', lyric: 'to' },
-  { note: 'F4', lyric: 'you! 🎉' }
+  { note: 'F4', lyric: 'you!' }
 ];
 
 export const TimeLockPiano: React.FC = () => {
@@ -234,7 +234,8 @@ export const TimeLockPiano: React.FC = () => {
           ) : (
             <div className="flex items-center gap-2 text-[#e6d5b8] font-mono text-xs font-bold">
               <Trophy className="w-4 h-4 text-[#c5a059]" />
-              <span>SONG COMPLETED! YOU'RE A MAESTRO! 🎉</span>
+              <span>SONG COMPLETED — CELEBRATION MAESTRO!</span>
+              <Sparkles className="w-3.5 h-3.5 text-[#c5a059]" />
             </div>
           )}
 
@@ -282,9 +283,10 @@ export const TimeLockPiano: React.FC = () => {
         </div>
       </div>
 
-      <span className="font-mono text-[9px] text-[#a8a29e] uppercase tracking-wider mt-2.5">
-        ⌨️ Press keyboard keys (A-S-D-F...) or tap keys to play
-      </span>
+      <div className="flex items-center gap-1.5 font-mono text-[9px] text-[#a8a29e] uppercase tracking-wider mt-2.5">
+        <Keyboard className="w-3 h-3 text-[#c5a059]" />
+        <span>Press keyboard keys (A-S-D-F...) or tap keys to play</span>
+      </div>
     </div>
   );
 };

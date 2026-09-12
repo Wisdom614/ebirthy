@@ -44,7 +44,7 @@ interface TimeRemaining {
 
 interface FloatingReaction {
   id: number;
-  emoji: string;
+  type: 'confetti' | 'heart' | 'spark' | 'toast';
   x: number;
   y: number;
 }
@@ -220,21 +220,14 @@ export const TimeLockScreen: React.FC<TimeLockScreenProps> = ({
       });
     }
 
-    // Spawn floating emoji element
+    // Spawn floating icon element
     const rect = e?.currentTarget.getBoundingClientRect();
     const spawnX = rect ? rect.left + rect.width / 2 : window.innerWidth / 2;
     const spawnY = rect ? rect.top : window.innerHeight * 0.7;
 
-    const emojis = {
-      confetti: '🎉',
-      heart: '💖',
-      spark: '✨',
-      toast: '🥂'
-    };
-
     const newReaction: FloatingReaction = {
       id: Date.now() + Math.random(),
-      emoji: emojis[type],
+      type,
       x: spawnX + (Math.random() - 0.5) * 40,
       y: spawnY
     };
@@ -285,16 +278,19 @@ export const TimeLockScreen: React.FC<TimeLockScreenProps> = ({
       {/* Radial Soft Espresso Vignette */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(28,26,23,0.3)_0%,rgba(18,17,16,0.95)_80%)] pointer-events-none z-0" />
 
-      {/* Floating Animated Reaction Emojis */}
+      {/* Floating Animated Reaction Icons */}
       <div className="fixed inset-0 pointer-events-none z-40 overflow-hidden">
         {floatingReactions.map((r) => (
-          <span
+          <div
             key={r.id}
-            className="absolute text-2xl sm:text-3xl animate-float-up opacity-90 transition-all"
-            style={{ left: `${r.x}px`, top: `${r.y}px` }}
+            className="absolute animate-float-up transition-all flex items-center justify-center p-2 rounded-full bg-[#1c1a17]/90 border border-[#c5a059]/40 shadow-[0_0_15px_rgba(197,160,89,0.3)] backdrop-blur-md"
+            style={{ left: `${r.x - 16}px`, top: `${r.y - 16}px` }}
           >
-            {r.emoji}
-          </span>
+            {r.type === 'confetti' && <PartyPopper className="w-5 h-5 text-[#c5a059]" />}
+            {r.type === 'heart' && <Heart className="w-5 h-5 text-rose-400 fill-rose-400" />}
+            {r.type === 'spark' && <Flame className="w-5 h-5 text-[#e6d5b8]" />}
+            {r.type === 'toast' && <Wine className="w-5 h-5 text-[#c5a059]" />}
+          </div>
         ))}
       </div>
 

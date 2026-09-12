@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { audio } from '../../utils/audioManager';
 import confetti from 'canvas-confetti';
-import { Zap, RefreshCw, Trophy, Clock, CheckCircle2, RotateCcw } from 'lucide-react';
+import { Zap, RefreshCw, Trophy, Clock, CheckCircle2, RotateCcw, Sparkles } from 'lucide-react';
 
 const TYPING_PHRASES = [
   'Celebrating another incredible orbit around the sun with joy, laughter, and wisdom.',
@@ -177,8 +177,23 @@ export const TimeLockTypingGame: React.FC = () => {
               <div className="font-mono text-xs font-black text-[#faf8f5]">
                 SPEED: <span className="text-[#e6d5b8]">{wpm} WPM</span> · ACCURACY: <span className="text-emerald-400">{accuracy}%</span>
               </div>
-              <div className="font-mono text-[9px] text-[#a8a29e]">
-                {wpm > 60 ? '🚀 Quantum Velocity Typist!' : wpm > 40 ? '⚡ Supersonic Celebrator!' : '✨ Splendid Effort!'}
+              <div className="font-mono text-[9px] text-[#a8a29e] flex items-center gap-1 mt-0.5">
+                {wpm > 60 ? (
+                  <>
+                    <Zap className="w-3 h-3 text-[#c5a059]" />
+                    <span>Quantum Velocity Typist</span>
+                  </>
+                ) : wpm > 40 ? (
+                  <>
+                    <Sparkles className="w-3 h-3 text-[#c5a059]" />
+                    <span>Supersonic Celebrator</span>
+                  </>
+                ) : (
+                  <>
+                    <CheckCircle2 className="w-3 h-3 text-emerald-400" />
+                    <span>Splendid Effort</span>
+                  </>
+                )}
               </div>
             </div>
           </div>
