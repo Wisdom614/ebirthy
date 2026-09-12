@@ -20,6 +20,7 @@ import {
 import { BrandLogo } from '../ui/BrandLogo';
 import { TimeLockAtmosphere } from './TimeLockAtmosphere';
 import { Vault3DCore } from './Vault3DCore';
+import { TimeLockArcade } from './TimeLockArcade';
 import {
   generateGoogleCalendarUrl,
   downloadIcsFile
@@ -493,8 +494,11 @@ export const TimeLockScreen: React.FC<TimeLockScreenProps> = ({
           </span>
         </div>
 
-        {/* 7. Zero-Hour Schedule Footnote */}
-        <div className="mt-5 inline-flex items-center gap-2 font-mono text-[11px] sm:text-xs text-zinc-400 uppercase font-medium border-t border-white/10 pt-3">
+        {/* 7. Interactive Celebration Arcade (Piano & Speed Typing) */}
+        <TimeLockArcade />
+
+        {/* 8. Zero-Hour Schedule Footnote */}
+        <div className="mt-4 inline-flex items-center gap-2 font-mono text-[11px] sm:text-xs text-zinc-400 uppercase font-medium border-t border-white/10 pt-3">
           <Clock className="w-3.5 h-3.5 text-amber-400" />
           <span>ZERO-HOUR: <strong className="text-zinc-200 font-bold ml-1">{formattedDate}</strong></span>
         </div>
