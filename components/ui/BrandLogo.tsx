@@ -119,7 +119,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
         </span>
         {showSubtitle && (
           <span
-            className={`font-mono ${colors.subText} uppercase tracking-widest font-bold block truncate leading-none mt-1 ${
+            className={`font-mono ${colors.subText} uppercase tracking-widest font-bold hidden sm:block truncate leading-none mt-1 ${
               isSm ? 'text-[8px]' : 'text-[9px]'
             }`}
           >

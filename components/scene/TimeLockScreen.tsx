@@ -284,14 +284,14 @@ export const TimeLockScreen: React.FC<TimeLockScreenProps> = ({
       </div>
 
       {/* 1. Swiss Architectural Top Navigation */}
-      <nav className="h-16 border-b-2 border-[#1c1917] bg-white px-6 sm:px-12 flex items-center justify-between sticky top-0 z-50 w-full">
-        <BrandLogo size="md" />
+      <nav className="h-14 sm:h-16 border-b-2 border-[#1c1917] bg-white px-3 sm:px-8 flex items-center justify-between sticky top-0 z-50 w-full">
+        <BrandLogo size="sm" />
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           {/* Audio Soundscape Toggle */}
           <button
             onClick={toggleAtmosphericAudio}
-            className={`px-3 py-1.5 font-mono text-xs font-bold uppercase border-2 border-[#1c1917] flex items-center gap-1.5 transition-all cursor-pointer shadow-[2px_2px_0px_#1c1917] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none ${
+            className={`h-9 px-2.5 sm:px-3 font-mono text-[11px] sm:text-xs font-bold uppercase border-2 border-[#1c1917] flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-[2px_2px_0px_#1c1917] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none ${
               isAudioActive
                 ? 'bg-amber-400 text-[#1c1917]'
                 : 'bg-white hover:bg-[#eeeae0] text-[#1c1917]'
@@ -301,12 +301,14 @@ export const TimeLockScreen: React.FC<TimeLockScreenProps> = ({
             {isAudioActive ? (
               <>
                 <Volume2 className="w-3.5 h-3.5 text-[#1c1917]" />
-                <span>[ AUDIO: ON ]</span>
+                <span className="hidden sm:inline">[ AUDIO: ON ]</span>
+                <span className="sm:hidden text-[10px]">ON</span>
               </>
             ) : (
               <>
                 <VolumeX className="w-3.5 h-3.5 text-zinc-600" />
-                <span>[ SOUNDSCAPE ]</span>
+                <span className="hidden sm:inline">[ SOUNDSCAPE ]</span>
+                <span className="sm:hidden text-[10px]">AUDIO</span>
               </>
             )}
           </button>
@@ -315,23 +317,24 @@ export const TimeLockScreen: React.FC<TimeLockScreenProps> = ({
           <div className="relative">
             <button
               onClick={() => setCalendarMenuOpen(!calendarMenuOpen)}
-              className="px-3.5 py-1.5 bg-amber-400 hover:bg-amber-300 text-[#1c1917] border-2 border-[#1c1917] font-mono font-bold text-xs uppercase shadow-[2px_2px_0px_#1c1917] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none flex items-center gap-1.5 transition-all cursor-pointer"
+              className="h-9 px-2.5 sm:px-3.5 bg-amber-400 hover:bg-amber-300 text-[#1c1917] border-2 border-[#1c1917] font-mono font-bold text-[11px] sm:text-xs uppercase shadow-[2px_2px_0px_#1c1917] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none flex items-center justify-center gap-1.5 transition-all cursor-pointer"
             >
               <Calendar className="w-3.5 h-3.5 text-[#1c1917]" />
-              <span>[ REMIND ME ]</span>
+              <span className="hidden sm:inline">[ REMIND ME ]</span>
+              <span className="sm:hidden text-[10px]">REMIND</span>
               <ChevronDown className="w-3 h-3 text-[#1c1917]" />
             </button>
 
             {calendarMenuOpen && (
               <div
-                className="absolute right-0 top-11 w-52 bg-white border-2 border-[#1c1917] p-1.5 flex flex-col gap-1 z-50 shadow-[4px_4px_0px_#1c1917] animate-in fade-in zoom-in-95 duration-100 text-left"
+                className="absolute right-0 top-11 w-48 sm:w-52 bg-white border-2 border-[#1c1917] p-1.5 flex flex-col gap-1 z-50 shadow-[4px_4px_0px_#1c1917] animate-in fade-in zoom-in-95 duration-100 text-left"
                 onClick={() => setCalendarMenuOpen(false)}
               >
                 <a
                   href={googleCalUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-3 py-2 text-left font-mono text-xs font-bold uppercase hover:bg-amber-100 text-[#1c1917] flex items-center justify-between border border-transparent hover:border-[#1c1917] transition-all"
+                  className="px-2.5 py-1.5 text-left font-mono text-[11px] sm:text-xs font-bold uppercase hover:bg-amber-100 text-[#1c1917] flex items-center justify-between border border-transparent hover:border-[#1c1917] transition-all"
                 >
                   <span>Google Calendar</span>
                   <ExternalLink className="w-3.5 h-3.5 text-amber-700" />
@@ -339,9 +342,9 @@ export const TimeLockScreen: React.FC<TimeLockScreenProps> = ({
 
                 <button
                   onClick={() => downloadIcsFile(recipientName, unlockDateTime)}
-                  className="px-3 py-2 text-left font-mono text-xs font-bold uppercase hover:bg-amber-100 text-[#1c1917] flex items-center justify-between border border-transparent hover:border-[#1c1917] transition-all cursor-pointer"
+                  className="px-2.5 py-1.5 text-left font-mono text-[11px] sm:text-xs font-bold uppercase hover:bg-amber-100 text-[#1c1917] flex items-center justify-between border border-transparent hover:border-[#1c1917] transition-all cursor-pointer"
                 >
-                  <span>Apple / Outlook (iCal)</span>
+                  <span>Apple / iCal</span>
                   <Calendar className="w-3.5 h-3.5 text-amber-700" />
                 </button>
               </div>
@@ -351,65 +354,65 @@ export const TimeLockScreen: React.FC<TimeLockScreenProps> = ({
       </nav>
 
       {/* 2. Main Center Stage */}
-      <main className="relative z-10 my-auto py-8 px-4 flex flex-col items-center max-w-2xl w-full">
+      <main className="relative z-10 my-auto py-5 sm:py-8 px-3 sm:px-4 flex flex-col items-center max-w-xl w-full">
         
         {/* Architectural Locked Status Badge */}
-        <div className="inline-flex items-center gap-2 px-3 py-1 bg-white border-2 border-[#1c1917] shadow-[2px_2px_0px_#1c1917] mb-3">
-          <Lock className="w-3.5 h-3.5 text-amber-700" />
-          <span className="font-mono text-xs text-[#1c1917] uppercase tracking-wider font-bold">
-            [ TIME-LOCKED CELEBRATION DISPATCH ]
+        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 sm:px-3 sm:py-1 bg-white border-2 border-[#1c1917] shadow-[2px_2px_0px_#1c1917] mb-2 sm:mb-3">
+          <Lock className="w-3 h-3 text-amber-700" />
+          <span className="font-mono text-[10px] sm:text-xs text-[#1c1917] uppercase tracking-wider font-bold">
+            [ TIME-LOCKED VAULT ]
           </span>
         </div>
 
         {/* Recipient Headline */}
-        <h1 className="text-3xl sm:text-5xl md:text-6xl font-black uppercase tracking-tight text-[#1c1917] leading-none">
-          FOR <span className="bg-amber-400 text-[#1c1917] px-3 py-1 border-2 border-[#1c1917] inline-block shadow-[4px_4px_0px_#1c1917] mt-1 ml-1">{recipientName}</span>
+        <h1 className="text-2xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-[#1c1917] leading-tight">
+          FOR <span className="bg-amber-400 text-[#1c1917] px-2.5 py-0.5 border-2 border-[#1c1917] inline-block shadow-[3px_3px_0px_#1c1917] mt-0.5 ml-1">{recipientName}</span>
         </h1>
 
-        <p className="mt-4 font-mono text-xs sm:text-sm uppercase tracking-wide text-zinc-800 max-w-lg leading-relaxed font-semibold border-y-2 border-[#1c1917]/20 py-2">
+        <p className="mt-2.5 mb-2 font-mono text-[10px] sm:text-xs uppercase tracking-wide text-zinc-700 max-w-md leading-relaxed font-semibold border-y border-[#1c1917]/20 py-1.5">
           A personalized celebration has been sealed inside this vault. Unlocks automatically at zero-hour.
         </p>
 
         {/* 3. COUNTDOWN MATRIX (4 Uniform Swiss White Cards) */}
-        <div className="grid grid-cols-4 gap-2.5 sm:gap-4 w-full max-w-lg mt-6 mb-3">
+        <div className="grid grid-cols-4 gap-2 sm:gap-3.5 w-full max-w-md my-3 sm:my-4">
           {/* Days */}
-          <div className="bg-white border-2 border-[#1c1917] p-3 sm:p-4 flex flex-col items-center shadow-[4px_4px_0px_#1c1917] hover:translate-x-[-1px] hover:translate-y-[-1px] transition-all">
-            <span className="font-mono text-3xl sm:text-5xl font-black text-[#1c1917] tracking-tighter leading-none">
+          <div className="bg-white border-2 border-[#1c1917] p-2.5 sm:p-3.5 flex flex-col items-center shadow-[3px_3px_0px_#1c1917] sm:shadow-[4px_4px_0px_#1c1917]">
+            <span className="font-mono text-2xl sm:text-4xl font-black text-[#1c1917] tracking-tighter leading-none">
               {pad(timeLeft.days)}
             </span>
-            <span className="font-mono text-[9px] sm:text-[10px] uppercase font-bold tracking-widest text-[#1c1917] px-2 py-0.5 bg-amber-200 border border-[#1c1917] mt-2">
+            <span className="font-mono text-[8px] sm:text-[9px] uppercase font-bold tracking-widest text-[#1c1917] px-1.5 py-0.5 bg-amber-200 border border-[#1c1917] mt-1.5 sm:mt-2">
               DAYS
             </span>
           </div>
 
           {/* Hours */}
-          <div className="bg-white border-2 border-[#1c1917] p-3 sm:p-4 flex flex-col items-center shadow-[4px_4px_0px_#1c1917] hover:translate-x-[-1px] hover:translate-y-[-1px] transition-all">
-            <span className="font-mono text-3xl sm:text-5xl font-black text-[#1c1917] tracking-tighter leading-none">
+          <div className="bg-white border-2 border-[#1c1917] p-2.5 sm:p-3.5 flex flex-col items-center shadow-[3px_3px_0px_#1c1917] sm:shadow-[4px_4px_0px_#1c1917]">
+            <span className="font-mono text-2xl sm:text-4xl font-black text-[#1c1917] tracking-tighter leading-none">
               {pad(timeLeft.hours)}
             </span>
-            <span className="font-mono text-[9px] sm:text-[10px] uppercase font-bold tracking-widest text-[#1c1917] px-2 py-0.5 bg-amber-200 border border-[#1c1917] mt-2">
+            <span className="font-mono text-[8px] sm:text-[9px] uppercase font-bold tracking-widest text-[#1c1917] px-1.5 py-0.5 bg-amber-200 border border-[#1c1917] mt-1.5 sm:mt-2">
               HOURS
             </span>
           </div>
 
           {/* Minutes */}
-          <div className="bg-white border-2 border-[#1c1917] p-3 sm:p-4 flex flex-col items-center shadow-[4px_4px_0px_#1c1917] hover:translate-x-[-1px] hover:translate-y-[-1px] transition-all">
-            <span className="font-mono text-3xl sm:text-5xl font-black text-[#1c1917] tracking-tighter leading-none">
+          <div className="bg-white border-2 border-[#1c1917] p-2.5 sm:p-3.5 flex flex-col items-center shadow-[3px_3px_0px_#1c1917] sm:shadow-[4px_4px_0px_#1c1917]">
+            <span className="font-mono text-2xl sm:text-4xl font-black text-[#1c1917] tracking-tighter leading-none">
               {pad(timeLeft.minutes)}
             </span>
-            <span className="font-mono text-[9px] sm:text-[10px] uppercase font-bold tracking-widest text-[#1c1917] px-2 py-0.5 bg-amber-200 border border-[#1c1917] mt-2">
+            <span className="font-mono text-[8px] sm:text-[9px] uppercase font-bold tracking-widest text-[#1c1917] px-1.5 py-0.5 bg-amber-200 border border-[#1c1917] mt-1.5 sm:mt-2">
               MINUTES
             </span>
           </div>
 
           {/* Seconds */}
-          <div className="bg-white border-2 border-[#1c1917] p-3 sm:p-4 flex flex-col items-center shadow-[4px_4px_0px_#1c1917] hover:translate-x-[-1px] hover:translate-y-[-1px] transition-all">
-            <span className="font-mono text-3xl sm:text-5xl font-black text-amber-600 tracking-tighter leading-none">
+          <div className="bg-white border-2 border-[#1c1917] p-2.5 sm:p-3.5 flex flex-col items-center shadow-[3px_3px_0px_#1c1917] sm:shadow-[4px_4px_0px_#1c1917]">
+            <span className="font-mono text-2xl sm:text-4xl font-black text-amber-600 tracking-tighter leading-none">
               {pad(timeLeft.seconds)}
             </span>
-            <span className="font-mono text-[9px] sm:text-[10px] uppercase font-bold tracking-widest text-[#1c1917] px-2 py-0.5 bg-amber-400 border border-[#1c1917] mt-2 flex items-center gap-1">
+            <span className="font-mono text-[8px] sm:text-[9px] uppercase font-bold tracking-widest text-[#1c1917] px-1.5 py-0.5 bg-amber-400 border border-[#1c1917] mt-1.5 sm:mt-2 flex items-center gap-1">
               <span className="w-1.5 h-1.5 rounded-full bg-[#1c1917] animate-pulse" />
-              <span>SECONDS</span>
+              <span>SECS</span>
             </span>
           </div>
         </div>

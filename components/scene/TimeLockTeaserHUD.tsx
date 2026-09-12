@@ -114,10 +114,10 @@ export const TimeLockTeaserHUD: React.FC<TimeLockTeaserHUDProps> = ({
   const currentPhoto = availableImages[activePhotoIdx];
 
   return (
-    <div className="w-full max-w-lg mx-auto my-3 text-[#1c1917] select-none">
+    <div className="w-full max-w-md mx-auto my-2.5 text-[#1c1917] select-none">
       {mode === 'peek' && hasPhotos && currentPhoto ? (
         /* SNEAK PEEK FLASH CARD (5s Duration) */
-        <div className="bg-white border-2 border-[#1c1917] p-4 sm:p-5 shadow-[4px_4px_0px_#1c1917] flex flex-col items-center animate-in zoom-in-95 duration-200">
+        <div className="bg-white border-2 border-[#1c1917] p-3.5 sm:p-4.5 shadow-[3px_3px_0px_#1c1917] sm:shadow-[4px_4px_0px_#1c1917] flex flex-col items-center animate-in zoom-in-95 duration-200">
           
           {/* Top Status Strip */}
           <div className="w-full flex items-center justify-between border-b-2 border-[#1c1917] pb-2 mb-3">
@@ -140,7 +140,7 @@ export const TimeLockTeaserHUD: React.FC<TimeLockTeaserHUDProps> = ({
           </div>
 
           {/* Photo Frame */}
-          <div className="relative w-full max-w-[320px] aspect-4/3 bg-[#f7f4ed] border-2 border-[#1c1917] overflow-hidden shadow-[2px_2px_0px_#1c1917]">
+          <div className="relative w-full max-w-[280px] sm:max-w-[320px] aspect-4/3 bg-[#f7f4ed] border-2 border-[#1c1917] overflow-hidden shadow-[2px_2px_0px_#1c1917]">
             {/* Corner Precision Targets */}
             <div className="absolute top-1 left-1 w-2.5 h-2.5 border-t-2 border-l-2 border-[#1c1917] z-20 pointer-events-none" />
             <div className="absolute top-1 right-1 w-2.5 h-2.5 border-t-2 border-r-2 border-[#1c1917] z-20 pointer-events-none" />
@@ -164,13 +164,13 @@ export const TimeLockTeaserHUD: React.FC<TimeLockTeaserHUDProps> = ({
 
           {/* Caption if provided */}
           {currentPhoto.caption && (
-            <div className="mt-2.5 font-mono text-xs font-bold text-zinc-800 uppercase tracking-wide bg-[#f7f4ed] border border-[#1c1917] px-3 py-1 text-center max-w-[320px] truncate">
+            <div className="mt-2.5 font-mono text-xs font-bold text-zinc-800 uppercase tracking-wide bg-[#f7f4ed] border border-[#1c1917] px-3 py-1 text-center max-w-[280px] sm:max-w-[320px] truncate">
               &quot;{currentPhoto.caption}&quot;
             </div>
           )}
 
           {/* 5-Second Linear Progress Bar */}
-          <div className="w-full max-w-[320px] h-1.5 bg-[#eeeae0] border border-[#1c1917] mt-3 overflow-hidden">
+          <div className="w-full max-w-[280px] sm:max-w-[320px] h-1.5 bg-[#eeeae0] border border-[#1c1917] mt-3 overflow-hidden">
             <div
               className="h-full bg-amber-500 transition-all duration-1000 ease-linear"
               style={{ width: `${(peekCountdown / 5) * 100}%` }}
@@ -179,7 +179,7 @@ export const TimeLockTeaserHUD: React.FC<TimeLockTeaserHUDProps> = ({
         </div>
       ) : (
         /* VAULT INTEL & TELEMETRY MATRIX (When sealed or rotated) */
-        <div className="bg-white border-2 border-[#1c1917] p-4 sm:p-5 shadow-[4px_4px_0px_#1c1917] flex flex-col items-center">
+        <div className="bg-white border-2 border-[#1c1917] p-3.5 sm:p-4.5 shadow-[3px_3px_0px_#1c1917] sm:shadow-[4px_4px_0px_#1c1917] flex flex-col items-center">
           
           {/* Header Strip */}
           <div className="w-full flex items-center justify-between border-b-2 border-[#1c1917] pb-2.5 mb-3">

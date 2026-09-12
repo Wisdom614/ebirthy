@@ -263,12 +263,12 @@ export const Vault3DCore: React.FC<Vault3DCoreProps> = ({
   };
 
   return (
-    <div className="flex flex-col items-center select-none relative my-2">
+    <div className="flex flex-col items-center select-none relative my-1 sm:my-2">
       {/* 3D Canvas Container with Subtle Halo & Pulse */}
       <div
         ref={containerRef}
         onClick={handleVaultClick}
-        className="w-[240px] h-[240px] sm:w-[290px] sm:h-[290px] relative cursor-grab active:cursor-grabbing flex items-center justify-center transition-transform hover:scale-105 active:scale-95"
+        className="w-[200px] h-[200px] sm:w-[260px] sm:h-[260px] relative cursor-grab active:cursor-grabbing flex items-center justify-center transition-transform hover:scale-105 active:scale-95"
       >
         {/* Soft Radial Backlight */}
         <div className="absolute inset-0 bg-radial from-amber-500/15 via-transparent to-transparent blur-xl pointer-events-none" />
