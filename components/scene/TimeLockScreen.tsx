@@ -257,33 +257,33 @@ export const TimeLockScreen: React.FC<TimeLockScreenProps> = ({
   const googleCalUrl = generateGoogleCalendarUrl(recipientName, unlockDateTime);
 
   return (
-    <div className="min-h-screen bg-[#070b14] text-white flex flex-col items-center justify-between p-4 sm:p-7 text-center select-none relative overflow-hidden font-sans">
+    <div className="min-h-screen bg-[#121110] text-[#f5f0e6] flex flex-col items-center justify-between p-4 sm:p-7 text-center select-none relative overflow-hidden font-sans">
       
-      {/* 1. Harmonious Dark Graph-Paper Grid Background */}
+      {/* 1. Natural Warm Champagne Graph-Paper Grid Background */}
       <div
-        className="absolute inset-0 pointer-events-none opacity-40 z-0"
+        className="absolute inset-0 pointer-events-none opacity-30 z-0"
         style={{
           backgroundImage: `
-            linear-gradient(to right, rgba(245, 158, 11, 0.08) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(245, 158, 11, 0.08) 1px, transparent 1px)
+            linear-gradient(to right, rgba(197, 160, 89, 0.08) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(197, 160, 89, 0.08) 1px, transparent 1px)
           `,
           backgroundSize: '32px 32px'
         }}
       />
 
       {/* Blueprint Crosshairs on Corners */}
-      <div className="absolute top-4 left-4 font-mono text-[9px] text-amber-500/30 select-none pointer-events-none hidden sm:block">
-        + [GRID: 32px · LAT_01]
+      <div className="absolute top-4 left-4 font-mono text-[9px] text-[#c5a059]/40 select-none pointer-events-none hidden sm:block">
+        + [GRID: 32px · ARCHITECTURAL_01]
       </div>
-      <div className="absolute top-4 right-4 font-mono text-[9px] text-amber-500/30 select-none pointer-events-none hidden sm:block">
+      <div className="absolute top-4 right-4 font-mono text-[9px] text-[#c5a059]/40 select-none pointer-events-none hidden sm:block">
         [TIME_LOCKED: ACTIVE] +
       </div>
 
       {/* Dynamic Starlight & Particle Waves */}
-      <TimeLockAtmosphere themeColor="#f59e0b" />
+      <TimeLockAtmosphere themeColor="#c5a059" />
 
-      {/* Radial Obsidian Vignette */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(15,23,42,0.4)_0%,rgba(7,11,20,0.92)_80%)] pointer-events-none z-0" />
+      {/* Radial Soft Espresso Vignette */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(28,26,23,0.3)_0%,rgba(18,17,16,0.95)_80%)] pointer-events-none z-0" />
 
       {/* Floating Animated Reaction Emojis */}
       <div className="fixed inset-0 pointer-events-none z-40 overflow-hidden">
@@ -299,7 +299,7 @@ export const TimeLockScreen: React.FC<TimeLockScreenProps> = ({
       </div>
 
       {/* 2. Top Control Bar */}
-      <header className="relative z-20 w-full max-w-4xl flex items-center justify-between border-b border-white/10 pb-3 pt-1">
+      <header className="relative z-20 w-full max-w-4xl flex items-center justify-between border-b border-[#c5a059]/20 pb-3 pt-1">
         <BrandLogo size="sm" showSubtitle={true} href="" variant="gold" />
 
         <div className="flex items-center gap-2">
@@ -308,19 +308,19 @@ export const TimeLockScreen: React.FC<TimeLockScreenProps> = ({
             onClick={toggleAtmosphericAudio}
             className={`px-3 py-1.5 font-mono text-[10px] font-bold uppercase rounded-md border flex items-center gap-2 transition-all cursor-pointer backdrop-blur-md ${
               isAudioActive
-                ? 'bg-amber-400 text-zinc-950 border-amber-400 shadow-[0_0_12px_rgba(245,158,11,0.4)]'
-                : 'bg-white/5 border-white/10 text-zinc-300 hover:bg-white/10 hover:border-white/20'
+                ? 'bg-[#c5a059] text-[#141311] border-[#c5a059] shadow-[0_0_12px_rgba(197,160,89,0.35)]'
+                : 'bg-[#1c1a17]/80 border-[#c5a059]/25 text-[#d6cdb7] hover:bg-[#26231f] hover:border-[#c5a059]/40'
             }`}
             title="Toggle atmospheric harmonic drone"
           >
             {isAudioActive ? (
               <>
-                <Volume2 className="w-3.5 h-3.5 text-zinc-950" />
+                <Volume2 className="w-3.5 h-3.5 text-[#141311]" />
                 <span>AUDIO ON</span>
               </>
             ) : (
               <>
-                <VolumeX className="w-3.5 h-3.5 text-zinc-400" />
+                <VolumeX className="w-3.5 h-3.5 text-[#a8a29e]" />
                 <span>SOUNDSCAPE</span>
               </>
             )}
@@ -330,34 +330,34 @@ export const TimeLockScreen: React.FC<TimeLockScreenProps> = ({
           <div className="relative">
             <button
               onClick={() => setCalendarMenuOpen(!calendarMenuOpen)}
-              className="px-3 py-1.5 bg-white/5 hover:bg-white/10 text-amber-300 border border-amber-400/30 rounded-md font-mono text-[10px] font-bold uppercase flex items-center gap-1.5 transition-all cursor-pointer backdrop-blur-md hover:border-amber-400/50"
+              className="px-3 py-1.5 bg-[#1c1a17]/80 hover:bg-[#26231f] text-[#c5a059] border border-[#c5a059]/30 rounded-md font-mono text-[10px] font-bold uppercase flex items-center gap-1.5 transition-all cursor-pointer backdrop-blur-md hover:border-[#c5a059]/50"
             >
-              <Calendar className="w-3.5 h-3.5 text-amber-400" />
+              <Calendar className="w-3.5 h-3.5 text-[#c5a059]" />
               <span>REMIND ME</span>
-              <ChevronDown className="w-3 h-3 text-zinc-400" />
+              <ChevronDown className="w-3 h-3 text-[#a8a29e]" />
             </button>
 
             {calendarMenuOpen && (
               <div
-                className="absolute right-0 top-10 w-52 bg-[#0d1424] border border-amber-400/40 rounded-lg p-1.5 flex flex-col gap-1 z-50 shadow-[0_10px_30px_rgba(0,0,0,0.8)] backdrop-blur-xl animate-in fade-in zoom-in-95 duration-100 text-left"
+                className="absolute right-0 top-10 w-52 bg-[#1c1a17] border border-[#c5a059]/40 rounded-lg p-1.5 flex flex-col gap-1 z-50 shadow-[0_10px_30px_rgba(0,0,0,0.8)] backdrop-blur-xl animate-in fade-in zoom-in-95 duration-100 text-left"
                 onClick={() => setCalendarMenuOpen(false)}
               >
                 <a
                   href={googleCalUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-3 py-2 text-left font-mono text-xs font-semibold rounded-md hover:bg-amber-400/15 text-zinc-200 hover:text-amber-300 flex items-center justify-between transition-colors"
+                  className="px-3 py-2 text-left font-mono text-xs font-semibold rounded-md hover:bg-[#c5a059]/15 text-[#e6d5b8] hover:text-[#f5f0e6] flex items-center justify-between transition-colors"
                 >
                   <span>Google Calendar</span>
-                  <ExternalLink className="w-3.5 h-3.5 text-amber-400" />
+                  <ExternalLink className="w-3.5 h-3.5 text-[#c5a059]" />
                 </a>
 
                 <button
                   onClick={() => downloadIcsFile(recipientName, unlockDateTime)}
-                  className="px-3 py-2 text-left font-mono text-xs font-semibold rounded-md hover:bg-amber-400/15 text-zinc-200 hover:text-amber-300 flex items-center justify-between transition-colors cursor-pointer"
+                  className="px-3 py-2 text-left font-mono text-xs font-semibold rounded-md hover:bg-[#c5a059]/15 text-[#e6d5b8] hover:text-[#f5f0e6] flex items-center justify-between transition-colors cursor-pointer"
                 >
                   <span>Apple / Outlook (iCal)</span>
-                  <Calendar className="w-3.5 h-3.5 text-amber-400" />
+                  <Calendar className="w-3.5 h-3.5 text-[#c5a059]" />
                 </button>
               </div>
             )}
@@ -370,73 +370,73 @@ export const TimeLockScreen: React.FC<TimeLockScreenProps> = ({
         
         {/* Discreet Locked Status */}
         <div className="inline-flex items-center gap-2 mb-2">
-          <Lock className="w-3.5 h-3.5 text-amber-400" />
-          <span className="font-mono text-[11px] text-amber-300/90 uppercase tracking-[0.25em] font-semibold">
+          <Lock className="w-3.5 h-3.5 text-[#c5a059]" />
+          <span className="font-mono text-[11px] text-[#c5a059] uppercase tracking-[0.25em] font-semibold">
             LOCKED TIME CAPSULE
           </span>
         </div>
 
         {/* Recipient Headline */}
-        <h1 className="text-3xl sm:text-5xl font-black uppercase tracking-tight text-white drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)] leading-tight">
-          FOR <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-yellow-500">{recipientName}</span>
+        <h1 className="text-3xl sm:text-5xl font-black uppercase tracking-tight text-[#faf8f5] drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)] leading-tight">
+          FOR <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#f5ebd7] via-[#c5a059] to-[#a37e36]">{recipientName}</span>
         </h1>
 
-        <p className="mt-1.5 font-mono text-xs text-zinc-400 uppercase tracking-wider font-medium max-w-md">
+        <p className="mt-1.5 font-mono text-xs text-[#a8a29e] uppercase tracking-wider font-medium max-w-md">
           A personalized celebration has been sealed inside. Unlocks automatically at zero-hour.
         </p>
 
         {/* 4. COUNTDOWN MATRIX MOVED UP (Primary Focal Point) */}
         <div className="grid grid-cols-4 gap-2.5 sm:gap-4 w-full max-w-lg mt-5 mb-2">
           {/* Days */}
-          <div className="bg-[#0c1220]/85 border border-amber-500/25 rounded-lg p-3 sm:p-4 flex flex-col items-center shadow-[0_4px_25px_rgba(0,0,0,0.7)] backdrop-blur-xl relative overflow-hidden group">
-            <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-amber-400/50 to-transparent" />
-            <span className="font-mono text-3xl sm:text-5xl font-black text-white tracking-tighter drop-shadow-md">
+          <div className="bg-[#1c1a17]/90 border border-[#c5a059]/25 rounded-lg p-3 sm:p-4 flex flex-col items-center shadow-[0_4px_25px_rgba(0,0,0,0.6)] backdrop-blur-xl relative overflow-hidden group">
+            <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-[#c5a059]/50 to-transparent" />
+            <span className="font-mono text-3xl sm:text-5xl font-black text-[#faf8f5] tracking-tighter drop-shadow-md">
               {pad(timeLeft.days)}
             </span>
-            <span className="font-mono text-[9px] sm:text-[10px] uppercase font-bold tracking-[0.2em] text-amber-400 mt-1">
+            <span className="font-mono text-[9px] sm:text-[10px] uppercase font-bold tracking-[0.2em] text-[#c5a059] mt-1">
               DAYS
             </span>
           </div>
 
           {/* Hours */}
-          <div className="bg-[#0c1220]/85 border border-amber-500/25 rounded-lg p-3 sm:p-4 flex flex-col items-center shadow-[0_4px_25px_rgba(0,0,0,0.7)] backdrop-blur-xl relative overflow-hidden group">
-            <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-amber-400/50 to-transparent" />
-            <span className="font-mono text-3xl sm:text-5xl font-black text-white tracking-tighter drop-shadow-md">
+          <div className="bg-[#1c1a17]/90 border border-[#c5a059]/25 rounded-lg p-3 sm:p-4 flex flex-col items-center shadow-[0_4px_25px_rgba(0,0,0,0.6)] backdrop-blur-xl relative overflow-hidden group">
+            <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-[#c5a059]/50 to-transparent" />
+            <span className="font-mono text-3xl sm:text-5xl font-black text-[#faf8f5] tracking-tighter drop-shadow-md">
               {pad(timeLeft.hours)}
             </span>
-            <span className="font-mono text-[9px] sm:text-[10px] uppercase font-bold tracking-[0.2em] text-amber-400 mt-1">
+            <span className="font-mono text-[9px] sm:text-[10px] uppercase font-bold tracking-[0.2em] text-[#c5a059] mt-1">
               HOURS
             </span>
           </div>
 
           {/* Minutes */}
-          <div className="bg-[#0c1220]/85 border border-amber-500/25 rounded-lg p-3 sm:p-4 flex flex-col items-center shadow-[0_4px_25px_rgba(0,0,0,0.7)] backdrop-blur-xl relative overflow-hidden group">
-            <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-amber-400/50 to-transparent" />
-            <span className="font-mono text-3xl sm:text-5xl font-black text-white tracking-tighter drop-shadow-md">
+          <div className="bg-[#1c1a17]/90 border border-[#c5a059]/25 rounded-lg p-3 sm:p-4 flex flex-col items-center shadow-[0_4px_25px_rgba(0,0,0,0.6)] backdrop-blur-xl relative overflow-hidden group">
+            <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-[#c5a059]/50 to-transparent" />
+            <span className="font-mono text-3xl sm:text-5xl font-black text-[#faf8f5] tracking-tighter drop-shadow-md">
               {pad(timeLeft.minutes)}
             </span>
-            <span className="font-mono text-[9px] sm:text-[10px] uppercase font-bold tracking-[0.2em] text-amber-400 mt-1">
+            <span className="font-mono text-[9px] sm:text-[10px] uppercase font-bold tracking-[0.2em] text-[#c5a059] mt-1">
               MINUTES
             </span>
           </div>
 
           {/* Seconds */}
-          <div className="bg-[#0c1220]/85 border border-amber-400/40 rounded-lg p-3 sm:p-4 flex flex-col items-center shadow-[0_4px_25px_rgba(245,158,11,0.15)] backdrop-blur-xl relative overflow-hidden group">
-            <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-amber-400 to-transparent" />
-            <span className="font-mono text-3xl sm:text-5xl font-black text-amber-300 tracking-tighter drop-shadow-[0_0_12px_rgba(245,158,11,0.4)]">
+          <div className="bg-[#1c1a17]/90 border border-[#c5a059]/35 rounded-lg p-3 sm:p-4 flex flex-col items-center shadow-[0_4px_25px_rgba(197,160,89,0.1)] backdrop-blur-xl relative overflow-hidden group">
+            <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-[#c5a059] to-transparent" />
+            <span className="font-mono text-3xl sm:text-5xl font-black text-[#e6d5b8] tracking-tighter drop-shadow-[0_0_12px_rgba(197,160,89,0.3)]">
               {pad(timeLeft.seconds)}
             </span>
-            <span className="font-mono text-[9px] sm:text-[10px] uppercase font-bold tracking-[0.2em] text-amber-400 mt-1 flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+            <span className="font-mono text-[9px] sm:text-[10px] uppercase font-bold tracking-[0.2em] text-[#c5a059] mt-1 flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#c5a059] animate-pulse" />
               <span>SECONDS</span>
             </span>
           </div>
         </div>
 
-        {/* 5. 3D Radiant Gold Vault Core with Sound Resonance */}
+        {/* 5. 3D Antique Bronze Vault Core with Sound Resonance */}
         <div className="my-1">
           <Vault3DCore
-            themeColor="#f59e0b"
+            themeColor="#c5a059"
             onInteract={() => {
               playCrystalChime();
               setSparkCount((p) => p + 1);
@@ -446,8 +446,8 @@ export const TimeLockScreen: React.FC<TimeLockScreenProps> = ({
 
         {/* 6. Interactive Pre-Celebration Reaction Station */}
         <div className="flex flex-col items-center gap-2 mt-1 max-w-md w-full">
-          <span className="font-mono text-[10px] text-zinc-400 uppercase tracking-widest font-semibold flex items-center gap-1.5">
-            <Sparkles className="w-3 h-3 text-amber-400" />
+          <span className="font-mono text-[10px] text-[#a8a29e] uppercase tracking-widest font-semibold flex items-center gap-1.5">
+            <Sparkles className="w-3 h-3 text-[#c5a059]" />
             <span>SEND PRE-CELEBRATION ENERGY</span>
           </span>
 
@@ -455,41 +455,41 @@ export const TimeLockScreen: React.FC<TimeLockScreenProps> = ({
             {/* Confetti */}
             <button
               onClick={(e) => triggerReaction('confetti', e)}
-              className="px-3 py-1.5 bg-white/5 hover:bg-amber-400/20 active:scale-95 border border-amber-400/30 rounded-full font-mono text-xs flex items-center gap-1.5 transition-all text-zinc-200 hover:text-amber-300 cursor-pointer backdrop-blur-md"
+              className="px-3 py-1.5 bg-[#1c1a17]/80 hover:bg-[#c5a059]/20 active:scale-95 border border-[#c5a059]/30 rounded-full font-mono text-xs flex items-center gap-1.5 transition-all text-[#d6cdb7] hover:text-[#faf8f5] cursor-pointer backdrop-blur-md"
             >
-              <PartyPopper className="w-3.5 h-3.5 text-amber-400" />
+              <PartyPopper className="w-3.5 h-3.5 text-[#c5a059]" />
               <span>Confetti</span>
             </button>
 
             {/* Heart */}
             <button
               onClick={(e) => triggerReaction('heart', e)}
-              className="px-3 py-1.5 bg-white/5 hover:bg-rose-400/20 active:scale-95 border border-rose-400/30 rounded-full font-mono text-xs flex items-center gap-1.5 transition-all text-zinc-200 hover:text-rose-300 cursor-pointer backdrop-blur-md"
+              className="px-3 py-1.5 bg-[#1c1a17]/80 hover:bg-rose-900/30 active:scale-95 border border-rose-400/30 rounded-full font-mono text-xs flex items-center gap-1.5 transition-all text-[#d6cdb7] hover:text-rose-200 cursor-pointer backdrop-blur-md"
             >
-              <Heart className="w-3.5 h-3.5 text-rose-400 fill-rose-400/30" />
+              <Heart className="w-3.5 h-3.5 text-rose-300 fill-rose-400/30" />
               <span>Wish Love</span>
             </button>
 
             {/* Spark */}
             <button
               onClick={(e) => triggerReaction('spark', e)}
-              className="px-3 py-1.5 bg-white/5 hover:bg-yellow-400/20 active:scale-95 border border-yellow-400/30 rounded-full font-mono text-xs flex items-center gap-1.5 transition-all text-zinc-200 hover:text-yellow-300 cursor-pointer backdrop-blur-md"
+              className="px-3 py-1.5 bg-[#1c1a17]/80 hover:bg-[#c5a059]/20 active:scale-95 border border-[#c5a059]/30 rounded-full font-mono text-xs flex items-center gap-1.5 transition-all text-[#d6cdb7] hover:text-[#faf8f5] cursor-pointer backdrop-blur-md"
             >
-              <Flame className="w-3.5 h-3.5 text-yellow-400" />
+              <Flame className="w-3.5 h-3.5 text-[#e6d5b8]" />
               <span>Sparkle</span>
             </button>
 
             {/* Toast */}
             <button
               onClick={(e) => triggerReaction('toast', e)}
-              className="px-3 py-1.5 bg-white/5 hover:bg-amber-400/20 active:scale-95 border border-amber-400/30 rounded-full font-mono text-xs flex items-center gap-1.5 transition-all text-zinc-200 hover:text-amber-300 cursor-pointer backdrop-blur-md"
+              className="px-3 py-1.5 bg-[#1c1a17]/80 hover:bg-[#c5a059]/20 active:scale-95 border border-[#c5a059]/30 rounded-full font-mono text-xs flex items-center gap-1.5 transition-all text-[#d6cdb7] hover:text-[#faf8f5] cursor-pointer backdrop-blur-md"
             >
-              <Wine className="w-3.5 h-3.5 text-amber-300" />
+              <Wine className="w-3.5 h-3.5 text-[#c5a059]" />
               <span>Toast</span>
             </button>
           </div>
 
-          <span className="font-mono text-[9px] text-amber-400/70 tracking-wider mt-0.5">
+          <span className="font-mono text-[9px] text-[#c5a059]/80 tracking-wider mt-0.5">
             ✦ {sparkCount} CELEBRATION SPARKS TRANSMITTED
           </span>
         </div>
@@ -498,16 +498,16 @@ export const TimeLockScreen: React.FC<TimeLockScreenProps> = ({
         <TimeLockArcade />
 
         {/* 8. Zero-Hour Schedule Footnote */}
-        <div className="mt-4 inline-flex items-center gap-2 font-mono text-[11px] sm:text-xs text-zinc-400 uppercase font-medium border-t border-white/10 pt-3">
-          <Clock className="w-3.5 h-3.5 text-amber-400" />
-          <span>ZERO-HOUR: <strong className="text-zinc-200 font-bold ml-1">{formattedDate}</strong></span>
+        <div className="mt-4 inline-flex items-center gap-2 font-mono text-[11px] sm:text-xs text-[#a8a29e] uppercase font-medium border-t border-[#c5a059]/20 pt-3">
+          <Clock className="w-3.5 h-3.5 text-[#c5a059]" />
+          <span>ZERO-HOUR: <strong className="text-[#f5f0e6] font-bold ml-1">{formattedDate}</strong></span>
         </div>
       </main>
 
-      {/* 8. Bottom Status Strip */}
-      <footer className="relative z-20 w-full max-w-4xl border-t border-white/10 pt-3 flex items-center justify-between text-[10px] font-mono text-zinc-500 uppercase tracking-widest">
+      {/* 9. Bottom Status Strip */}
+      <footer className="relative z-20 w-full max-w-4xl border-t border-[#c5a059]/20 pt-3 flex items-center justify-between text-[10px] font-mono text-[#8c857b] uppercase tracking-widest">
         <span>ENCRYPTED CELEBRATION CAPSULE</span>
-        <span className="text-amber-400/80 font-medium">AUTOMATIC UNSEAL ON EXPIRY</span>
+        <span className="text-[#c5a059]/90 font-medium">AUTOMATIC UNSEAL ON EXPIRY</span>
       </footer>
     </div>
   );

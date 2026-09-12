@@ -98,47 +98,47 @@ export const TimeLockTypingGame: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center w-full max-w-lg mx-auto bg-[#0a0f1c]/90 border border-amber-500/30 rounded-xl p-4 sm:p-5 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.8)] select-none">
+    <div className="flex flex-col items-center w-full max-w-lg mx-auto bg-[#1c1a17]/90 border border-[#c5a059]/30 rounded-xl p-4 sm:p-5 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.8)] select-none">
       
       {/* Header */}
-      <div className="flex items-center justify-between w-full border-b border-white/10 pb-3 mb-3">
+      <div className="flex items-center justify-between w-full border-b border-[#c5a059]/20 pb-3 mb-3">
         <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded-md bg-amber-400/20 border border-amber-400/40 flex items-center justify-center">
-            <Zap className="w-3.5 h-3.5 text-amber-400" />
+          <div className="w-6 h-6 rounded-md bg-[#c5a059]/20 border border-[#c5a059]/40 flex items-center justify-center">
+            <Zap className="w-3.5 h-3.5 text-[#c5a059]" />
           </div>
-          <span className="font-mono text-xs font-bold text-white uppercase tracking-wider">
+          <span className="font-mono text-xs font-bold text-[#faf8f5] uppercase tracking-wider">
             SPEED TYPING TEST
           </span>
         </div>
 
-        <div className="flex items-center gap-3 font-mono text-[10px] text-zinc-400">
+        <div className="flex items-center gap-3 font-mono text-[10px] text-[#a8a29e]">
           <span className="flex items-center gap-1">
-            <Clock className="w-3 h-3 text-amber-400" />
+            <Clock className="w-3 h-3 text-[#c5a059]" />
             <span>{elapsedSeconds}s</span>
           </span>
-          <span className="text-amber-400 font-bold">
-            {wpm} <span className="text-zinc-500 font-normal">WPM</span>
+          <span className="text-[#c5a059] font-bold">
+            {wpm} <span className="text-[#78716c] font-normal">WPM</span>
           </span>
           <span className="text-emerald-400 font-bold">
-            {accuracy}% <span className="text-zinc-500 font-normal">ACC</span>
+            {accuracy}% <span className="text-[#78716c] font-normal">ACC</span>
           </span>
         </div>
       </div>
 
       {/* Target Quote Display */}
-      <div className="w-full bg-[#060911] border border-amber-500/20 rounded-lg p-3.5 mb-3 text-left font-mono text-xs sm:text-sm leading-relaxed tracking-wide relative overflow-hidden">
+      <div className="w-full bg-[#121110] border border-[#c5a059]/20 rounded-lg p-3.5 mb-3 text-left font-mono text-xs sm:text-sm leading-relaxed tracking-wide relative overflow-hidden">
         {targetPhrase.split('').map((char, index) => {
-          let colorClass = 'text-zinc-500';
+          let colorClass = 'text-[#78716c]';
           let bgClass = '';
 
           if (index < inputVal.length) {
             if (inputVal[index] === char) {
-              colorClass = 'text-amber-300 font-bold';
+              colorClass = 'text-[#e6d5b8] font-bold';
             } else {
-              colorClass = 'text-rose-400 bg-rose-500/20 underline';
+              colorClass = 'text-rose-400 bg-rose-900/30 underline';
             }
           } else if (index === inputVal.length) {
-            bgClass = 'border-b-2 border-amber-400 animate-pulse text-white';
+            bgClass = 'border-b-2 border-[#c5a059] animate-pulse text-[#faf8f5]';
           }
 
           return (
@@ -158,26 +158,26 @@ export const TimeLockTypingGame: React.FC = () => {
             value={inputVal}
             onChange={handleInputChange}
             placeholder="Start typing the phrase above..."
-            className="flex-1 px-3.5 py-2.5 bg-black/40 border border-amber-400/40 rounded-lg text-white font-mono text-xs focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition-all placeholder:text-zinc-600"
+            className="flex-1 px-3.5 py-2.5 bg-black/40 border border-[#c5a059]/35 rounded-lg text-[#faf8f5] font-mono text-xs focus:outline-none focus:border-[#c5a059] focus:ring-1 focus:ring-[#c5a059] transition-all placeholder:text-[#78716c]"
             autoFocus
           />
           <button
             onClick={handleRestart}
-            className="p-2.5 bg-white/5 hover:bg-white/10 text-zinc-300 hover:text-white rounded-lg border border-white/10 transition-colors"
+            className="p-2.5 bg-white/5 hover:bg-white/10 text-[#a8a29e] hover:text-[#faf8f5] rounded-lg border border-white/10 transition-colors cursor-pointer"
             title="Reset typing test"
           >
             <RotateCcw className="w-4 h-4" />
           </button>
         </div>
       ) : (
-        <div className="w-full bg-gradient-to-r from-amber-500/10 via-amber-400/20 to-amber-500/10 border border-amber-400/50 rounded-lg p-3 flex items-center justify-between animate-in zoom-in-95">
+        <div className="w-full bg-[#141311]/90 border border-[#c5a059]/50 rounded-lg p-3 flex items-center justify-between animate-in zoom-in-95">
           <div className="flex items-center gap-2.5 text-left">
-            <Trophy className="w-5 h-5 text-amber-400 flex-shrink-0" />
+            <Trophy className="w-5 h-5 text-[#c5a059] flex-shrink-0" />
             <div>
-              <div className="font-mono text-xs font-black text-white">
-                SPEED: <span className="text-amber-300">{wpm} WPM</span> · ACCURACY: <span className="text-emerald-400">{accuracy}%</span>
+              <div className="font-mono text-xs font-black text-[#faf8f5]">
+                SPEED: <span className="text-[#e6d5b8]">{wpm} WPM</span> · ACCURACY: <span className="text-emerald-400">{accuracy}%</span>
               </div>
-              <div className="font-mono text-[9px] text-zinc-400">
+              <div className="font-mono text-[9px] text-[#a8a29e]">
                 {wpm > 60 ? '🚀 Quantum Velocity Typist!' : wpm > 40 ? '⚡ Supersonic Celebrator!' : '✨ Splendid Effort!'}
               </div>
             </div>
@@ -185,7 +185,7 @@ export const TimeLockTypingGame: React.FC = () => {
 
           <button
             onClick={handleNextPhrase}
-            className="px-3 py-1.5 bg-amber-400 hover:bg-amber-300 text-zinc-950 rounded-md font-mono text-[10px] font-black uppercase flex items-center gap-1.5 transition-all shadow-sm cursor-pointer"
+            className="px-3 py-1.5 bg-[#c5a059] hover:bg-[#b38a42] text-[#141311] rounded-md font-mono text-[10px] font-black uppercase flex items-center gap-1.5 transition-all shadow-sm cursor-pointer"
           >
             <RefreshCw className="w-3 h-3" />
             <span>Next Quote</span>
@@ -193,7 +193,7 @@ export const TimeLockTypingGame: React.FC = () => {
         </div>
       )}
 
-      <div className="w-full flex items-center justify-between text-[9px] font-mono text-zinc-500 mt-2.5 px-1">
+      <div className="w-full flex items-center justify-between text-[9px] font-mono text-[#78716c] mt-2.5 px-1">
         <span>Quote {phraseIndex + 1} of {TYPING_PHRASES.length}</span>
         <span>Tap box or type to start test</span>
       </div>
