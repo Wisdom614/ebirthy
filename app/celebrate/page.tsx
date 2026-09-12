@@ -81,6 +81,7 @@ function CelebrateContent() {
       <TimeLockScreen
         recipientName={scene.recipientName}
         unlockDateTime={scene.unlockDateTime}
+        senderName={scene.senderName}
         onUnlock={() => setIsTimeLocked(false)}
         themeBackgroundClass={theme.backgroundClass}
       />
