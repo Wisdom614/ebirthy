@@ -176,39 +176,39 @@ export const TimeLockPiano: React.FC = () => {
   const currentSongTarget = HAPPY_BIRTHDAY_SONG[songStep];
 
   return (
-    <div className="flex flex-col items-center w-full max-w-lg mx-auto bg-[#1c1a17]/90 border border-[#c5a059]/30 rounded-xl p-4 sm:p-5 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.8)] select-none">
+    <div className="flex flex-col items-center w-full max-w-lg mx-auto bg-white border-2 border-[#1c1917] p-4 sm:p-5 shadow-[4px_4px_0px_#1c1917] select-none text-[#1c1917]">
       
       {/* Top Header & Mode Switcher */}
-      <div className="flex items-center justify-between w-full border-b border-[#c5a059]/20 pb-3 mb-3">
+      <div className="flex items-center justify-between w-full border-b-2 border-[#1c1917] pb-3 mb-3">
         <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded-md bg-[#c5a059]/20 border border-[#c5a059]/40 flex items-center justify-center">
-            <Music className="w-3.5 h-3.5 text-[#c5a059]" />
+          <div className="w-7 h-7 bg-amber-400 border-2 border-[#1c1917] flex items-center justify-center shadow-[2px_2px_0px_#1c1917]">
+            <Music className="w-3.5 h-3.5 text-[#1c1917]" />
           </div>
-          <span className="font-mono text-xs font-bold text-[#faf8f5] uppercase tracking-wider">
+          <span className="font-mono text-xs font-black text-[#1c1917] uppercase tracking-wider">
             CELEBRATION PIANO
           </span>
         </div>
 
-        <div className="flex items-center gap-1.5 bg-black/40 p-0.5 rounded-lg border border-[#c5a059]/20">
+        <div className="flex items-center gap-1.5 bg-[#f7f4ed] p-1 border-2 border-[#1c1917]">
           <button
             onClick={() => {
               setGameMode('guided');
               restartSong();
             }}
-            className={`px-2.5 py-1 rounded-md font-mono text-[10px] font-bold uppercase transition-all cursor-pointer ${
+            className={`px-2.5 py-1 font-mono text-[10px] font-bold uppercase transition-all cursor-pointer border-2 ${
               gameMode === 'guided'
-                ? 'bg-[#c5a059] text-[#141311] shadow-xs'
-                : 'text-[#a8a29e] hover:text-[#faf8f5]'
+                ? 'bg-amber-400 border-[#1c1917] text-[#1c1917] shadow-[2px_2px_0px_#1c1917]'
+                : 'bg-white border-transparent text-[#57534e] hover:text-[#1c1917]'
             }`}
           >
             Song Mode
           </button>
           <button
             onClick={() => setGameMode('free')}
-            className={`px-2.5 py-1 rounded-md font-mono text-[10px] font-bold uppercase transition-all cursor-pointer ${
+            className={`px-2.5 py-1 font-mono text-[10px] font-bold uppercase transition-all cursor-pointer border-2 ${
               gameMode === 'free'
-                ? 'bg-[#c5a059] text-[#141311] shadow-xs'
-                : 'text-[#a8a29e] hover:text-[#faf8f5]'
+                ? 'bg-amber-400 border-[#1c1917] text-[#1c1917] shadow-[2px_2px_0px_#1c1917]'
+                : 'bg-white border-transparent text-[#57534e] hover:text-[#1c1917]'
             }`}
           >
             Free Play
@@ -218,30 +218,30 @@ export const TimeLockPiano: React.FC = () => {
 
       {/* Guided Song Prompt Banner */}
       {gameMode === 'guided' && (
-        <div className="w-full bg-[#141311]/90 border border-[#c5a059]/25 rounded-lg p-2.5 mb-3 flex items-center justify-between">
+        <div className="w-full bg-[#f7f4ed] border-2 border-[#1c1917] p-2.5 mb-3 flex items-center justify-between shadow-[2px_2px_0px_#1c1917]">
           {!isCompleted ? (
             <div className="flex items-center gap-2 overflow-hidden text-left">
-              <span className="w-2 h-2 rounded-full bg-[#c5a059] animate-ping flex-shrink-0" />
+              <span className="w-2.5 h-2.5 bg-amber-500 border border-[#1c1917] animate-ping flex-shrink-0" />
               <div className="flex flex-col min-w-0">
-                <span className="font-mono text-[10px] text-[#a8a29e] uppercase tracking-widest">
-                  Next Note: <strong className="text-[#e6d5b8] text-xs font-black">{currentSongTarget?.note}</strong> ({currentSongTarget?.lyric})
+                <span className="font-mono text-[10px] text-[#57534e] uppercase tracking-widest">
+                  Target Note: <strong className="text-[#1c1917] text-xs font-black bg-amber-300 px-1.5 py-0.5 border border-[#1c1917] inline-block">{currentSongTarget?.note}</strong> ({currentSongTarget?.lyric})
                 </span>
-                <span className="font-mono text-[9px] text-[#78716c]">
-                  Step {songStep + 1} of {HAPPY_BIRTHDAY_SONG.length}
+                <span className="font-mono text-[9px] text-[#78716c] font-bold mt-0.5">
+                  STEP {songStep + 1} OF {HAPPY_BIRTHDAY_SONG.length}
                 </span>
               </div>
             </div>
           ) : (
-            <div className="flex items-center gap-2 text-[#e6d5b8] font-mono text-xs font-bold">
-              <Trophy className="w-4 h-4 text-[#c5a059]" />
+            <div className="flex items-center gap-2 text-[#1c1917] font-mono text-xs font-black">
+              <Trophy className="w-4 h-4 text-amber-600" />
               <span>SONG COMPLETED — CELEBRATION MAESTRO!</span>
-              <Sparkles className="w-3.5 h-3.5 text-[#c5a059]" />
+              <Sparkles className="w-3.5 h-3.5 text-amber-600" />
             </div>
           )}
 
           <button
             onClick={restartSong}
-            className="p-1.5 hover:bg-white/10 rounded-md text-[#a8a29e] hover:text-[#c5a059] transition-colors cursor-pointer"
+            className="p-1.5 bg-white border-2 border-[#1c1917] shadow-[2px_2px_0px_#1c1917] hover:bg-[#eeeae0] text-[#1c1917] transition-all cursor-pointer active:translate-x-[1px] active:translate-y-[1px] active:shadow-none"
             title="Restart song"
           >
             <RefreshCw className="w-3.5 h-3.5" />
@@ -250,7 +250,7 @@ export const TimeLockPiano: React.FC = () => {
       )}
 
       {/* Piano Keyboard */}
-      <div className="relative flex justify-center w-full h-32 sm:h-36 pt-1 pb-2 bg-[#121110] border border-[#c5a059]/30 rounded-lg p-1.5 shadow-inner overflow-x-auto">
+      <div className="relative flex justify-center w-full h-32 sm:h-36 pt-1 pb-2 bg-[#eeeae0] border-2 border-[#1c1917] p-2 shadow-inner overflow-x-auto">
         {/* White Keys */}
         <div className="flex gap-1 sm:gap-1.5 h-full w-full justify-center">
           {PIANO_KEYS.filter((k) => !k.isBlack).map((key) => {
@@ -261,19 +261,19 @@ export const TimeLockPiano: React.FC = () => {
               <button
                 key={key.note}
                 onClick={() => playNote(key.freq, key.note)}
-                className={`flex-1 min-w-[28px] sm:min-w-[34px] max-w-[42px] h-full rounded-b-md flex flex-col justify-end items-center pb-2 transition-all cursor-pointer relative border ${
+                className={`flex-1 min-w-[28px] sm:min-w-[34px] max-w-[42px] h-full flex flex-col justify-end items-center pb-2 transition-all cursor-pointer relative border-2 border-[#1c1917] ${
                   isCurrentlyActive
-                    ? 'bg-[#c5a059] border-[#e6d5b8] translate-y-[2px] shadow-[0_0_15px_rgba(197,160,89,0.7)] text-[#141311]'
+                    ? 'bg-amber-400 translate-y-[2px] shadow-none text-[#1c1917]'
                     : isTarget
-                    ? 'bg-gradient-to-b from-[#faf8f5] via-[#f5ebd7] to-[#e6d5b8] border-[#c5a059] shadow-[0_0_12px_rgba(197,160,89,0.4)] animate-pulse'
-                    : 'bg-gradient-to-b from-[#faf8f5] to-[#f0e8dc] border-[#d1c7b7] hover:bg-[#ffffff]'
+                    ? 'bg-amber-300 shadow-[2px_2px_0px_#1c1917] animate-pulse text-[#1c1917]'
+                    : 'bg-white hover:bg-amber-50 shadow-[2px_2px_0px_#1c1917] text-[#1c1917]'
                 }`}
               >
-                <span className="font-mono text-[9px] sm:text-[10px] font-black text-[#1c1917] leading-none">
+                <span className="font-mono text-[10px] sm:text-xs font-black leading-none">
                   {key.name}
                 </span>
                 {key.keyboardKey && (
-                  <span className="font-mono text-[8px] text-[#78716c] mt-1 uppercase font-bold leading-none hidden sm:block">
+                  <span className="font-mono text-[8px] text-[#78716c] mt-1.5 uppercase font-bold leading-none hidden sm:block">
                     {key.keyboardKey}
                   </span>
                 )}
@@ -283,9 +283,9 @@ export const TimeLockPiano: React.FC = () => {
         </div>
       </div>
 
-      <div className="flex items-center gap-1.5 font-mono text-[9px] text-[#a8a29e] uppercase tracking-wider mt-2.5">
-        <Keyboard className="w-3 h-3 text-[#c5a059]" />
-        <span>Press keyboard keys (A-S-D-F...) or tap keys to play</span>
+      <div className="flex items-center gap-1.5 font-mono text-[9px] text-[#57534e] uppercase tracking-wider font-bold mt-3">
+        <Keyboard className="w-3.5 h-3.5 text-[#1c1917]" />
+        <span>Press keyboard keys (A-S-D-F...) or tap keys directly</span>
       </div>
     </div>
   );

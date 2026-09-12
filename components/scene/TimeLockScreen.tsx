@@ -250,189 +250,162 @@ export const TimeLockScreen: React.FC<TimeLockScreenProps> = ({
   const googleCalUrl = generateGoogleCalendarUrl(recipientName, unlockDateTime);
 
   return (
-    <div className="min-h-screen bg-[#121110] text-[#f5f0e6] flex flex-col items-center justify-between p-4 sm:p-7 text-center select-none relative overflow-hidden font-sans">
+    <div className="min-h-screen bg-[#f7f4ed] text-[#1c1917] flex flex-col items-center justify-between text-center select-none relative overflow-hidden font-sans grid-bg selection:bg-amber-400 selection:text-black">
       
-      {/* 1. Natural Warm Champagne Graph-Paper Grid Background */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-30 z-0"
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, rgba(197, 160, 89, 0.08) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(197, 160, 89, 0.08) 1px, transparent 1px)
-          `,
-          backgroundSize: '32px 32px'
-        }}
-      />
-
-      {/* Blueprint Crosshairs on Corners */}
-      <div className="absolute top-4 left-4 font-mono text-[9px] text-[#c5a059]/40 select-none pointer-events-none hidden sm:block">
-        + [GRID: 32px · ARCHITECTURAL_01]
-      </div>
-      <div className="absolute top-4 right-4 font-mono text-[9px] text-[#c5a059]/40 select-none pointer-events-none hidden sm:block">
-        [TIME_LOCKED: ACTIVE] +
-      </div>
-
       {/* Dynamic Starlight & Particle Waves */}
-      <TimeLockAtmosphere themeColor="#c5a059" />
+      <TimeLockAtmosphere themeColor="#f59e0b" />
 
-      {/* Radial Soft Espresso Vignette */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(28,26,23,0.3)_0%,rgba(18,17,16,0.95)_80%)] pointer-events-none z-0" />
-
-      {/* Floating Animated Reaction Icons */}
+      {/* Floating Animated Reaction Badges */}
       <div className="fixed inset-0 pointer-events-none z-40 overflow-hidden">
         {floatingReactions.map((r) => (
           <div
             key={r.id}
-            className="absolute animate-float-up transition-all flex items-center justify-center p-2 rounded-full bg-[#1c1a17]/90 border border-[#c5a059]/40 shadow-[0_0_15px_rgba(197,160,89,0.3)] backdrop-blur-md"
+            className="absolute animate-float-up transition-all flex items-center justify-center p-2 bg-white border-2 border-[#1c1917] shadow-[3px_3px_0px_#1c1917]"
             style={{ left: `${r.x - 16}px`, top: `${r.y - 16}px` }}
           >
-            {r.type === 'confetti' && <PartyPopper className="w-5 h-5 text-[#c5a059]" />}
-            {r.type === 'heart' && <Heart className="w-5 h-5 text-rose-400 fill-rose-400" />}
-            {r.type === 'spark' && <Flame className="w-5 h-5 text-[#e6d5b8]" />}
-            {r.type === 'toast' && <Wine className="w-5 h-5 text-[#c5a059]" />}
+            {r.type === 'confetti' && <PartyPopper className="w-5 h-5 text-amber-600" />}
+            {r.type === 'heart' && <Heart className="w-5 h-5 text-rose-600 fill-rose-600" />}
+            {r.type === 'spark' && <Flame className="w-5 h-5 text-amber-500 fill-amber-500" />}
+            {r.type === 'toast' && <Wine className="w-5 h-5 text-amber-700" />}
           </div>
         ))}
       </div>
 
-      {/* 2. Top Control Bar */}
-      <header className="relative z-20 w-full max-w-4xl flex items-center justify-between border-b border-[#c5a059]/20 pb-3 pt-1">
-        <BrandLogo size="sm" showSubtitle={true} href="" variant="gold" />
+      {/* 1. Swiss Architectural Top Navigation */}
+      <nav className="h-16 border-b-2 border-[#1c1917] bg-white px-6 sm:px-12 flex items-center justify-between sticky top-0 z-50 w-full">
+        <BrandLogo size="md" />
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           {/* Audio Soundscape Toggle */}
           <button
             onClick={toggleAtmosphericAudio}
-            className={`px-3 py-1.5 font-mono text-[10px] font-bold uppercase rounded-md border flex items-center gap-2 transition-all cursor-pointer backdrop-blur-md ${
+            className={`px-3 py-1.5 font-mono text-xs font-bold uppercase border-2 border-[#1c1917] flex items-center gap-1.5 transition-all cursor-pointer shadow-[2px_2px_0px_#1c1917] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none ${
               isAudioActive
-                ? 'bg-[#c5a059] text-[#141311] border-[#c5a059] shadow-[0_0_12px_rgba(197,160,89,0.35)]'
-                : 'bg-[#1c1a17]/80 border-[#c5a059]/25 text-[#d6cdb7] hover:bg-[#26231f] hover:border-[#c5a059]/40'
+                ? 'bg-amber-400 text-[#1c1917]'
+                : 'bg-white hover:bg-[#eeeae0] text-[#1c1917]'
             }`}
-            title="Toggle atmospheric harmonic drone"
+            title="Toggle atmospheric soundscape"
           >
             {isAudioActive ? (
               <>
-                <Volume2 className="w-3.5 h-3.5 text-[#141311]" />
-                <span>AUDIO ON</span>
+                <Volume2 className="w-3.5 h-3.5 text-[#1c1917]" />
+                <span>[ AUDIO: ON ]</span>
               </>
             ) : (
               <>
-                <VolumeX className="w-3.5 h-3.5 text-[#a8a29e]" />
-                <span>SOUNDSCAPE</span>
+                <VolumeX className="w-3.5 h-3.5 text-zinc-600" />
+                <span>[ SOUNDSCAPE ]</span>
               </>
             )}
           </button>
 
-          {/* Calendar Reminder Dropdown Trigger */}
+          {/* Calendar Reminder Dropdown */}
           <div className="relative">
             <button
               onClick={() => setCalendarMenuOpen(!calendarMenuOpen)}
-              className="px-3 py-1.5 bg-[#1c1a17]/80 hover:bg-[#26231f] text-[#c5a059] border border-[#c5a059]/30 rounded-md font-mono text-[10px] font-bold uppercase flex items-center gap-1.5 transition-all cursor-pointer backdrop-blur-md hover:border-[#c5a059]/50"
+              className="px-3.5 py-1.5 bg-amber-400 hover:bg-amber-300 text-[#1c1917] border-2 border-[#1c1917] font-mono font-bold text-xs uppercase shadow-[2px_2px_0px_#1c1917] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none flex items-center gap-1.5 transition-all cursor-pointer"
             >
-              <Calendar className="w-3.5 h-3.5 text-[#c5a059]" />
-              <span>REMIND ME</span>
-              <ChevronDown className="w-3 h-3 text-[#a8a29e]" />
+              <Calendar className="w-3.5 h-3.5 text-[#1c1917]" />
+              <span>[ REMIND ME ]</span>
+              <ChevronDown className="w-3 h-3 text-[#1c1917]" />
             </button>
 
             {calendarMenuOpen && (
               <div
-                className="absolute right-0 top-10 w-52 bg-[#1c1a17] border border-[#c5a059]/40 rounded-lg p-1.5 flex flex-col gap-1 z-50 shadow-[0_10px_30px_rgba(0,0,0,0.8)] backdrop-blur-xl animate-in fade-in zoom-in-95 duration-100 text-left"
+                className="absolute right-0 top-11 w-52 bg-white border-2 border-[#1c1917] p-1.5 flex flex-col gap-1 z-50 shadow-[4px_4px_0px_#1c1917] animate-in fade-in zoom-in-95 duration-100 text-left"
                 onClick={() => setCalendarMenuOpen(false)}
               >
                 <a
                   href={googleCalUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-3 py-2 text-left font-mono text-xs font-semibold rounded-md hover:bg-[#c5a059]/15 text-[#e6d5b8] hover:text-[#f5f0e6] flex items-center justify-between transition-colors"
+                  className="px-3 py-2 text-left font-mono text-xs font-bold uppercase hover:bg-amber-100 text-[#1c1917] flex items-center justify-between border border-transparent hover:border-[#1c1917] transition-all"
                 >
                   <span>Google Calendar</span>
-                  <ExternalLink className="w-3.5 h-3.5 text-[#c5a059]" />
+                  <ExternalLink className="w-3.5 h-3.5 text-amber-700" />
                 </a>
 
                 <button
                   onClick={() => downloadIcsFile(recipientName, unlockDateTime)}
-                  className="px-3 py-2 text-left font-mono text-xs font-semibold rounded-md hover:bg-[#c5a059]/15 text-[#e6d5b8] hover:text-[#f5f0e6] flex items-center justify-between transition-colors cursor-pointer"
+                  className="px-3 py-2 text-left font-mono text-xs font-bold uppercase hover:bg-amber-100 text-[#1c1917] flex items-center justify-between border border-transparent hover:border-[#1c1917] transition-all cursor-pointer"
                 >
                   <span>Apple / Outlook (iCal)</span>
-                  <Calendar className="w-3.5 h-3.5 text-[#c5a059]" />
+                  <Calendar className="w-3.5 h-3.5 text-amber-700" />
                 </button>
               </div>
             )}
           </div>
         </div>
-      </header>
+      </nav>
 
-      {/* 3. Main Center Stage */}
-      <main className="relative z-10 my-auto py-4 sm:py-6 flex flex-col items-center max-w-2xl w-full">
+      {/* 2. Main Center Stage */}
+      <main className="relative z-10 my-auto py-8 px-4 flex flex-col items-center max-w-2xl w-full">
         
-        {/* Discreet Locked Status */}
-        <div className="inline-flex items-center gap-2 mb-2">
-          <Lock className="w-3.5 h-3.5 text-[#c5a059]" />
-          <span className="font-mono text-[11px] text-[#c5a059] uppercase tracking-[0.25em] font-semibold">
-            LOCKED TIME CAPSULE
+        {/* Architectural Locked Status Badge */}
+        <div className="inline-flex items-center gap-2 px-3 py-1 bg-white border-2 border-[#1c1917] shadow-[2px_2px_0px_#1c1917] mb-3">
+          <Lock className="w-3.5 h-3.5 text-amber-700" />
+          <span className="font-mono text-xs text-[#1c1917] uppercase tracking-wider font-bold">
+            [ TIME-LOCKED CELEBRATION DISPATCH ]
           </span>
         </div>
 
         {/* Recipient Headline */}
-        <h1 className="text-3xl sm:text-5xl font-black uppercase tracking-tight text-[#faf8f5] drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)] leading-tight">
-          FOR <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#f5ebd7] via-[#c5a059] to-[#a37e36]">{recipientName}</span>
+        <h1 className="text-3xl sm:text-5xl md:text-6xl font-black uppercase tracking-tight text-[#1c1917] leading-none">
+          FOR <span className="bg-amber-400 text-[#1c1917] px-3 py-1 border-2 border-[#1c1917] inline-block shadow-[4px_4px_0px_#1c1917] mt-1 ml-1">{recipientName}</span>
         </h1>
 
-        <p className="mt-1.5 font-mono text-xs text-[#a8a29e] uppercase tracking-wider font-medium max-w-md">
-          A personalized celebration has been sealed inside. Unlocks automatically at zero-hour.
+        <p className="mt-4 font-mono text-xs sm:text-sm uppercase tracking-wide text-zinc-800 max-w-lg leading-relaxed font-semibold border-y-2 border-[#1c1917]/20 py-2">
+          A personalized celebration has been sealed inside this vault. Unlocks automatically at zero-hour.
         </p>
 
-        {/* 4. COUNTDOWN MATRIX MOVED UP (Primary Focal Point) */}
-        <div className="grid grid-cols-4 gap-2.5 sm:gap-4 w-full max-w-lg mt-5 mb-2">
+        {/* 3. COUNTDOWN MATRIX (4 Uniform Swiss White Cards) */}
+        <div className="grid grid-cols-4 gap-2.5 sm:gap-4 w-full max-w-lg mt-6 mb-3">
           {/* Days */}
-          <div className="bg-[#1c1a17]/90 border border-[#c5a059]/25 rounded-lg p-3 sm:p-4 flex flex-col items-center shadow-[0_4px_25px_rgba(0,0,0,0.6)] backdrop-blur-xl relative overflow-hidden group">
-            <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-[#c5a059]/50 to-transparent" />
-            <span className="font-mono text-3xl sm:text-5xl font-black text-[#faf8f5] tracking-tighter drop-shadow-md">
+          <div className="bg-white border-2 border-[#1c1917] p-3 sm:p-4 flex flex-col items-center shadow-[4px_4px_0px_#1c1917] hover:translate-x-[-1px] hover:translate-y-[-1px] transition-all">
+            <span className="font-mono text-3xl sm:text-5xl font-black text-[#1c1917] tracking-tighter leading-none">
               {pad(timeLeft.days)}
             </span>
-            <span className="font-mono text-[9px] sm:text-[10px] uppercase font-bold tracking-[0.2em] text-[#c5a059] mt-1">
+            <span className="font-mono text-[9px] sm:text-[10px] uppercase font-bold tracking-widest text-[#1c1917] px-2 py-0.5 bg-amber-200 border border-[#1c1917] mt-2">
               DAYS
             </span>
           </div>
 
           {/* Hours */}
-          <div className="bg-[#1c1a17]/90 border border-[#c5a059]/25 rounded-lg p-3 sm:p-4 flex flex-col items-center shadow-[0_4px_25px_rgba(0,0,0,0.6)] backdrop-blur-xl relative overflow-hidden group">
-            <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-[#c5a059]/50 to-transparent" />
-            <span className="font-mono text-3xl sm:text-5xl font-black text-[#faf8f5] tracking-tighter drop-shadow-md">
+          <div className="bg-white border-2 border-[#1c1917] p-3 sm:p-4 flex flex-col items-center shadow-[4px_4px_0px_#1c1917] hover:translate-x-[-1px] hover:translate-y-[-1px] transition-all">
+            <span className="font-mono text-3xl sm:text-5xl font-black text-[#1c1917] tracking-tighter leading-none">
               {pad(timeLeft.hours)}
             </span>
-            <span className="font-mono text-[9px] sm:text-[10px] uppercase font-bold tracking-[0.2em] text-[#c5a059] mt-1">
+            <span className="font-mono text-[9px] sm:text-[10px] uppercase font-bold tracking-widest text-[#1c1917] px-2 py-0.5 bg-amber-200 border border-[#1c1917] mt-2">
               HOURS
             </span>
           </div>
 
           {/* Minutes */}
-          <div className="bg-[#1c1a17]/90 border border-[#c5a059]/25 rounded-lg p-3 sm:p-4 flex flex-col items-center shadow-[0_4px_25px_rgba(0,0,0,0.6)] backdrop-blur-xl relative overflow-hidden group">
-            <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-[#c5a059]/50 to-transparent" />
-            <span className="font-mono text-3xl sm:text-5xl font-black text-[#faf8f5] tracking-tighter drop-shadow-md">
+          <div className="bg-white border-2 border-[#1c1917] p-3 sm:p-4 flex flex-col items-center shadow-[4px_4px_0px_#1c1917] hover:translate-x-[-1px] hover:translate-y-[-1px] transition-all">
+            <span className="font-mono text-3xl sm:text-5xl font-black text-[#1c1917] tracking-tighter leading-none">
               {pad(timeLeft.minutes)}
             </span>
-            <span className="font-mono text-[9px] sm:text-[10px] uppercase font-bold tracking-[0.2em] text-[#c5a059] mt-1">
+            <span className="font-mono text-[9px] sm:text-[10px] uppercase font-bold tracking-widest text-[#1c1917] px-2 py-0.5 bg-amber-200 border border-[#1c1917] mt-2">
               MINUTES
             </span>
           </div>
 
           {/* Seconds */}
-          <div className="bg-[#1c1a17]/90 border border-[#c5a059]/35 rounded-lg p-3 sm:p-4 flex flex-col items-center shadow-[0_4px_25px_rgba(197,160,89,0.1)] backdrop-blur-xl relative overflow-hidden group">
-            <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-[#c5a059] to-transparent" />
-            <span className="font-mono text-3xl sm:text-5xl font-black text-[#e6d5b8] tracking-tighter drop-shadow-[0_0_12px_rgba(197,160,89,0.3)]">
+          <div className="bg-white border-2 border-[#1c1917] p-3 sm:p-4 flex flex-col items-center shadow-[4px_4px_0px_#1c1917] hover:translate-x-[-1px] hover:translate-y-[-1px] transition-all">
+            <span className="font-mono text-3xl sm:text-5xl font-black text-amber-600 tracking-tighter leading-none">
               {pad(timeLeft.seconds)}
             </span>
-            <span className="font-mono text-[9px] sm:text-[10px] uppercase font-bold tracking-[0.2em] text-[#c5a059] mt-1 flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#c5a059] animate-pulse" />
+            <span className="font-mono text-[9px] sm:text-[10px] uppercase font-bold tracking-widest text-[#1c1917] px-2 py-0.5 bg-amber-400 border border-[#1c1917] mt-2 flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#1c1917] animate-pulse" />
               <span>SECONDS</span>
             </span>
           </div>
         </div>
 
-        {/* 5. 3D Antique Bronze Vault Core with Sound Resonance */}
-        <div className="my-1">
+        {/* 4. 3D Swiss Architectural Interactive Vault */}
+        <div className="my-2">
           <Vault3DCore
-            themeColor="#c5a059"
+            themeColor="#f59e0b"
             onInteract={() => {
               playCrystalChime();
               setSparkCount((p) => p + 1);
@@ -440,73 +413,71 @@ export const TimeLockScreen: React.FC<TimeLockScreenProps> = ({
           />
         </div>
 
-        {/* 6. Interactive Pre-Celebration Reaction Station */}
+        {/* 5. Interactive Pre-Celebration Reaction Station */}
         <div className="flex flex-col items-center gap-2 mt-1 max-w-md w-full">
-          <span className="font-mono text-[10px] text-[#a8a29e] uppercase tracking-widest font-semibold flex items-center gap-1.5">
-            <Sparkles className="w-3 h-3 text-[#c5a059]" />
-            <span>SEND PRE-CELEBRATION ENERGY</span>
+          <span className="font-mono text-[10px] text-zinc-700 uppercase tracking-widest font-bold flex items-center gap-1.5">
+            <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+            <span>[ TRANSMIT PRE-CELEBRATION ENERGY ]</span>
           </span>
 
           <div className="flex items-center justify-center gap-2 flex-wrap">
             {/* Confetti */}
             <button
               onClick={(e) => triggerReaction('confetti', e)}
-              className="px-3 py-1.5 bg-[#1c1a17]/80 hover:bg-[#c5a059]/20 active:scale-95 border border-[#c5a059]/30 rounded-full font-mono text-xs flex items-center gap-1.5 transition-all text-[#d6cdb7] hover:text-[#faf8f5] cursor-pointer backdrop-blur-md"
+              className="px-3.5 py-2 bg-white hover:bg-amber-100 active:translate-x-[1px] active:translate-y-[1px] border-2 border-[#1c1917] shadow-[2px_2px_0px_#1c1917] active:shadow-none font-mono text-xs font-bold text-[#1c1917] flex items-center gap-1.5 cursor-pointer transition-all"
             >
-              <PartyPopper className="w-3.5 h-3.5 text-[#c5a059]" />
-              <span>Confetti</span>
+              <PartyPopper className="w-4 h-4 text-amber-600" />
+              <span>[ CONFETTI ]</span>
             </button>
 
             {/* Heart */}
             <button
               onClick={(e) => triggerReaction('heart', e)}
-              className="px-3 py-1.5 bg-[#1c1a17]/80 hover:bg-rose-900/30 active:scale-95 border border-rose-400/30 rounded-full font-mono text-xs flex items-center gap-1.5 transition-all text-[#d6cdb7] hover:text-rose-200 cursor-pointer backdrop-blur-md"
+              className="px-3.5 py-2 bg-white hover:bg-rose-100 active:translate-x-[1px] active:translate-y-[1px] border-2 border-[#1c1917] shadow-[2px_2px_0px_#1c1917] active:shadow-none font-mono text-xs font-bold text-[#1c1917] flex items-center gap-1.5 cursor-pointer transition-all"
             >
-              <Heart className="w-3.5 h-3.5 text-rose-300 fill-rose-400/30" />
-              <span>Wish Love</span>
+              <Heart className="w-4 h-4 text-rose-600 fill-rose-600/30" />
+              <span>[ WISH LOVE ]</span>
             </button>
 
             {/* Spark */}
             <button
               onClick={(e) => triggerReaction('spark', e)}
-              className="px-3 py-1.5 bg-[#1c1a17]/80 hover:bg-[#c5a059]/20 active:scale-95 border border-[#c5a059]/30 rounded-full font-mono text-xs flex items-center gap-1.5 transition-all text-[#d6cdb7] hover:text-[#faf8f5] cursor-pointer backdrop-blur-md"
+              className="px-3.5 py-2 bg-white hover:bg-amber-100 active:translate-x-[1px] active:translate-y-[1px] border-2 border-[#1c1917] shadow-[2px_2px_0px_#1c1917] active:shadow-none font-mono text-xs font-bold text-[#1c1917] flex items-center gap-1.5 cursor-pointer transition-all"
             >
-              <Flame className="w-3.5 h-3.5 text-[#e6d5b8]" />
-              <span>Sparkle</span>
+              <Flame className="w-4 h-4 text-amber-500" />
+              <span>[ SPARKLE ]</span>
             </button>
 
             {/* Toast */}
             <button
               onClick={(e) => triggerReaction('toast', e)}
-              className="px-3 py-1.5 bg-[#1c1a17]/80 hover:bg-[#c5a059]/20 active:scale-95 border border-[#c5a059]/30 rounded-full font-mono text-xs flex items-center gap-1.5 transition-all text-[#d6cdb7] hover:text-[#faf8f5] cursor-pointer backdrop-blur-md"
+              className="px-3.5 py-2 bg-white hover:bg-amber-100 active:translate-x-[1px] active:translate-y-[1px] border-2 border-[#1c1917] shadow-[2px_2px_0px_#1c1917] active:shadow-none font-mono text-xs font-bold text-[#1c1917] flex items-center gap-1.5 cursor-pointer transition-all"
             >
-              <Wine className="w-3.5 h-3.5 text-[#c5a059]" />
-              <span>Toast</span>
+              <Wine className="w-4 h-4 text-amber-700" />
+              <span>[ TOAST ]</span>
             </button>
           </div>
 
-          <span className="font-mono text-[9px] text-[#c5a059]/80 tracking-wider mt-0.5">
-            ✦ {sparkCount} CELEBRATION SPARKS TRANSMITTED
+          <span className="font-mono text-[9px] text-zinc-600 uppercase font-bold tracking-wider mt-0.5">
+            &gt;&gt; {sparkCount} CELEBRATION SPARKS TRANSMITTED
           </span>
         </div>
 
-        {/* 7. Interactive Celebration Arcade (Piano & Speed Typing) */}
+        {/* 6. Interactive Celebration Arcade (Piano & Speed Typing) */}
         <TimeLockArcade />
 
-        {/* 8. Zero-Hour Schedule Footnote */}
-        <div className="mt-4 inline-flex items-center gap-2 font-mono text-[11px] sm:text-xs text-[#a8a29e] uppercase font-medium border-t border-[#c5a059]/20 pt-3">
-          <Clock className="w-3.5 h-3.5 text-[#c5a059]" />
-          <span>ZERO-HOUR: <strong className="text-[#f5f0e6] font-bold ml-1">{formattedDate}</strong></span>
+        {/* 7. Zero-Hour Schedule Footnote */}
+        <div className="mt-6 inline-flex items-center gap-2 font-mono text-xs text-zinc-700 uppercase font-bold border-y-2 border-[#1c1917]/20 py-2 px-4 bg-white/60">
+          <Clock className="w-4 h-4 text-amber-700" />
+          <span>ZERO-HOUR: <strong className="text-[#1c1917] font-black ml-1">{formattedDate}</strong></span>
         </div>
       </main>
 
-      {/* 9. Bottom Status Strip */}
-      <footer className="relative z-20 w-full max-w-4xl border-t border-[#c5a059]/20 pt-3 flex items-center justify-between text-[10px] font-mono text-[#8c857b] uppercase tracking-widest">
-        <span>ENCRYPTED CELEBRATION CAPSULE</span>
-        <span className="text-[#c5a059]/90 font-medium">AUTOMATIC UNSEAL ON EXPIRY</span>
+      {/* 8. Swiss Architectural Bottom Strip */}
+      <footer className="w-full border-t-2 border-[#1c1917] bg-white py-3 px-6 sm:px-12 flex items-center justify-between text-xs font-mono text-zinc-700 uppercase font-bold">
+        <span>[ ENCRYPTED CELEBRATION CAPSULE ]</span>
+        <span className="text-amber-800 font-black">[ AUTOMATIC UNSEAL ON EXPIRY ]</span>
       </footer>
     </div>
   );
 };
-
-

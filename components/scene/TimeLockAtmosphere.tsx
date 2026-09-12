@@ -51,11 +51,11 @@ export const TimeLockAtmosphere: React.FC<TimeLockAtmosphereProps> = ({
     const particles: Particle[] = [];
 
     const colors = [
-      '#c5a059', // Champagne bronze
-      '#f5f0e6', // Parchment ivory
-      '#d4af37', // Antique gold
-      '#dfd3c3', // Warm sand
-      '#a89f91'  // Stone gray
+      '#d97706', // Amber gold
+      '#f59e0b', // Warm amber
+      '#b45309', // Deep terracotta bronze
+      '#eab308', // Yellow gold
+      '#78716c'  // Charcoal ink dust
     ];
 
     for (let i = 0; i < particleCount; i++) {
@@ -64,9 +64,9 @@ export const TimeLockAtmosphere: React.FC<TimeLockAtmosphereProps> = ({
         y: Math.random() * height,
         vx: (Math.random() - 0.5) * 0.3,
         vy: (Math.random() - 0.5) * 0.3,
-        size: Math.random() * 2.0 + 0.6,
-        alpha: Math.random() * 0.45 + 0.15,
-        baseAlpha: Math.random() * 0.4 + 0.15,
+        size: Math.random() * 2.2 + 0.6,
+        alpha: Math.random() * 0.4 + 0.1,
+        baseAlpha: Math.random() * 0.35 + 0.1,
         pulseSpeed: Math.random() * 0.015 + 0.005,
         color: colors[Math.floor(Math.random() * colors.length)]
       });
@@ -78,18 +78,17 @@ export const TimeLockAtmosphere: React.FC<TimeLockAtmosphereProps> = ({
       time += 0.015;
       ctx.clearRect(0, 0, width, height);
 
-      // 1. Ambient Soft Warm Glow
+      // 1. Soft Warm Amber Glow
       const grad = ctx.createRadialGradient(
         width / 2,
         height / 2,
         width * 0.05,
         width / 2,
         height / 2,
-        width * 0.7
+        width * 0.6
       );
-      grad.addColorStop(0, 'rgba(197, 160, 89, 0.05)');
-      grad.addColorStop(0.5, 'rgba(28, 26, 23, 0.02)');
-      grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      grad.addColorStop(0, 'rgba(245, 158, 11, 0.04)');
+      grad.addColorStop(1, 'rgba(247, 244, 237, 0)');
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, width, height);
 

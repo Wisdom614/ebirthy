@@ -34,19 +34,19 @@ export const Vault3DCore: React.FC<Vault3DCoreProps> = ({
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     container.appendChild(renderer.domElement);
 
-    // 3. Lighting - Warm Natural Candlelight & Soft Rim Light
-    const ambientLight = new THREE.AmbientLight(0xf5ebe1, 1.2);
+    // 3. Lighting - Swiss Daylight & Warm Amber Fill
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.4);
     scene.add(ambientLight);
 
-    const pointLight1 = new THREE.PointLight(0xd4af37, 2.8, 30);
+    const pointLight1 = new THREE.PointLight(0xf59e0b, 3.5, 30);
     pointLight1.position.set(4, 5, 4);
     scene.add(pointLight1);
 
-    const pointLight2 = new THREE.PointLight(0xa37e36, 2.0, 30);
+    const pointLight2 = new THREE.PointLight(0xd97706, 2.5, 30);
     pointLight2.position.set(-4, -3, 3);
     scene.add(pointLight2);
 
-    const rimLight = new THREE.PointLight(0xfaf5ee, 1.6, 30);
+    const rimLight = new THREE.PointLight(0xffffff, 2.0, 30);
     rimLight.position.set(0, 4, -4);
     scene.add(rimLight);
 
@@ -54,12 +54,12 @@ export const Vault3DCore: React.FC<Vault3DCoreProps> = ({
     const rootGroup = new THREE.Group();
     scene.add(rootGroup);
 
-    // 5. Outer Crystal Dodecahedron (The Vault Shell) - Antique Champagne Bronze
+    // 5. Outer Crystal Dodecahedron (The Vault Shell) - Rich Amber Gold
     const vaultGeo = new THREE.DodecahedronGeometry(1.25, 0);
     const vaultMat = new THREE.MeshStandardMaterial({
-      color: new THREE.Color(0xb38a42),
-      metalness: 0.86,
-      roughness: 0.28,
+      color: new THREE.Color(0xd97706),
+      metalness: 0.88,
+      roughness: 0.22,
       transparent: true,
       opacity: 0.88,
       wireframe: false
@@ -67,33 +67,33 @@ export const Vault3DCore: React.FC<Vault3DCoreProps> = ({
     const vaultMesh = new THREE.Mesh(vaultGeo, vaultMat);
     rootGroup.add(vaultMesh);
 
-    // Outer Wireframe Cage for precision look - Soft Muted Champagne
+    // Outer Wireframe Cage for precision look - Crisp Architectural Ink
     const wireGeo = new THREE.WireframeGeometry(vaultGeo);
     const wireMat = new THREE.LineBasicMaterial({
-      color: 0xe6d5b8,
-      linewidth: 1.2,
+      color: 0x1c1917,
+      linewidth: 1.8,
       transparent: true,
-      opacity: 0.65
+      opacity: 0.85
     });
     const wireLines = new THREE.LineSegments(wireGeo, wireMat);
     vaultMesh.add(wireLines);
 
-    // 6. Inner Glowing Core - Soft Candle Amber
+    // 6. Inner Glowing Core - Luminous Sun Gold
     const innerGeo = new THREE.OctahedronGeometry(0.58, 0);
     const innerMat = new THREE.MeshStandardMaterial({
-      color: 0xfaf5ee,
-      emissive: new THREE.Color(0xc5a059),
-      emissiveIntensity: 0.8,
+      color: 0xffffff,
+      emissive: new THREE.Color(0xf59e0b),
+      emissiveIntensity: 1.1,
       metalness: 0.9,
-      roughness: 0.15
+      roughness: 0.1
     });
     const innerMesh = new THREE.Mesh(innerGeo, innerMat);
     rootGroup.add(innerMesh);
 
-    // 7. Kinetic Orbital Rings - Brushed Champagne Brass
+    // 7. Kinetic Orbital Rings - Architectural Charcoal & Brass
     const ring1Geo = new THREE.TorusGeometry(1.75, 0.022, 16, 80);
     const ringMat1 = new THREE.MeshStandardMaterial({
-      color: new THREE.Color(0xc5a059),
+      color: new THREE.Color(0x1c1917),
       metalness: 0.9,
       roughness: 0.2
     });
@@ -102,18 +102,18 @@ export const Vault3DCore: React.FC<Vault3DCoreProps> = ({
 
     const ring2Geo = new THREE.TorusGeometry(2.0, 0.018, 16, 80);
     const ringMat2 = new THREE.MeshStandardMaterial({
-      color: 0xdfd3c3,
+      color: new THREE.Color(0xd97706),
       metalness: 0.85,
       roughness: 0.25,
       transparent: true,
-      opacity: 0.65
+      opacity: 0.8
     });
     const ring2 = new THREE.Mesh(ring2Geo, ringMat2);
     ring2.rotation.x = Math.PI / 3;
     ring2.rotation.y = Math.PI / 6;
     rootGroup.add(ring2);
 
-    // 8. Surrounding Sparkle Particle Swarm - Natural Stardust
+    // 8. Surrounding Sparkle Particle Swarm
     const particlesCount = 45;
     const starGeo = new THREE.BufferGeometry();
     const starPositions = new Float32Array(particlesCount * 3);
@@ -130,7 +130,7 @@ export const Vault3DCore: React.FC<Vault3DCoreProps> = ({
 
     starGeo.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
     const starMat = new THREE.PointsMaterial({
-      color: 0xeae0d0,
+      color: 0x78716c,
       size: 0.045,
       transparent: true,
       opacity: 0.75

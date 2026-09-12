@@ -15,63 +15,63 @@ export const TimeLockArcade: React.FC = () => {
         /* Floating Launch Bar */
         <button
           onClick={() => setIsOpen(true)}
-          className="w-full py-2.5 px-4 bg-[#1c1a17]/90 hover:bg-[#26231f] border border-[#c5a059]/30 hover:border-[#c5a059]/60 rounded-xl flex items-center justify-between text-[#e6d5b8] transition-all cursor-pointer backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.5)] group"
+          className="w-full py-3 px-4 bg-white hover:bg-[#eeeae0] border-2 border-[#1c1917] shadow-[3px_3px_0px_#1c1917] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none flex items-center justify-between text-[#1c1917] transition-all cursor-pointer group"
         >
-          <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-lg bg-[#c5a059]/20 border border-[#c5a059]/40 flex items-center justify-center group-hover:scale-105 transition-transform">
-              <Gamepad2 className="w-4 h-4 text-[#c5a059]" />
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-amber-400 border-2 border-[#1c1917] shadow-[2px_2px_0px_#1c1917] flex items-center justify-center flex-shrink-0">
+              <Gamepad2 className="w-4 h-4 text-[#1c1917]" />
             </div>
             <div className="flex flex-col text-left">
-              <span className="font-mono text-xs font-bold text-[#faf8f5] uppercase tracking-wider flex items-center gap-1.5">
-                <span>WAITING ARCADE &amp; LOUNGE</span>
-                <span className="w-1.5 h-1.5 rounded-full bg-[#c5a059] animate-pulse" />
+              <span className="font-mono text-xs font-black text-[#1c1917] uppercase tracking-wider flex items-center gap-2">
+                <span>[ WAITING ARCADE &amp; LOUNGE ]</span>
+                <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
               </span>
-              <span className="font-mono text-[9px] text-[#a8a29e]">
-                Play Piano &amp; Typing Speed Challenge while waiting
+              <span className="font-mono text-[10px] text-zinc-600 font-semibold uppercase">
+                Play Piano &amp; Typing Speed Challenge
               </span>
             </div>
           </div>
 
-          <div className="flex items-center gap-1.5 font-mono text-[10px] text-[#c5a059] font-bold bg-[#c5a059]/10 border border-[#c5a059]/30 px-2 py-1 rounded-md">
-            <span>PLAY</span>
+          <div className="flex items-center gap-1.5 font-mono text-xs font-bold bg-amber-400 text-[#1c1917] border-2 border-[#1c1917] px-2.5 py-1 shadow-[1px_1px_0px_#1c1917]">
+            <span>OPEN</span>
             <ChevronDown className="w-3.5 h-3.5" />
           </div>
         </button>
       ) : (
         /* Expanded Game Drawer */
-        <div className="w-full bg-[#181614]/95 border border-[#c5a059]/40 rounded-2xl p-4 shadow-[0_12px_40px_rgba(0,0,0,0.85)] backdrop-blur-2xl animate-in zoom-in-95 duration-150 relative">
+        <div className="w-full bg-white border-2 border-[#1c1917] p-5 shadow-[6px_6px_0px_#1c1917] animate-in zoom-in-95 duration-150 relative">
           
           {/* Top Control Bar */}
-          <div className="flex items-center justify-between border-b border-[#c5a059]/20 pb-3 mb-4">
-            <div className="flex items-center gap-1.5">
+          <div className="flex items-center justify-between border-b-2 border-[#1c1917] pb-3 mb-4">
+            <div className="flex items-center gap-2">
               <button
                 onClick={() => setActiveTab('piano')}
-                className={`px-3 py-1.5 rounded-lg font-mono text-xs font-bold uppercase flex items-center gap-1.5 transition-all cursor-pointer ${
+                className={`px-3 py-1.5 font-mono text-xs font-bold uppercase flex items-center gap-1.5 transition-all cursor-pointer border-2 border-[#1c1917] ${
                   activeTab === 'piano'
-                    ? 'bg-[#c5a059] text-[#141311] shadow-sm font-black'
-                    : 'bg-[#1c1a17] text-[#a8a29e] hover:text-[#faf8f5]'
+                    ? 'bg-amber-400 text-[#1c1917] shadow-[2px_2px_0px_#1c1917]'
+                    : 'bg-[#eeeae0] text-zinc-700 hover:text-black hover:bg-[#e4dfd4]'
                 }`}
               >
                 <Music className="w-3.5 h-3.5" />
-                <span>Birthday Piano</span>
+                <span>[ PIANO ]</span>
               </button>
 
               <button
                 onClick={() => setActiveTab('typing')}
-                className={`px-3 py-1.5 rounded-lg font-mono text-xs font-bold uppercase flex items-center gap-1.5 transition-all cursor-pointer ${
+                className={`px-3 py-1.5 font-mono text-xs font-bold uppercase flex items-center gap-1.5 transition-all cursor-pointer border-2 border-[#1c1917] ${
                   activeTab === 'typing'
-                    ? 'bg-[#c5a059] text-[#141311] shadow-sm font-black'
-                    : 'bg-[#1c1a17] text-[#a8a29e] hover:text-[#faf8f5]'
+                    ? 'bg-amber-400 text-[#1c1917] shadow-[2px_2px_0px_#1c1917]'
+                    : 'bg-[#eeeae0] text-zinc-700 hover:text-black hover:bg-[#e4dfd4]'
                 }`}
               >
                 <Zap className="w-3.5 h-3.5" />
-                <span>Speed Typing</span>
+                <span>[ TYPING TEST ]</span>
               </button>
             </div>
 
             <button
               onClick={() => setIsOpen(false)}
-              className="p-1.5 hover:bg-white/10 rounded-lg text-[#a8a29e] hover:text-[#faf8f5] transition-colors cursor-pointer"
+              className="p-1.5 bg-[#eeeae0] hover:bg-[#e4dfd4] border-2 border-[#1c1917] text-[#1c1917] transition-colors cursor-pointer shadow-[1px_1px_0px_#1c1917]"
               title="Close arcade"
             >
               <X className="w-4 h-4" />
