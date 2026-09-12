@@ -10,7 +10,7 @@ import { BrandLogo } from '../ui/BrandLogo';
 
 import { trackEvent } from '../../utils/analytics/tracker';
 
-export type ChronicleLayout = 'matrix' | 'passport' | 'ribbon';
+export type ChronicleLayout = 'classic' | 'matrix' | 'passport' | 'ribbon' | 'cosmic' | 'receipt';
 
 interface ChronicleImageModalProps {
   isOpen: boolean;
@@ -31,7 +31,7 @@ export const ChronicleImageModal: React.FC<ChronicleImageModalProps> = ({
 }) => {
   const cardRef = useRef<HTMLDivElement | null>(null);
   const [isExporting, setIsExporting] = useState(false);
-  const [layoutStyle, setLayoutStyle] = useState<ChronicleLayout>('matrix');
+  const [layoutStyle, setLayoutStyle] = useState<ChronicleLayout>('classic');
 
   if (!isOpen) return null;
 
@@ -108,12 +108,15 @@ export const ChronicleImageModal: React.FC<ChronicleImageModalProps> = ({
             <span>CHRONICLE LAYOUT:</span>
           </div>
 
-          <div className="flex items-center gap-1.5 font-mono text-[10px] font-bold">
+          <div className="flex items-center gap-1.5 font-mono text-[10px] font-bold overflow-x-auto pb-1 max-w-full">
             {(
               [
-                { id: 'matrix', label: '1. TELEMETRY' },
-                { id: 'passport', label: '2. PASSPORT VISA' },
-                { id: 'ribbon', label: '3. EDITORIAL' }
+                { id: 'classic', label: 'ORIGINAL GRID' },
+                { id: 'matrix', label: 'TELEMETRY' },
+                { id: 'passport', label: 'PASSPORT VISA' },
+                { id: 'ribbon', label: 'EDITORIAL' },
+                { id: 'cosmic', label: 'COSMIC STAR-LOG' },
+                { id: 'receipt', label: 'LIFE RECEIPT' }
               ] as { id: ChronicleLayout; label: string }[]
             ).map((s) => (
               <button
@@ -122,7 +125,7 @@ export const ChronicleImageModal: React.FC<ChronicleImageModalProps> = ({
                   audio.playSFX('sparkle');
                   setLayoutStyle(s.id);
                 }}
-                className={`px-2.5 py-1 uppercase border-2 transition-all cursor-pointer flex items-center gap-1 ${
+                className={`px-2 py-1 uppercase border-2 whitespace-nowrap transition-all cursor-pointer flex items-center gap-1 ${
                   layoutStyle === s.id
                     ? 'bg-amber-400 text-[#1c1917] border-[#1c1917] font-black shadow-[2px_2px_0px_#1c1917]'
                     : 'bg-white text-zinc-700 border-[#1c1917]/40 hover:border-[#1c1917]'
@@ -139,6 +142,118 @@ export const ChronicleImageModal: React.FC<ChronicleImageModalProps> = ({
         <div className="flex-1 overflow-y-auto p-2 sm:p-4 flex items-center justify-center bg-zinc-900/10 border-2 border-dashed border-[#1c1917]/30">
           
           {/* ========================================================
+              LAYOUT 0: ORIGINAL CLASSIC GRID (The Beloved Initial Design)
+             ======================================================== */}
+          {layoutStyle === 'classic' && (
+            <div
+              ref={cardRef}
+              id="printable-chronicle-card-classic"
+              className="w-full max-w-[380px] bg-[#f7f4ed] border-4 border-[#1c1917] p-3.5 sm:p-5 flex flex-col justify-between shadow-[6px_6px_0px_#1c1917] relative text-[#1c1917]"
+            >
+              <div className="border-b-2 border-[#1c1917] pb-2 sm:pb-3 flex items-center justify-between gap-2 flex-wrap">
+                <BrandLogo size="sm" showSubtitle={true} href="" />
+                <div className="flex items-center gap-1.5 font-mono text-[8px] sm:text-[9px] font-bold">
+                  <span className="px-1.5 sm:px-2 py-0.5 bg-amber-400 text-[#1c1917] border border-[#1c1917] uppercase shadow-sm font-black">
+                    {formatBirthDayMonth(birthDate)}
+                  </span>
+                  <span className="px-1.5 sm:px-2 py-0.5 bg-white border border-[#1c1917] uppercase shadow-sm">
+                    OFFICIAL ARCHIVE
+                  </span>
+                </div>
+              </div>
+
+              <div className="my-1.5 sm:my-3 flex flex-col items-center text-center">
+                {photoUrl ? (
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white border-2 border-[#1c1917] p-1 shadow-[2px_2px_0px_#1c1917] mb-1.5 sm:mb-2">
+                    <img
+                      src={photoUrl}
+                      alt={recipientName}
+                      className="w-full h-full object-cover grayscale contrast-125"
+                      crossOrigin="anonymous"
+                    />
+                  </div>
+                ) : (
+                  <div className="w-12 h-12 sm:w-16 sm:h-16 bg-amber-400 border-2 border-[#1c1917] shadow-[2px_2px_0px_#1c1917] mb-1.5 sm:mb-2 flex items-center justify-center">
+                    <Camera className="w-5 h-5 sm:w-7 sm:h-7 text-[#1c1917]" />
+                  </div>
+                )}
+
+                <h2 className="text-base sm:text-lg font-black uppercase tracking-tight text-[#1c1917] leading-tight">
+                  LIVING CHRONICLE OF <br />
+                  <span className="bg-amber-400 px-2 py-0.5 border border-[#1c1917] inline-block mt-0.5">
+                    {recipientName}
+                  </span>
+                </h2>
+                <span className="font-mono text-[8px] text-zinc-600 uppercase font-bold tracking-wider mt-0.5 block">
+                  CUMULATIVE MILESTONE TELEMETRY · BORN {formatBirthDayMonth(birthDate)}
+                </span>
+              </div>
+
+              <div className="grid grid-cols-2 gap-1.5 sm:gap-2 my-1.5 sm:my-2 font-mono">
+                <div className="bg-white border-2 border-[#1c1917] p-1.5 sm:p-2 text-center shadow-[1px_1px_0px_#1c1917]">
+                  <span className="text-[7px] sm:text-[8px] text-zinc-500 uppercase font-bold block">TOTAL YEARS</span>
+                  <span className="text-base sm:text-lg font-black text-[#1c1917] leading-tight block">
+                    {chronicle.totalYears.toLocaleString()}
+                  </span>
+                  <span className="text-[6px] sm:text-[7px] text-amber-700 uppercase font-bold">SOLAR ORBITS</span>
+                </div>
+
+                <div className="bg-white border-2 border-[#1c1917] p-1.5 sm:p-2 text-center shadow-[1px_1px_0px_#1c1917]">
+                  <span className="text-[7px] sm:text-[8px] text-zinc-500 uppercase font-bold block">TOTAL MONTHS</span>
+                  <span className="text-base sm:text-lg font-black text-[#1c1917] leading-tight block">
+                    {chronicle.totalMonths.toLocaleString()}
+                  </span>
+                  <span className="text-[6px] sm:text-[7px] text-amber-700 uppercase font-bold">MONTHS LIVED</span>
+                </div>
+
+                <div className="bg-white border-2 border-[#1c1917] p-1.5 sm:p-2 text-center shadow-[1px_1px_0px_#1c1917]">
+                  <span className="text-[7px] sm:text-[8px] text-zinc-500 uppercase font-bold block">TOTAL WEEKS</span>
+                  <span className="text-base sm:text-lg font-black text-[#1c1917] leading-tight block">
+                    {chronicle.totalWeeks.toLocaleString()}
+                  </span>
+                  <span className="text-[6px] sm:text-[7px] text-amber-700 uppercase font-bold">WEEKS PASSED</span>
+                </div>
+
+                <div className="bg-white border-2 border-[#1c1917] p-1.5 sm:p-2 text-center shadow-[1px_1px_0px_#1c1917]">
+                  <span className="text-[7px] sm:text-[8px] text-zinc-500 uppercase font-bold block">TOTAL DAYS</span>
+                  <span className="text-base sm:text-lg font-black text-[#1c1917] leading-tight block">
+                    {chronicle.totalDays.toLocaleString()}
+                  </span>
+                  <span className="text-[6px] sm:text-[7px] text-amber-700 uppercase font-bold">DAYS ON EARTH</span>
+                </div>
+
+                <div className="bg-white border-2 border-[#1c1917] p-1.5 sm:p-2 text-center shadow-[1px_1px_0px_#1c1917]">
+                  <span className="text-[7px] sm:text-[8px] text-zinc-500 uppercase font-bold block">TOTAL HOURS</span>
+                  <span className="text-base sm:text-lg font-black text-[#1c1917] leading-tight block">
+                    {chronicle.totalHours.toLocaleString()}
+                  </span>
+                  <span className="text-[6px] sm:text-[7px] text-amber-700 uppercase font-bold">HOURS OF IMPACT</span>
+                </div>
+
+                <div className="bg-white border-2 border-[#1c1917] p-1.5 sm:p-2 text-center shadow-[1px_1px_0px_#1c1917]">
+                  <span className="text-[7px] sm:text-[8px] text-zinc-500 uppercase font-bold block">TOTAL MINUTES</span>
+                  <span className="text-base sm:text-lg font-black text-[#1c1917] leading-tight block truncate">
+                    {chronicle.totalMinutes.toLocaleString()}
+                  </span>
+                  <span className="text-[6px] sm:text-[7px] text-amber-700 uppercase font-bold">MINUTES LIVED</span>
+                </div>
+              </div>
+
+              <div className="mt-2 pt-2 border-t-2 border-[#1c1917] flex items-end justify-between font-mono text-[7px] sm:text-[8px] gap-2">
+                <div className="text-left">
+                  <span className="text-zinc-500 uppercase block font-semibold">VERIFIED MILESTONE</span>
+                  <span className="font-bold text-[8px] sm:text-[9px] uppercase text-[#1c1917]">{chronicle.totalDays.toLocaleString()} DAYS OF EXCELLENCE</span>
+                </div>
+
+                <div className="text-right">
+                  <span className="text-zinc-500 uppercase block font-semibold">STAMPED YEAR</span>
+                  <span className="font-bold text-[8px] sm:text-[9px] uppercase text-[#1c1917]">{currentYear} CELEBRATION</span>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* ========================================================
               LAYOUT 1: TELEMETRY MATRIX (Technical High-Density Grid)
              ======================================================== */}
           {layoutStyle === 'matrix' && (
@@ -147,7 +262,6 @@ export const ChronicleImageModal: React.FC<ChronicleImageModalProps> = ({
               id="printable-chronicle-card-matrix"
               className="w-full max-w-[390px] bg-[#f7f4ed] border-4 border-[#1c1917] p-4 sm:p-5 flex flex-col justify-between shadow-[6px_6px_0px_#1c1917] relative text-[#1c1917] select-none overflow-hidden"
             >
-              {/* Top Structural Header */}
               <div className="border-b-2 border-[#1c1917] pb-2 flex items-center justify-between gap-2">
                 <BrandLogo size="sm" showSubtitle={true} href="" />
                 <div className="flex items-center gap-1.5 font-mono text-[8px] sm:text-[9px] font-bold">
@@ -160,8 +274,7 @@ export const ChronicleImageModal: React.FC<ChronicleImageModalProps> = ({
                 </div>
               </div>
 
-              {/* Main Portrait & Title Header */}
-              <div className="my-2.5 flex flex-col items-center text-center">
+              <div className="my-2 flex flex-col items-center text-center">
                 {photoUrl ? (
                   <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white border-2 border-[#1c1917] p-1 shadow-[3px_3px_0px_#1c1917] mb-2 relative">
                     <img
@@ -188,7 +301,6 @@ export const ChronicleImageModal: React.FC<ChronicleImageModalProps> = ({
                 </span>
               </div>
 
-              {/* 2x3 Metric Grid with Progress Meters */}
               <div className="grid grid-cols-2 gap-2 my-1 font-mono">
                 <div className="bg-white border-2 border-[#1c1917] p-2 text-center shadow-[1px_1px_0px_#1c1917]">
                   <span className="text-[7px] text-zinc-500 uppercase font-bold block">TOTAL YEARS</span>
@@ -257,7 +369,6 @@ export const ChronicleImageModal: React.FC<ChronicleImageModalProps> = ({
                 </div>
               </div>
 
-              {/* Bottom Verification Strip */}
               <div className="mt-2 pt-2 border-t-2 border-[#1c1917] flex items-end justify-between font-mono text-[8px] gap-2">
                 <div>
                   <span className="text-zinc-500 uppercase block font-semibold text-[7px]">CALIBRATED STATUS</span>
@@ -280,7 +391,6 @@ export const ChronicleImageModal: React.FC<ChronicleImageModalProps> = ({
               id="printable-chronicle-card-passport"
               className="w-full max-w-[390px] bg-[#fcf9f2] border-4 border-[#1c1917] p-4 sm:p-5 flex flex-col justify-between shadow-[6px_6px_0px_#1c1917] relative text-[#1c1917] select-none overflow-hidden"
             >
-              {/* Passport Header Banner */}
               <div className="border-b-2 border-[#1c1917] pb-2 flex items-center justify-between">
                 <div className="flex items-center gap-1.5">
                   <div className="w-5 h-5 bg-[#1c1917] text-amber-400 font-bold font-mono text-[9px] flex items-center justify-center">
@@ -296,9 +406,7 @@ export const ChronicleImageModal: React.FC<ChronicleImageModalProps> = ({
                 </span>
               </div>
 
-              {/* Passport Body: Left Photo / Right Info Ledger */}
-              <div className="my-2.5 grid grid-cols-12 gap-3 items-center">
-                {/* Left Column: Official Passport Photo & Seal */}
+              <div className="my-2 grid grid-cols-12 gap-3 items-center">
                 <div className="col-span-5 flex flex-col items-center">
                   <div className="w-24 h-28 bg-white border-2 border-[#1c1917] p-1 shadow-[3px_3px_0px_#1c1917] relative overflow-hidden">
                     {photoUrl ? (
@@ -313,7 +421,6 @@ export const ChronicleImageModal: React.FC<ChronicleImageModalProps> = ({
                         <Camera className="w-8 h-8 text-zinc-400" />
                       </div>
                     )}
-                    {/* Stamped Circular Visa Seal Overlay */}
                     <div className="absolute -bottom-3 -right-3 w-14 h-14 rounded-full border border-amber-600/80 bg-amber-400/20 backdrop-blur-xs flex items-center justify-center rotate-[-15deg] pointer-events-none">
                       <span className="font-mono text-[5px] font-black text-amber-900 uppercase text-center">
                         VERIFIED<br />CITIZEN
@@ -325,7 +432,6 @@ export const ChronicleImageModal: React.FC<ChronicleImageModalProps> = ({
                   </span>
                 </div>
 
-                {/* Right Column: Passport Milestone Ledger */}
                 <div className="col-span-7 flex flex-col font-mono text-left">
                   <div className="border-b border-[#1c1917]/30 pb-1 mb-1">
                     <span className="text-[6px] text-zinc-500 uppercase block font-bold leading-none">HOLDER / NAME</span>
@@ -360,7 +466,6 @@ export const ChronicleImageModal: React.FC<ChronicleImageModalProps> = ({
                 </div>
               </div>
 
-              {/* Passport Machine Readable Zone (MRZ Chevrons) */}
               <div className="border-t-2 border-[#1c1917] pt-1.5 font-mono text-[7px] text-zinc-600 uppercase tracking-widest leading-tight">
                 <div>P&lt;EARTH&lt;&lt;{(recipientName || 'RECIPIENT').toUpperCase().replace(/\s+/g, '&lt;')}&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;</div>
                 <div>{chronicle.totalDays}D&lt;&lt;{chronicle.totalYears}Y&lt;&lt;{currentYear}&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;</div>
@@ -377,7 +482,6 @@ export const ChronicleImageModal: React.FC<ChronicleImageModalProps> = ({
               id="printable-chronicle-card-ribbon"
               className="w-full max-w-[390px] bg-[#1a1816] border-4 border-[#f59e0b] p-4 sm:p-5 flex flex-col justify-between shadow-[6px_6px_0px_#f59e0b] relative text-[#f5f5f4] select-none overflow-hidden"
             >
-              {/* Header Badge */}
               <div className="border-b border-[#f59e0b]/40 pb-2 flex items-center justify-between">
                 <span className="font-mono text-[8px] uppercase tracking-widest text-[#f59e0b] font-black">
                   ★ LUXURY MILESTONE CHRONICLE ★
@@ -387,7 +491,6 @@ export const ChronicleImageModal: React.FC<ChronicleImageModalProps> = ({
                 </span>
               </div>
 
-              {/* Hero Banner with Recipient & Giant Day Count */}
               <div className="my-2 text-center flex flex-col items-center">
                 {photoUrl && (
                   <div className="w-16 h-16 rounded-full border-2 border-[#f59e0b] p-0.5 mb-1.5 overflow-hidden shadow-[0px_0px_10px_rgba(245,158,11,0.2)]">
@@ -406,7 +509,6 @@ export const ChronicleImageModal: React.FC<ChronicleImageModalProps> = ({
                   {recipientName}
                 </h2>
 
-                {/* Monumental Day Count Badge */}
                 <div className="w-full bg-[#262320] border-2 border-[#f59e0b] py-2 px-3 my-2 text-center shadow-[3px_3px_0px_#f59e0b]">
                   <span className="font-mono text-[7px] text-amber-400 uppercase tracking-widest block font-bold">
                     CUMULATIVE EXISTENCE
@@ -420,7 +522,6 @@ export const ChronicleImageModal: React.FC<ChronicleImageModalProps> = ({
                 </div>
               </div>
 
-              {/* Stacked Milestone Ribbons */}
               <div className="space-y-1 font-mono text-[8px]">
                 <div className="bg-[#262320] border border-[#f59e0b]/40 px-2.5 py-1 flex items-center justify-between">
                   <span className="text-zinc-400">☀️ SOLAR ORBITS:</span>
@@ -436,10 +537,155 @@ export const ChronicleImageModal: React.FC<ChronicleImageModalProps> = ({
                 </div>
               </div>
 
-              {/* Footer */}
               <div className="mt-2 pt-1.5 border-t border-[#f59e0b]/40 flex items-center justify-between font-mono text-[7px] text-zinc-400">
                 <span>BORN: {formatBirthDayMonth(birthDate)}</span>
                 <span className="text-[#f59e0b] font-bold">VERIFIED ARCHIVE</span>
+              </div>
+            </div>
+          )}
+
+          {/* ========================================================
+              LAYOUT 4: COSMIC STAR-LOG (Deep Space Astronomy Journey)
+             ======================================================== */}
+          {layoutStyle === 'cosmic' && (
+            <div
+              ref={cardRef}
+              id="printable-chronicle-card-cosmic"
+              className="w-full max-w-[390px] bg-[#090d16] border-4 border-[#38bdf8] p-4 sm:p-5 flex flex-col justify-between shadow-[6px_6px_0px_#0284c7] relative text-[#f0f9ff] select-none overflow-hidden"
+            >
+              {/* Cosmic Header */}
+              <div className="border-b border-[#38bdf8]/40 pb-2 flex items-center justify-between font-mono text-[8px]">
+                <span className="text-[#38bdf8] font-black uppercase tracking-widest flex items-center gap-1">
+                  ✦ DEEP SPACE STAR-LOG
+                </span>
+                <span className="bg-[#0284c7] text-white px-2 py-0.5 font-bold uppercase">
+                  MISSION #{currentYear}
+                </span>
+              </div>
+
+              {/* Cosmic Hero Center */}
+              <div className="my-2 flex flex-col items-center text-center">
+                <div className="w-20 h-20 rounded-full border-2 border-dashed border-[#38bdf8] p-1 mb-2 relative flex items-center justify-center">
+                  <div className="w-full h-full rounded-full overflow-hidden bg-slate-900">
+                    {photoUrl ? (
+                      <img
+                        src={photoUrl}
+                        alt={recipientName}
+                        className="w-full h-full object-cover grayscale contrast-125"
+                        crossOrigin="anonymous"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-[#38bdf8]">
+                        <Camera className="w-7 h-7" />
+                      </div>
+                    )}
+                  </div>
+                  <div className="absolute -bottom-1 bg-[#38bdf8] text-[#090d16] font-mono text-[7px] font-black px-1.5 py-0.2 rounded-full uppercase">
+                    VOYAGER
+                  </div>
+                </div>
+
+                <h2 className="text-base sm:text-lg font-black uppercase tracking-tight text-white">
+                  {recipientName}
+                </h2>
+                <span className="font-mono text-[7px] text-[#38bdf8] uppercase tracking-wider block">
+                  CELESTIAL TIME ELAPSED SINCE {formatBirthDayMonth(birthDate)}
+                </span>
+              </div>
+
+              {/* Starlight Metrics Grid */}
+              <div className="grid grid-cols-3 gap-1.5 font-mono text-[7px] my-1">
+                <div className="bg-[#131b2e] border border-[#38bdf8]/30 p-1.5 text-center">
+                  <span className="text-slate-400 block">SOLAR LAPS</span>
+                  <span className="text-sm font-black text-[#38bdf8] block">{chronicle.totalYears}</span>
+                  <span className="text-[6px] text-slate-500">ORBITS</span>
+                </div>
+                <div className="bg-[#131b2e] border border-[#38bdf8]/30 p-1.5 text-center">
+                  <span className="text-slate-400 block">EARTH TURNS</span>
+                  <span className="text-sm font-black text-amber-300 block">{chronicle.totalDays.toLocaleString()}</span>
+                  <span className="text-[6px] text-slate-500">DAYS</span>
+                </div>
+                <div className="bg-[#131b2e] border border-[#38bdf8]/30 p-1.5 text-center">
+                  <span className="text-slate-400 block">LIGHT TIME</span>
+                  <span className="text-sm font-black text-[#38bdf8] block">{chronicle.totalHours.toLocaleString()}</span>
+                  <span className="text-[6px] text-slate-500">HOURS</span>
+                </div>
+              </div>
+
+              {/* Cosmic Footer */}
+              <div className="mt-2 pt-1.5 border-t border-[#38bdf8]/30 flex justify-between font-mono text-[7px] text-slate-400">
+                <span>INTERSTELLAR ARCHIVE</span>
+                <span className="text-[#38bdf8] font-bold">100% LIVING PULSE</span>
+              </div>
+            </div>
+          )}
+
+          {/* ========================================================
+              LAYOUT 5: LIFE RECEIPT (Modernist Thermal Ledger)
+             ======================================================== */}
+          {layoutStyle === 'receipt' && (
+            <div
+              ref={cardRef}
+              id="printable-chronicle-card-receipt"
+              className="w-full max-w-[370px] bg-[#fffdf9] border-2 border-dashed border-[#1c1917] p-4 sm:p-5 flex flex-col justify-between shadow-[5px_5px_0px_#1c1917] relative text-[#1c1917] font-mono select-none"
+            >
+              {/* Receipt Header */}
+              <div className="text-center border-b-2 border-dashed border-[#1c1917] pb-2">
+                <span className="text-xs font-black tracking-widest block uppercase">
+                  *** TIME OF LIFE RECEIPT ***
+                </span>
+                <span className="text-[8px] text-zinc-600 uppercase block">
+                  CUSTOMER: {recipientName}
+                </span>
+                <span className="text-[8px] text-zinc-500 uppercase block">
+                  ORIGIN DATE: {formatBirthDayMonth(birthDate)} · {currentYear}
+                </span>
+              </div>
+
+              {/* Receipt Itemized Table */}
+              <div className="my-2 space-y-1 text-[9px]">
+                <div className="flex justify-between border-b border-dotted border-zinc-400 pb-0.5 font-bold">
+                  <span>ITEM / TIME UNIT</span>
+                  <span>QUANTITY</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>1. SOLAR ORBITS</span>
+                  <span className="font-bold">{chronicle.totalYears} YRS</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>2. LUNAR PHASES</span>
+                  <span className="font-bold">{chronicle.totalMonths} MOS</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>3. WEEKS OF GROWTH</span>
+                  <span className="font-bold">{chronicle.totalWeeks.toLocaleString()} WKS</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>4. DAYS ON EARTH</span>
+                  <span className="font-black text-amber-700">{chronicle.totalDays.toLocaleString()} DAYS</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>5. HOURS OF IMPACT</span>
+                  <span className="font-bold">{chronicle.totalHours.toLocaleString()} HRS</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>6. MINUTES LIVED</span>
+                  <span className="font-bold">{chronicle.totalMinutes.toLocaleString()} MIN</span>
+                </div>
+              </div>
+
+              {/* Receipt Total & Barcode */}
+              <div className="border-t-2 border-dashed border-[#1c1917] pt-2 text-center">
+                <div className="flex justify-between font-black text-xs my-0.5">
+                  <span>TOTAL LIFE SCORE:</span>
+                  <span className="text-amber-600">PRICELESS (∞)</span>
+                </div>
+                <p className="text-[7px] text-zinc-500 uppercase mt-1">
+                  THANK YOU FOR BEING A LEGEND · KEEP SHINING
+                </p>
+                <div className="mt-1.5 text-[8px] tracking-[0.3em] font-black text-center overflow-hidden whitespace-nowrap">
+                  |||||| | |||||||| |||| | |||||| |||||
+                </div>
               </div>
             </div>
           )}
