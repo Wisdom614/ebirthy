@@ -15,6 +15,7 @@ import { MemoryGalleryEditor } from '../../components/studio/MemoryGalleryEditor
 import { ShareModal } from '../../components/studio/ShareModal';
 import { AuthModal } from '../../components/auth/AuthModal';
 import { SavedScenesDrawer } from '../../components/studio/SavedScenesDrawer';
+import { KeepsakePosterModal } from '../../components/scene/KeepsakePosterModal';
 import { BrandLogo } from '../../components/ui/BrandLogo';
 import { audio } from '../../utils/audioManager';
 import {
@@ -28,7 +29,8 @@ import {
   LogIn,
   LogOut,
   ArrowLeft,
-  MoreHorizontal
+  MoreHorizontal,
+  Image as ImageIcon
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -41,6 +43,7 @@ function StudioContent() {
   const [activeTab, setActiveTab] = useState<'details' | 'theme' | 'effects' | 'gallery'>('details');
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [isPosterModalOpen, setIsPosterModalOpen] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [previewDevice, setPreviewDevice] = useState<'desktop' | 'mobile'>('desktop');
@@ -325,6 +328,16 @@ function StudioContent() {
             </button>
           )}
 
+          {/* Keepsake Poster Exporter Trigger */}
+          <button
+            onClick={() => setIsPosterModalOpen(true)}
+            className="px-3.5 py-1.5 bg-[#f7f4ed] hover:bg-[#eeeae0] text-[#1c1917] border-2 border-[#1c1917] font-mono font-bold text-xs uppercase shadow-[2px_2px_0px_#1c1917] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none flex items-center gap-1.5 transition-all cursor-pointer"
+            title="Download 300 DPI Commemorative Keepsake Poster"
+          >
+            <ImageIcon className="w-3.5 h-3.5 text-amber-600" />
+            <span>[ POSTER ]</span>
+          </button>
+
           {/* Share Modal Trigger */}
           <button
             onClick={handleShareClick}
@@ -394,6 +407,14 @@ function StudioContent() {
               >
                 <FolderHeart className="w-3.5 h-3.5 text-amber-600" />
                 <span>MY SAVED SCENES</span>
+              </button>
+
+              <button
+                onClick={() => setIsPosterModalOpen(true)}
+                className="w-full px-2.5 py-2 text-left font-mono text-xs font-bold uppercase hover:bg-[#eeeae0] flex items-center gap-2 text-[#1c1917]"
+              >
+                <ImageIcon className="w-3.5 h-3.5 text-amber-600" />
+                <span>EXPORT POSTER (300 DPI)</span>
               </button>
 
               <button
@@ -484,24 +505,37 @@ function StudioContent() {
               <span className="font-mono text-xs font-bold uppercase text-[#1c1917]">[ SIMULATOR · LIVE VIEW ]</span>
             </div>
 
-            {/* Device Switcher */}
-            <div className="flex items-center gap-1 bg-[#f7f4ed] p-1 border-2 border-[#1c1917]">
+            <div className="flex items-center gap-2">
+              {/* Creator Poster Export Button */}
               <button
-                onClick={() => setPreviewDevice('desktop')}
-                className={`px-2 py-1 font-mono text-[10px] font-bold uppercase transition-colors cursor-pointer border ${
-                  previewDevice === 'desktop' ? 'bg-amber-400 text-[#1c1917] border-[#1c1917]' : 'text-zinc-600 border-transparent hover:text-black'
-                }`}
+                onClick={() => setIsPosterModalOpen(true)}
+                className="px-2.5 py-1 bg-[#f7f4ed] hover:bg-[#eeeae0] text-[#1c1917] border border-[#1c1917] font-mono text-[10px] font-black uppercase shadow-[1px_1px_0px_#1c1917] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none flex items-center gap-1 cursor-pointer transition-all"
+                title="Download 300 DPI Commemorative Keepsake Poster"
               >
-                DESKTOP
+                <ImageIcon className="w-3 h-3 text-amber-600" />
+                <span className="hidden sm:inline">[ EXPORT POSTER ]</span>
+                <span className="sm:hidden">POSTER</span>
               </button>
-              <button
-                onClick={() => setPreviewDevice('mobile')}
-                className={`px-2 py-1 font-mono text-[10px] font-bold uppercase transition-colors cursor-pointer border ${
-                  previewDevice === 'mobile' ? 'bg-amber-400 text-[#1c1917] border-[#1c1917]' : 'text-zinc-600 border-transparent hover:text-black'
-                }`}
-              >
-                MOBILE
-              </button>
+
+              {/* Device Switcher */}
+              <div className="flex items-center gap-1 bg-[#f7f4ed] p-1 border-2 border-[#1c1917]">
+                <button
+                  onClick={() => setPreviewDevice('desktop')}
+                  className={`px-2 py-1 font-mono text-[10px] font-bold uppercase transition-colors cursor-pointer border ${
+                    previewDevice === 'desktop' ? 'bg-amber-400 text-[#1c1917] border-[#1c1917]' : 'text-zinc-600 border-transparent hover:text-black'
+                  }`}
+                >
+                  DESKTOP
+                </button>
+                <button
+                  onClick={() => setPreviewDevice('mobile')}
+                  className={`px-2 py-1 font-mono text-[10px] font-bold uppercase transition-colors cursor-pointer border ${
+                    previewDevice === 'mobile' ? 'bg-amber-400 text-[#1c1917] border-[#1c1917]' : 'text-zinc-600 border-transparent hover:text-black'
+                  }`}
+                >
+                  MOBILE
+                </button>
+              </div>
             </div>
           </div>
 
@@ -552,6 +586,14 @@ function StudioContent() {
           setPendingActionAfterAuth('share');
           setIsAuthModalOpen(true);
         }}
+      />
+
+      {/* Keepsake Poster Modal Dialog */}
+      <KeepsakePosterModal
+        isOpen={isPosterModalOpen}
+        onClose={() => setIsPosterModalOpen(false)}
+        scene={scene}
+        slug={currentSceneId}
       />
 
       {/* Auth Modal Dialog */}
