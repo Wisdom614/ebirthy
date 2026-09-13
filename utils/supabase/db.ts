@@ -30,22 +30,11 @@ export async function saveSceneToSupabase(
     throw new Error('Supabase is not configured. Please add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY to .env');
   }
 
-  const slug = customSlug || generateSceneSlug(scene.recipientName, scene.birthDate || scene.age);
-
-  const payload = {
-    recipient_name: scene.recipientName || 'Friend',
-    sender_name: scene.senderName || '',
-    theme: scene.theme,
-    config: scene,
-    slug: slug,
-    ...(userId ? { user_id: userId } : {})
-  };
-
   if (existingId) {
-    // Check if the scene is within its 3-day creator editing window
+    // Check if the scene is within its 3-day creator editing window and retrieve existing slug
     const { data: existingScene, error: fetchErr } = await supabase
       .from('scenes')
-      .select('id, created_at, user_id')
+      .select('id, created_at, user_id, slug')
       .eq('id', existingId)
       .single();
 
@@ -55,10 +44,23 @@ export async function saveSceneToSupabase(
       const editStatus = getSceneEditStatus(existingScene.created_at);
       if (!editStatus.canEdit) {
         throw new Error(
-          `This scene is finalized and can no longer be edited. Creators have a 3-day window from creation to edit content. You can duplicate it to create a new scene.`
+          `This scene was created more than 3 days ago and is finalized. You can duplicate it to create a new editable scene.`
         );
       }
     }
+
+    // Preserve the exact same slug unless explicitly overridden
+    const persistentSlug = customSlug || existingScene?.slug || generateSceneSlug(scene.recipientName, scene.birthDate || scene.age);
+
+    const payload = {
+      recipient_name: scene.recipientName || 'Friend',
+      sender_name: scene.senderName || '',
+      theme: scene.theme,
+      config: scene,
+      slug: persistentSlug,
+      updated_at: new Date().toISOString(),
+      ...(userId ? { user_id: userId } : {})
+    };
 
     const { data, error } = await supabase
       .from('scenes')
@@ -68,8 +70,27 @@ export async function saveSceneToSupabase(
       .single();
 
     if (error) throw error;
+
+    // Refresh local cache for instant zero-latency loading
+    if (typeof window !== 'undefined' && persistentSlug) {
+      try {
+        localStorage.setItem(`ebirthy_scene_${persistentSlug}`, JSON.stringify(scene));
+      } catch {}
+    }
+
     return data;
   } else {
+    const newSlug = customSlug || generateSceneSlug(scene.recipientName, scene.birthDate || scene.age);
+
+    const payload = {
+      recipient_name: scene.recipientName || 'Friend',
+      sender_name: scene.senderName || '',
+      theme: scene.theme,
+      config: scene,
+      slug: newSlug,
+      ...(userId ? { user_id: userId } : {})
+    };
+
     const { data, error } = await supabase
       .from('scenes')
       .upsert([payload], { onConflict: 'slug' })
@@ -77,6 +98,14 @@ export async function saveSceneToSupabase(
       .single();
 
     if (error) throw error;
+
+    // Refresh local cache
+    if (typeof window !== 'undefined' && data?.slug) {
+      try {
+        localStorage.setItem(`ebirthy_scene_${data.slug}`, JSON.stringify(scene));
+      } catch {}
+    }
+
     return data;
   }
 }

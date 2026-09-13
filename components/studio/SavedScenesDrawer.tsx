@@ -11,7 +11,7 @@ import { BrandLogo } from '../ui/BrandLogo';
 interface SavedScenesDrawerProps {
   isOpen: boolean;
   onClose: () => void;
-  onSelectScene: (scene: SceneConfig, id: string, createdAt?: string) => void;
+  onSelectScene: (scene: SceneConfig, id: string, createdAt?: string, slug?: string) => void;
   userId?: string;
   onOpenAuth: () => void;
 }
@@ -125,7 +125,7 @@ export const SavedScenesDrawer: React.FC<SavedScenesDrawerProps> = ({
                   <div
                     key={record.id}
                     onClick={() => {
-                      onSelectScene(record.config, record.id, record.created_at);
+                      onSelectScene(record.config, record.id, record.created_at, record.slug);
                       onClose();
                     }}
                     className="p-4 bg-white border-2 border-[#1c1917] hover:bg-[#eeeae0] transition-all cursor-pointer group shadow-[3px_3px_0px_#1c1917]"

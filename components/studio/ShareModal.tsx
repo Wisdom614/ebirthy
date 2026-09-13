@@ -12,47 +12,46 @@ import { BrandLogo } from '../ui/BrandLogo';
 interface ShareModalProps {
   scene: SceneConfig;
   isOpen: boolean;
+  sceneId?: string;
   slug?: string;
   user?: any;
   onClose: () => void;
   onRequireAuth?: () => void;
+  onSceneSaved?: (savedId: string, savedSlug: string, createdAt: string) => void;
 }
 
 export const ShareModal: React.FC<ShareModalProps> = ({
   scene,
   isOpen,
+  sceneId,
   slug: initialSlug,
   user,
   onClose,
-  onRequireAuth
+  onRequireAuth,
+  onSceneSaved
 }) => {
   const [copied, setCopied] = useState(false);
-  const [shortSlug, setShortSlug] = useState<string>('');
+  const [shortSlug, setShortSlug] = useState<string>(initialSlug || '');
   const [cloudStatus, setCloudStatus] = useState<'saving' | 'synced' | 'local_only' | 'error' | 'auth_required'>('saving');
   const [cloudErrorMsg, setCloudErrorMsg] = useState<string>('');
 
   useEffect(() => {
     if (!isOpen) return;
 
-    // Use initial slug or generate a clean human-readable slug (e.g. alex24-k9x)
-    const slug = initialSlug || generateSceneSlug(scene.recipientName, scene.age);
-    setShortSlug(slug);
-
-    // Save to local cache so link opens instantly on this device
-    try {
-      localStorage.setItem(`ebirthy_scene_${slug}`, JSON.stringify(scene));
-    } catch {}
-
-    // Check if user is required to sign in first
     if (isSupabaseConfigured) {
       if (!user) {
         setCloudStatus('auth_required');
         return;
       }
       setCloudStatus('saving');
-      saveSceneToSupabase(scene, user?.id, undefined, slug)
-        .then(() => {
-          setCloudStatus('synced');
+      saveSceneToSupabase(scene, user?.id, sceneId, initialSlug)
+        .then((record) => {
+          if (record) {
+            const finalSlug = record.slug || record.id;
+            setShortSlug(finalSlug);
+            setCloudStatus('synced');
+            onSceneSaved?.(record.id, finalSlug, record.created_at);
+          }
         })
         .catch((err) => {
           console.error('Supabase save error:', err);
@@ -60,9 +59,14 @@ export const ShareModal: React.FC<ShareModalProps> = ({
           setCloudErrorMsg(err?.message || 'Database sync error');
         });
     } else {
+      const slug = initialSlug || generateSceneSlug(scene.recipientName, scene.age);
+      setShortSlug(slug);
+      try {
+        localStorage.setItem(`ebirthy_scene_${slug}`, JSON.stringify(scene));
+      } catch {}
       setCloudStatus('local_only');
     }
-  }, [isOpen, initialSlug, scene, user]);
+  }, [isOpen, sceneId, initialSlug, scene, user]);
 
   if (!isOpen) return null;
 

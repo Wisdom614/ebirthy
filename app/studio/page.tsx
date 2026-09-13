@@ -34,7 +34,8 @@ import {
   Image as ImageIcon,
   Copy,
   Clock,
-  Lock
+  Lock,
+  RefreshCw
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -58,6 +59,7 @@ function StudioContent() {
   const [isSaving, setIsSaving] = useState(false);
   const [savedSuccess, setSavedSuccess] = useState(false);
   const [currentSceneId, setCurrentSceneId] = useState<string | undefined>(undefined);
+  const [currentSceneSlug, setCurrentSceneSlug] = useState<string | undefined>(undefined);
   const [currentSceneCreatedAt, setCurrentSceneCreatedAt] = useState<string | undefined>(undefined);
 
   const editStatus = getSceneEditStatus(currentSceneCreatedAt);
@@ -77,6 +79,7 @@ function StudioContent() {
     if (preset && PRESET_TEMPLATES[preset]) {
       setScene(PRESET_TEMPLATES[preset].config);
       setCurrentSceneId(undefined);
+      setCurrentSceneSlug(undefined);
       setCurrentSceneCreatedAt(undefined);
     } else if (data) {
       const decoded = decodeScene(data);
@@ -86,6 +89,7 @@ function StudioContent() {
         if (record) {
           setScene(record.config);
           setCurrentSceneId(record.id);
+          setCurrentSceneSlug(record.slug || record.id);
           setCurrentSceneCreatedAt(record.created_at);
         }
       });
@@ -150,9 +154,11 @@ function StudioContent() {
     if (isSupabaseConfigured && effectiveUser) {
       setIsSaving(true);
       try {
-        const record = await saveSceneToSupabase(scene, effectiveUser.id, currentSceneId);
+        const record = await saveSceneToSupabase(scene, effectiveUser.id, currentSceneId, currentSceneSlug);
         if (record) {
           setCurrentSceneId(record.id);
+          setCurrentSceneSlug(record.slug || record.id);
+          setCurrentSceneCreatedAt(record.created_at);
           const targetSlug = record.slug || record.id;
           trackEvent('scene_launched', {
             recipient: scene.recipientName,
@@ -170,7 +176,7 @@ function StudioContent() {
     }
 
     // Local fallback
-    const slug = currentSceneId || generateSceneSlug(scene.recipientName, scene.birthDate);
+    const slug = currentSceneSlug || currentSceneId || generateSceneSlug(scene.recipientName, scene.birthDate);
     try {
       localStorage.setItem(`ebirthy_scene_${slug}`, JSON.stringify(scene));
     } catch {}
@@ -209,6 +215,7 @@ function StudioContent() {
 
   const handleDuplicateAsNew = () => {
     setCurrentSceneId(undefined);
+    setCurrentSceneSlug(undefined);
     setCurrentSceneCreatedAt(undefined);
     audio.playSFX('sparkle');
   };
@@ -222,8 +229,8 @@ function StudioContent() {
     if (!user) {
       setAuthModalConfig({
         defaultMode: 'signup',
-        title: 'SIGN UP TO SAVE SCENE',
-        description: 'Create an account to save and manage scenes in your cloud vault.'
+        title: currentSceneId ? 'SIGN IN TO UPDATE LIVE SCENE' : 'SIGN UP TO SAVE SCENE',
+        description: 'Create an account to save and automatically update celebration scenes in your cloud vault.'
       });
       setPendingActionAfterAuth(null);
       setIsAuthModalOpen(true);
@@ -244,9 +251,10 @@ function StudioContent() {
 
     setIsSaving(true);
     try {
-      const result = await saveSceneToSupabase(scene, user?.id, currentSceneId);
+      const result = await saveSceneToSupabase(scene, user?.id, currentSceneId, currentSceneSlug);
       if (result) {
         setCurrentSceneId(result.id);
+        setCurrentSceneSlug(result.slug || result.id);
         setCurrentSceneCreatedAt(result.created_at);
         setSavedSuccess(true);
         audio.playSFX('sparkle');
@@ -342,7 +350,7 @@ function StudioContent() {
 
         {/* Right Desktop Controls (md:flex) */}
         <div className="hidden md:flex items-center gap-2 flex-shrink-0">
-          {/* Cloud Save Button */}
+          {/* Cloud Save / Update Button */}
           {currentSceneId && editStatus.isExpired ? (
             <button
               onClick={handleDuplicateAsNew}
@@ -359,18 +367,32 @@ function StudioContent() {
               className={`px-3 py-1.5 font-mono text-xs font-bold uppercase border-2 border-[#1c1917] shadow-[2px_2px_0px_#1c1917] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all cursor-pointer flex items-center gap-1.5 ${
                 savedSuccess
                   ? 'bg-emerald-400 text-[#1c1917]'
+                  : currentSceneId
+                  ? 'bg-amber-400 hover:bg-amber-300 text-[#1c1917]'
                   : 'bg-[#f7f4ed] hover:bg-[#eeeae0] text-[#1c1917]'
               }`}
-              title="Save to Cloud Vault (Editable for 3 days from creation)"
+              title={
+                currentSceneId
+                  ? 'Update live scene (changes apply automatically to existing shared links)'
+                  : 'Save to Cloud Vault (Editable for 3 days from creation)'
+              }
             >
               {isSaving ? (
                 <Loader2 className="w-3.5 h-3.5 animate-spin" />
               ) : savedSuccess ? (
                 <Check className="w-3.5 h-3.5" />
+              ) : currentSceneId ? (
+                <RefreshCw className="w-3.5 h-3.5" />
               ) : (
                 <Cloud className="w-3.5 h-3.5 text-amber-600" />
               )}
-              <span>{savedSuccess ? 'SAVED' : 'SAVE CLOUD'}</span>
+              <span>
+                {isSaving
+                  ? (currentSceneId ? 'UPDATING...' : 'SAVING...')
+                  : savedSuccess
+                  ? (currentSceneId ? 'LIVE UPDATED' : 'SAVED')
+                  : (currentSceneId ? 'UPDATE SCENE' : 'SAVE CLOUD')}
+              </span>
             </button>
           )}
 
@@ -471,8 +493,18 @@ function StudioContent() {
                 disabled={isSaving}
                 className="w-full px-2.5 py-2 text-left font-mono text-xs font-bold uppercase hover:bg-[#eeeae0] flex items-center gap-2 text-[#1c1917]"
               >
-                <Cloud className="w-3.5 h-3.5 text-amber-600" />
-                <span>SAVE TO CLOUD</span>
+                {currentSceneId ? (
+                  <RefreshCw className="w-3.5 h-3.5 text-amber-600" />
+                ) : (
+                  <Cloud className="w-3.5 h-3.5 text-amber-600" />
+                )}
+                <span>
+                  {isSaving
+                    ? (currentSceneId ? 'UPDATING...' : 'SAVING...')
+                    : savedSuccess
+                    ? (currentSceneId ? 'LIVE UPDATED ✓' : 'SAVED ✓')
+                    : (currentSceneId ? 'UPDATE LIVE SCENE' : 'SAVE TO CLOUD')}
+                </span>
               </button>
 
               <button
@@ -647,10 +679,16 @@ function StudioContent() {
       {/* Share Modal Dialog */}
       <ShareModal
         scene={scene}
-        slug={currentSceneId}
+        sceneId={currentSceneId}
+        slug={currentSceneSlug}
         user={user}
         isOpen={isShareModalOpen}
         onClose={() => setIsShareModalOpen(false)}
+        onSceneSaved={(savedId, savedSlug, createdAt) => {
+          setCurrentSceneId(savedId);
+          setCurrentSceneSlug(savedSlug);
+          setCurrentSceneCreatedAt(createdAt);
+        }}
         onRequireAuth={() => {
           setAuthModalConfig({
             defaultMode: 'signup',
@@ -667,7 +705,7 @@ function StudioContent() {
         isOpen={isPosterModalOpen}
         onClose={() => setIsPosterModalOpen(false)}
         scene={scene}
-        slug={currentSceneId}
+        slug={currentSceneSlug || currentSceneId}
       />
 
       {/* Auth Modal Dialog */}
@@ -688,9 +726,10 @@ function StudioContent() {
         isOpen={isDrawerOpen}
         onClose={() => setIsDrawerOpen(false)}
         userId={user?.id}
-        onSelectScene={(selected, id, createdAt) => {
+        onSelectScene={(selected, id, createdAt, slug) => {
           setScene(selected);
           setCurrentSceneId(id);
+          setCurrentSceneSlug(slug || id);
           setCurrentSceneCreatedAt(createdAt);
         }}
         onOpenAuth={() => setIsAuthModalOpen(true)}
